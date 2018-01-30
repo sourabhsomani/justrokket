@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% block meta %}
+    <title>Pricing - Just Rokket</title>
+	<meta charset="utf-8">
+	<meta name="language" content="en-us">
+	<meta name="robots" content="noodp"/>
+	<link rel="canonical" href="https://justrokket.com/pricing/" />
+	<meta name="description"content="Apply for admission with scholarship in any of our partner institution by paying a reimburseable Pre-Registration fees. *TnC apply. Learn more..">
+	<meta name="copyright" content="2017 Explore Edu Tech Private Limited">
+	<meta name="content-language" content="EN">
+	<meta name="publisher" content="https://justrokket.com/">
+    <meta name="contact" content="service@justrokket.com">
+    <meta property="og:image" content="{% static 'featured.jpg' %}">
+	<meta name="theme-color" content="#187e89">
+	<!--Facebook Tags-->
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Pricing - Just Rokket">
+	<meta property="og:description" content="Apply for admission with scholarship in any of our partner institution by paying a reimburseable Pre-Registration fees. *TnC apply. Learn more..">
+	<meta property="og:url" content="https://justrokket.com/pricing/">
+	<meta property="og:site_name" content="Just Rokket | Scholarships with admission">
+	<meta property="og:image" content="{% static 'featured.jpg' %}">
+
+	<!--Twitter Tags-->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:url" content="https://justrokket.com/pricing/">
+	<meta name="twitter:title" content="Pricing - Just Rokket">
+	<meta name="twitter:description" content="Apply for admission with scholarship in any of our partner institution by paying a reimburseable Pre-Registration fees. *TnC apply. Learn more..">
+	<meta name="twitter:image" content="{% static 'featured.jpg' %}">
+
+	<!--Google+ Tags-->
+	<meta itemprop="name" content="Pricing - Just Rokket">
+	<meta itemprop="description" content="Apply for admission with scholarship in any of our partner institution by paying a reimburseable Pre-Registration fees. *TnC apply. Learn more..">
+	<meta itemprop="image" content="{% static 'featured.jpg' %}">
+{% endblock meta %}
+
+{% block content %}
+
+    <div class="breadcrumb-section" style="background:url({% static 'images/banner-image.jpg' %}); background-size: cover;">
+	    <div class="container">
+            <div class="row">
+                <header class="entry-header">
+                <h1 class="entry-title">Pricing - Just Rokket</h1>
+                </header>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row about-us-main-box">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <p>The pricing on Just Rokket is meant to be simple and to enable you to enjoy our services at the minimum level of commitment.<br>
+                        We charge the following pre-registration amount from students who pre-register on the platform for any course/qualification.</p>
+                    <ul>
+                        <li>For the 1st Pre-Registration - <span class="red-colr">Rs. 200*</span></li>
+                        <li>For any subsequent pre-registration - <span class="red-colr">Rs. 200*</span></li>
+                    </ul>
+                    <p><span class="red-colr">*</span> The pre-registration amount is reimbursed to the student as an adjustment in his fees once he joins the institution</p>
+                    <p style="font-size: larger;"><span class="red-colr">*</span> Special promotion offer till end of August, 2017 - No pre registration charges</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

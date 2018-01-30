@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>explore</title>
+
+        {% load static from staticfiles %}
+        <!-- jQuery -->
+        <script   src="//code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.7/simplex/bootstrap.min.css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+        <!-- Font Awesome -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+    </head>
+
+    <body>
+
+    <div class="container">
+        <div class="row row-centered">
+        <div class="center">
+            <div class="col-12 col-centered">
+                <!--<img src="{% static 'assets/img/explore-logo.png' %}" style="max-height: 100px; margin-top:25px">-->
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="container login-form">
+    <div class="row" style="min-height: 100px"></div>
+	<div class="panel panel-default">
+		<div class="panel-body">
+            {% if form.errors %}
+                <p>Your username and password didn't match. Please try again.</p>
+            {% endif %}
+			<form method="post" action="{% url 'login' %}" >
+            {% csrf_token %}
+				<div class="input-group login-userinput">
+					<span class="input-group-addon"><i class="fa fa-user"></i> </span>
+					<input id="txtUser" type="text" class="form-control" name="username" placeholder="Username">
+				</div>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-lock"></i> </span>
+					<input  id="txtPassword" type="password" class="form-control" name="password" placeholder="Password">
+					
+				</div>
+				<button class="btn btn-primary btn-block login-button" type="submit"><i class="fa fa-sign-in"></i> Login</button>
+				
+			</form>
+		</div>
+	</div>
+    </div>
+
+    <style>
+        .login-form{width:390px;}
+        .login-title{font-family: 'Exo', sans-serif;text-align:center;color: white;}
+        .login-userinput{margin-bottom: 10px;}
+        .login-button{margin-top:10px;}
+        /* centered columns styles */
+        .row-centered {text-align:center;}
+        .col-centered {
+            display:inline-block;
+            float:none;
+            text-align:left;
+            margin-right:-4px;
+        }
+    </style>
+
+    </body>
+</html>

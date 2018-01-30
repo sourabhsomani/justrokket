@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load humanize %}
+{% block title %}
+<title>Just Rokket</title>
+{% endblock title %}
+{% block content %}
+
+<div class="container">
+	<div class="row">
+	  <h4>You have successfully made the payment {{order_obj.order_number }}</h4>
+	  <div class="row">
+	  	<table>
+	  		<thead>
+	  			<th>
+	  				Order No.
+	  			</th>
+	  			<th>
+	  				Status
+	  			</th>
+	  		</thead>
+	  		<tbody>
+	  			<td>
+	  				{{ order_obj.order_number }}
+	  			</td>
+	  			<td>
+	  				{{ order_obj.status }}
+	  			</td>
+	  			
+	  		</tbody>
+	  	</table>
+	  </div>
+	</div>
+</div>
+{% endblock %}

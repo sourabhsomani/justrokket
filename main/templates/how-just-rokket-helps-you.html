@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% block meta %}
+    <title>How Just Rokket Adds Value for Our Partner Institutions</title>
+	<meta charset="utf-8">
+	<meta name="language" content="en-us">
+	<meta name="robots" content="noodp"/>
+	<link rel="canonical" href="https://justrokket.com/how-just-rokket-helps-partner-institutions/" />
+	<meta name="description"content="Just Rokket a student sourcing strategy across courses, qualifications and campuses throughout the year. You can also improve admission efficiencies and cost. ">
+	<meta name="copyright" content="2017 Explore Edu Tech Private Limited">
+	<meta name="content-language" content="EN">
+	<meta name="publisher" content="https://justrokket.com/">
+    <meta name="contact" content="service@justrokket.com">
+    <meta property="og:image" content="{% static 'featured.jpg' %}">
+	<meta name="theme-color" content="#187e89">
+	<!--Facebook Tags-->
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="How Just Rokket Adds Value for Our Partner Institutions">
+	<meta property="og:description" content="Just Rokket a student sourcing strategy across courses, qualifications and campuses throughout the year. You can also improve admission efficiencies and cost.">
+	<meta property="og:url" content="https://justrokket.com/how-just-rokket-helps-partner-institutions/">
+	<meta property="og:site_name" content="Just Rokket | Scholarships with admission">
+	<meta property="og:image" content="{% static 'featured.jpg' %}">
+
+	<!--Twitter Tags-->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:url" content="https://justrokket.com/how-just-rokket-helps-partner-institutions/">
+	<meta name="twitter:title" content="How Just Rokket Adds Value for Our Partner Institutions">
+	<meta name="twitter:description" content="Just Rokket a student sourcing strategy across courses, qualifications and campuses throughout the year. You can also improve admission efficiencies and cost. ">
+	<meta name="twitter:image" content="{% static 'featured.jpg' %}">
+
+	<!--Google+ Tags-->
+	<meta itemprop="name" content="How Just Rokket Adds Value for Our Partner Institutions">
+	<meta itemprop="description" content="Just Rokket a student sourcing strategy across courses, qualifications and campuses throughout the year. You can also improve admission efficiencies and cost. ">
+	<meta itemprop="image" content="{% static 'featured.jpg' %}">
+{% endblock meta %}
+
+{% block content %}
+
+    <div class="breadcrumb-section" style="background:url({% static 'images/banner-image.jpg' %}); background-size: cover;">
+	<div class="container">
+    	<div class="row">
+            <header class="entry-header">
+            <h1 class="entry-title">How Just Rokket Adds Value for Our Partner Institutions</h1>
+            </header><!-- .entry-header -->
+        </div> <!--row #end  -->
+    </div>
+</div><!-- Breadcrumb #end -->
+
+    <div class="container">
+        <div class="row about-us-main-box">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <p>Just Rokket is a platform geared to help your search for deserving and interested candidates for admission. You can do this by creating and implementing on Just Rokket a student sourcing strategy across courses, qualifications and campuses.<br>
+                    </p>
+
+                    <p>Interact with students who are serious about an admission into your institute.<br>
+                        Improve admission efficiencies and get the best ROI.<br>
+
+                        Attract and enrol students throughout the year.<br><br>
+
+                    Let us know your interest and we will immediately get in touch with you. You can either drop us a mail on <a href="mailto:sales@justrokket.com">sales@justrokket.com</a> or click <a href="{% url 'contact-us' %}"><b>here</b></a> to let us know.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

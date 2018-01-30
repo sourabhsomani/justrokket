@@ -1,0 +1,408 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% block title %}
+<title>Just Rokket</title>
+{% endblock title %}
+{% block content %}
+    <script src="{% static 'vendor/masked.js' %}"></script>
+    <style type="text/css">
+      #id_id_type{
+        width:100%;
+      }
+      #id_gender{
+        width:100%;
+      }
+      .errorlist{
+        border: 1px solid red;
+      }
+    </style>
+    <div class="breadcrumb-section" style="background:url({% static 'images/banner-image.jpg' %}); background-size: cover;">
+	    <div class="container">
+            <div class="row">
+                <header class="entry-header">
+                <h1 class="entry-title">Your Profile</h1>
+                </header>
+            </div>
+        </div>
+    </div>
+    <div class="row about-us-main-box" style="background-color: #f4f4f4;">
+        <div class="container">
+            <div class="col-md-12 pl-0 pr-0" style="background-color: #fff;padding-top: 2em; margin-bottom: 2em;">
+              <ul class="nav nav-tabs nav-tabs-red nav-new-heading-tabs">
+                  <li class="active"><a data-toggle="tab" href="#tab1">My Profile</a></li>
+                  <li><a data-toggle="tab" href="#tab2">My Vouchers</a></li>
+{#                  <li><a data-toggle="tab" href="#tab3">My activity</a></li>#}
+              </ul>
+
+                <div class="tab-content tab-content-border">
+                <div id="tab1" class="tab-pane fade in active clearfix pl-0 pr-0">
+                  <form class="form form-horizontal" action="" method="POST">
+                  {% csrf_token %}
+                  <div class="col-md-12 pl-0 pr-0">
+                    <div class="panel panel-default panel-new">
+                      <div class="panel-heading pnel-new-bg">
+                        <div class="panel-title pnel-new-bg-text">Personal Details</div>
+                      </div>
+                      {% comment %}Personell Details{% endcomment %}
+                      <div class="panel-body">
+                        <div class="form-group">
+                          <label for="name" class="col-sm-2 control-label">{{ form.name.label }}</label>
+                          <div class="col-sm-10 {% if form.name.errors %}errorlist{% endif %}">
+                              {{ form.name}}
+                            {% comment %}<input type="email" class="form-control" id="inputEmail3" placeholder="Email">{% endcomment %}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="id_type" class="col-sm-2 control-label">Govt ID type</label>
+                          <div class="col-sm-10 {% if form.id_type.errors %}errorlist{% endif %}">
+                            {{ form.id_type }}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="id_no" class="col-sm-2 control-label">Govt ID No</label>
+                          <div class="col-sm-10 {% if form.id_no.errors %}errorlist{% endif %}">
+                              {{ form.id_no}}
+                          </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="id_type" class="col-sm-2 control-label">Gender</label>
+                          <div class="col-sm-10 {% if form.gender.errors %}errorlist{% endif %}">
+                            {{ form.gender }}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="dob" class="col-sm-2 control-label">Date of Birth</label>
+                          <div class="col-sm-10 {% if form.dob.errors %}errorlist{% endif %}">
+                            {{ form.dob }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% comment %}End Personell Details{% endcomment %}
+
+                  <div class="col-md-12 pl-0 pr-0">
+                    <div class="panel panel-default panel-new">
+                      <div class="panel-heading pnel-new-bg">
+                        <div class="panel-title pnel-new-bg-text">Residential Details</div>
+                      </div>
+                      {% comment %}Resiential Details{% endcomment %}
+                      <div class="panel-body">
+                        <div class="form-group">
+                          <label for="hosue" class="col-sm-2 control-label">House</label>
+                          <div class="col-sm-10 {% if form.house.errors %}errorlist{% endif %}">
+                              {{ form.house}}
+                            {% comment %}<input type="email" class="form-control" id="inputEmail3" placeholder="Email">{% endcomment %}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="street" class="col-sm-2 control-label">Street</label>
+                          <div class="col-sm-10 {% if form.street.errors %}errorlist{% endif %}">
+                              {{ form.street}}
+                            {% comment %}<input type="email" class="form-control" id="inputEmail3" placeholder="Email">{% endcomment %}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="city" class="col-sm-2 control-label ">City</label>
+                          <div class="col-sm-10 city {% if form.city.errors %}errorlist{% endif %}">
+                            {{ form.city }}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="district" class="col-sm-2 control-label ">District</label>
+                          <div class="col-sm-10 {% if form.district.errors %}errorlist{% endif %}">
+                              {{ form.district}}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="state" class="col-sm-2 control-label">State</label>
+                          <div class="col-sm-10 {% if form.state.errors %}errorlist{% endif %}">
+                              {{ form.state}}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="pin" class="col-sm-2 control-label">Pin</label>
+                          <div class="col-sm-10 {% if form.pin.errors %}errorlist{% endif %}">
+                              {{ form.pin}}
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="country" class="col-sm-2 control-label">Country</label>
+                          <div class="col-sm-10 {% if form.country.errors %}errorlist{% endif %}">
+                              {{ form.country}}
+                          </div>
+                        </div>
+
+                      </div>
+                  </div>
+              </div>
+                    {% comment %}End Resiential Details{% endcomment %}
+                    <div class="col-md-12 pl-0 pr-0">
+                        <div class="panel panel-default panel-new mb-0">
+                          <div class="panel-heading pnel-new-bg">
+                        <div class="panel-title pnel-new-bg-text">Contact Details</div>
+                      </div>
+                          <div class="panel-body">
+{#                            <div class="form-group">#}
+{#                              <label for="id_no" class="col-sm-2 control-label">Email</label>#}
+{#                              <div class="col-sm-10 {% if form.email.errors %}errorlist{% endif %}">#}
+{#                                  {{ form.email }}#}
+{#                              </div>#}
+{#                            </div>#}
+
+                            <div class="form-group">
+                                <label for="id_no" class="col-sm-2 control-label">Email</label>
+                                  <div class="col-sm-10">
+                                      <div style="margin-top: 10px">{{ request.user.email }}</div>
+                                  </div>
+                            </div>
+                            
+                            <div class="form-group">
+                              <label for="id_no" class="col-sm-2 control-label">Mobile</label>
+                              <div class="col-sm-10 {% if form.mobile.errors %}errorlist{% endif %}">
+                                  {{ form.mobile}}
+                              </div>
+                            </div>
+
+                            <div class="form-group">
+                      <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-orange">Update Profile</button>
+                      </div>
+                    </div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                    </div>
+                    <div class="panel panel-default panel-new mb-0">
+                    </div>
+                    
+                     </form>
+                    <div class="panel panel-default panel-new">
+                        <div class="panel-heading pnel-new-bg">
+                        <div class="panel-title pnel-new-bg-text">My Password Details</div>
+                      </div>
+                        <div class="panel-body">
+                            <div class="col-md-8">
+                                <table class="table table-responsive" style="border: none;">
+                                <tbody>
+                                    <form class="form" action="/reset-password-profile-page/" method="POST">{% csrf_token %}
+                                        <tr class="pswd" style="display: none;">
+                                        <td style="vertical-align: middle;"><b>New Password</b></td>
+                                        <td style="vertical-align: middle;"><input type="password" placeholder="Enter Your New Password" name="password"></td>
+                                        </tr>
+                                        <tr class="pswd" style="display: none;">
+                                            <td style="vertical-align: middle;"><b>Confirm New Password</b></td>
+                                            <td style="vertical-align: middle;"><input type="password" placeholder="Confirm Password" name="repeat_password"></td>
+                                        </tr>
+                                         <tr>
+                                            <td class="sav-bttn-red" colspan="2">
+                                            <button class="btn  btn-orange save-details" style="display:none; color: white; type="submit">Save Details</button>
+                                            </td>
+                                         </tr>
+                                    </form>
+                                </tbody>
+                            </table>
+                                <a class="change-password" style="font-size: 14px;text-decoration: underline;">Click here to change password</a>
+                            <script>
+                                 jQuery("a.change-password").on("click", function () {
+                                     jQuery("tr.pswd").toggle(500);
+                                     jQuery("a.change-password").hide();
+                                     jQuery(".save-details").show();
+
+                                 });
+                                jQuery(document).on("click", 'a.save-details', function () {
+                                    jQuery(this).hide();
+                                    jQuery("tr.pswd").hide();
+                                    jQuery("a.change-password").show();
+
+                                })
+                            </script>
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div id="tab2" class="tab-pane fade p-0">
+                        {% comment %}<h3>Voucher Details</h3>{% endcomment %}
+                        {% if view.get_vouchers %}
+
+                            <div class="panel panel-default panel-new pt-30">
+                            <div class="panel-heading" style="background-color: #e7e7e7;">
+                                <div class="panel-title">My Vouchers</div>
+                            </div>
+                            {% for voucher in view.get_vouchers %}
+                                <div class="panel-body">
+                                    <div class="col-md-6 col-xs-12 col-sm-12">
+                                        <p class="raleway" style="color: #888;"> Voucher No&nbsp;: &nbsp;&nbsp;<span class="rale-3" style="">{{ voucher.order_number }}, order placed on {{ voucher.transaction_date }}</span></p>
+                                        <p class="raleway" style="color: #888;"> Scholarship Awarded&nbsp;: &nbsp;&nbsp;<span class="rale-3" style="">{{ voucher.scholarship_awarded }}%</span></p>
+                                        <p class="raleway" style="color: #888;"> College Name&nbsp;: &nbsp;&nbsp;<span class="rale-3" style="">{{ voucher.college_name }}</span></p>
+                                        <p class="raleway" style="color: #888;"> Campus&nbsp;: &nbsp;&nbsp;<span class="rale-3" style=""> {{ voucher.campus }} </span></p>
+                                        <p class="raleway" style="color: #888;"> Qualification&nbsp;: &nbsp;&nbsp;<span class="rale-3" style="">{{ voucher.qualification }}</span></p>
+                                        <p class="raleway" style="color: #888;"> Session Starting in&nbsp;: &nbsp;&nbsp;<span class="rale-3" style="">{{ voucher.session_start|date:"M, Y" }}</span></p>
+                                        <p class="raleway" style="color: #888;"> Email&nbsp;: &nbsp;&nbsp;<span class="rale-3" style=""> {{ voucher.email }} </span></p>
+                                        <p class="raleway" style="color: #888;"> Mobile&nbsp;: &nbsp;&nbsp;<span class="rale-3" style=""> {{ voucher.mobile }} </span></p>
+                                       
+                                        {% if voucher.c_exm_type_1 or voucher.c_exm_type_2 %}
+                                        <p class="raleway" style="color: #888;"> Compt Exams&nbsp;: &nbsp;&nbsp;<span class="rale-3" style=""> {{ voucher.c_exm_type_1 }}{% if voucher.c_exm_type_2 %},{{ voucher.c_exm_type_2 }}{% endif %}  </span></p>
+                                        <p class="raleway" style="color: #888;"> Compt Exam Score&nbsp;: &nbsp;&nbsp;<span class="rale-3" style=""> {{ voucher.c_exm_score_1 }}{% if voucher.c_exm_type_2 %} and {% endif %}{{ voucher.c_exm_score_2 }} {% if voucher.c_exm_type_2 %}respectively.{% endif %} </span></p>
+                                        {% endif %}
+
+                                        {% if voucher.q_exm %}
+                                        <p class="raleway" style="color: #888;"> Qualification Exam &nbsp;: &nbsp;&nbsp;<span class="rale-3" style=""> {{ voucher.q_exm }} </span></p>
+                                        <p class="raleway" style="color: #888;"> Qualification Exam Score&nbsp;: &nbsp;&nbsp;<span class="rale-3" style=""> {{ voucher.q_exm_score }} </span></p>
+                                        {% endif %}
+
+                                        
+                                        
+
+                                    </div>
+                                    <div class="col-md-6 col-xs-12 col-sm-12"  id="{{ voucher.order_number }}">
+                                         {% if not voucher.refund_requested %}<a class="click-to-tell pull-right refund" style="font-style: italic;" data-order-number="{{ voucher.order_number }}">I want to cancel this Pre-registration Voucher</a>{% elif voucher.refund_requested and not voucher.refund_processed %}<span style="text-align: right;">Your refund request is now under process.</span>{% else %}Refund has been processed.{% endif %}
+                                        <div class="tell-us" style="display: none;margin-top: 3em;">
+                                            <form class="form-refund-{{ voucher.order_number }}" action="" method="POST">
+                                                <input  class="pull-right why-oh-why" type="text" placeholder="Just Tell Us Why" required="required">
+                                                <button class="btn-red btn-medium mt-e1 pull-right refund-submit-{{ voucher.order_number }}" type="submit">Submit</button>
+                                            </form>
+                                        </div>
+                                        <script>
+                                            jQuery(".refund-submit-{{ voucher.order_number }}").on('click', function () {
+                                                window.location = "/refund/{{ voucher.id }}?why=" + String(jQuery(".why-oh-why").val())
+                                            });
+                                            jQuery(".form-refund-{{ voucher.order_number }}").on('submit', function (e) {
+                                                e.preventDefault();
+                                            })
+                                        </script>
+                                    </div>
+                                </div>
+
+                        {% endfor %}
+                            </div>
+                        {% else %}
+                           <div class="container ">
+                                <div class="vocher-contner"></div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="alert alert-info">
+                                            You have not made any purchases yet.
+                                        </div>
+                                    </div>
+                                </div>
+                           </div>
+                        {% endif %}
+                    </div>
+                    <div id="tab3" class="tab-pane fade p-0">
+                        <div class="panel panel-default panel-new pt-30">
+                            <div class="panel-heading" style="background-color: #e7e7e7;">
+                                <div class="panel-title heading-black-box">"Tell your friends in your email list and on socail platforms about Just Rokket".</div>
+                            </div>
+                            <div class="panel-body">
+                               
+                                    <div class="row">
+                                        <div class="col-sm-1 col-md-1 col-xs-1 gmail-icn">
+                                            <a href="#"><img  src="{% static 'images/icons/Gmail_Icon.png' %}"></a>
+                                        </div>
+                                        <div class="col-sm-11 col-md-11 col-xs-11">
+                                            <p style="padding-top: 5px;color: #000;">Import your Gmail contacts and tell them about Just Rokket</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-e1">
+                                        <div class="col-sm-1 col-md-1 col-xs-1 outlookicon">
+                                            <a href="#"><img src="{% static 'images/icons/outlook_icon.png' %}"></a>
+                                        </div>
+                                        <div class="col-sm-11 col-md-11 col-xs-11">
+                                            <p style="padding-top: 5px;color: #000;" >Import your Outlook contacts and tell them about Just Rokket</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-e1">
+                                        <div class="col-sm-1 col-md-1 col-xs-1 facebookicon">
+                                            <a href="#"><img src="{% static 'images/icons/facebook_icon.png' %}" ></a>
+                                        </div>
+                                         <div class="col-sm-11 col-md-11 col-xs-11">
+                                            <p style="padding-top: 5px;color: #000;">Share post with your friends.</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-e1">
+                                         <div class="col-sm-1 col-md-1 col-xs-1 twittericon">
+                                            <a href="#"><img src="{% static 'images/icons/twitter_icon.png' %}" ></a>
+                                        </div>
+                                         <div class="col-sm-11 col-md-11 col-xs-11">
+                                            <p style="padding-top: 5px;color: #000;">Share post with your friends.</p>
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- tabs #end -->
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+      jQuery(function(){
+        jQuery("#id_id_type").addClass('form-control-1');
+        jQuery("#id_gender").addClass('form-control-1')
+        jQuery("input[type='text']").removeAttr('required')
+        jQuery("#id_id_type").removeAttr('required');
+        jQuery("#id_gender").removeAttr('required')
+        jQuery("input[type='checkbox']").removeAttr('required')
+      });
+    jQuery("#id_dob").mask("9999-99-99",  {placeholder: 'YYYY-MM-DD' });
+    </script>
+    <script>
+
+            jQuery(document).ready( function () {
+                jQuery("#id_name").addClass('profile-forms');
+                jQuery("#id_id_type").addClass('profile-forms');
+                jQuery("#id_id_no").addClass('profile-forms');
+                jQuery("#id_gender").addClass('profile-forms');
+                jQuery("#id_dob").addClass('profile-forms');
+                jQuery("#id_house").addClass('profile-forms');
+                jQuery("#id_street").addClass('profile-forms');
+                jQuery("#id_city").addClass('profile-forms');
+                jQuery("#id_district").addClass('profile-forms');
+                jQuery("#id_pin").addClass('profile-forms');
+                jQuery("#id_state").addClass('profile-forms');
+                jQuery("#id_country").addClass('profile-forms');
+                jQuery("#id_college").addClass('profile-forms');
+                jQuery("#id_mobile").addClass('profile-forms');
+            });
+
+    </script>
+    <script>
+        var url = document.location.toString();
+        if (url.match('#')) {
+            jQuery('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+        }
+    </script>
+    <script>jQuery("#id_pin").attr("maxlength", "6")</script>
+    <script>jQuery("#id_district").attr("maxlength", "25")</script>
+    <script>jQuery("#id_state").attr("maxlength", "25")</script>
+    <script>jQuery("#id_country").attr("maxlength", "25")</script>
+    <script>jQuery("#id_city").attr("maxlength", "25")</script>
+    <script>jQuery("#id_id_no").attr("maxlength", "25")</script>
+
+
+    <script>
+     jQuery('a.click-to-tell').on("click", function () {
+         jQuery("div#" + jQuery(this).data("order-number") +" > div.tell-us").toggle(800);
+     });
+    </script>
+
+    <!-- field validations-->
+<!--    <script>
+        $(".form-group").ready(function(){
+    $(".city").keypress(function (e){
+        var code =e.keyCode || e.which;
+        if((code<65 || code>90)&&(code<97 || code>122)&&code!=32&&code!=46)
+        {
+          alert("Only alphabetes are allowed");
+          return false;
+        }
+    });
+});
+    </script>-->
+{% endblock %}

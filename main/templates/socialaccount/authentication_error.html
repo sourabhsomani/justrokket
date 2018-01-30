@@ -1,0 +1,18 @@
+{% comment %}{% extends "socialaccount/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Social Network Login Failure" %}{% endblock %}
+
+{% block content %}
+<div class="container" style="min-height: 200px;margin-top: 50px;">
+    <h3>{% trans "Social Network Login Failure" %}</h3>
+
+    <p>{% trans "An error occurred while attempting to login via your social network account." %}</p>
+</div>
+
+{% endblock %}
+{% endcomment %}
+<script>
+        window.location.replace("https://www.justrokket.com/")
+    </script>

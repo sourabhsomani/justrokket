@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+{% load static from staticfiles %}
+{% load socialaccount %}
+{% load crispy from crispy_forms_tags %}
+{% providers_media_js %}
+<html lang="en">
+<head>
+{% block meta %}
+
+{% endblock meta %}
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+{% block title %}
+
+{% endblock title %}
+
+
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/linearicons-free.css' %}">
+<link rel="stylesheet" href="{% static 'css/simple-line-icons.css' %}">
+<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/fancybox/css/fancybox.css' %}">
+<link rel="stylesheet" href="{% static 'css/global.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Raleway:400,600" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css" />
+<link id="scrollUpTheme" rel="stylesheet" href="{% static 'css/themes/pill.css' %}">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.js"></script>
+<script src="{% static 'js/date-validator.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{%  static 'js/parsley.min.js' %}"></script>
+
+
+
+    <!-- Number Spinners -->
+
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+            margin: 0;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__placeholder{
+            color: #000!important;
+        }
+    .select2-container--default .select2-selection--single .select2-selection__rendered{
+        color: #000;
+        line-height: 28px;
+        }
+    </style>
+    <style>
+        textarea, input, button { outline: none!important; }
+        textarea:focus, input:focus, button:focus { outline: none!important; }
+    </style>
+</head>
+<body style="overflow-x: hidden!important;">
+<div class="se-pre-con"></div>
+
+<header class="site-header" id="masthead" style="height: 75px; z-index: 999999 !important;">
+<div class="container" style="height: 80px;">
+<div class="header_meta header_meta_custtm">
+    <div class="row" style="height: 80px !important;">
+      <div class="site-branding col-xs-12 col-sm-4 hidden-xs">
+          <a rel="home" href="/">
+              <img alt="Just Rokket" style="object-fit: contain;height: 65px;padding-bottom: 3%;" src="{% static 'images/icons/logo588x136.jpg' %}">
+          </a>
+      </div>
+      <nav class="main-navigation navbar navbar-default" id="site-navigation">
+      <div class="navbar-header container-fluid visible-xs">
+          <div class="row">
+              <div class="col-xs-3 text-left help" style="padding:0">
+                  <a style="display: inline-block;padding: 3px; border: 1px solid #b7b7b7; border-radius: 3px;margin:5px 0 0 15px;color: #333!important;" data-target=".navbar-collapse" data-toggle="collapse">
+                      HELP
+                  </a>
+              </div>
+                <div class="col-xs-6 text-center" style="padding:0">
+                    <a rel="home" href="/">
+                         <img alt="Just Rokket" style="max-width: 160px;object-fit: contain; height: auto" src="{% static 'images/icons/logo588x136.jpg' %}">
+                    </a>
+                  </div>
+                <div class="col-xs-3 text-left" style="padding:0; padding-top: 7px;">
+                  <a href="#" class="dropdown-toggle hello" data-toggle="dropdown" role="button" style="font-family: 'MarketFresh',sans-serif; color: #000; background-color: transparent;">{% if request.user.is_authenticated %}<span id="dropdwn_username" style="font-family: 'MarketFresh',sans-serif;color: #000;background-color: transparent;margin-left: 25px;margin-top: 5px;">HELLO!</span>{% else %}<a data-toggle="modal" data-target="#mymodal" style="border:1px solid #b7b7b7;margin: -3px 5px 0 25px;display: inline-block;padding: 3px;font-family: 'MarketFresh',sans-serif; border-radius: 3px;" class="enter-logged-out">ENTER</a>{% endif %}</a>
+                     {% if request.user.is_authenticated %}
+                        <ul class="dropdown-menu dropdown-content dropdown-menu1" role="menu" style="padding-bottom: 0;margin-top: 1em;margin-right: 1px!important;">
+                            <li><a {% if request.user.is_authenticated %} href="/profile/{{ request.user.id }}" {% else %} href="#" {% endif %} style="">My Profile</a></li>
+                            <li class="mvc" style="cursor: pointer!important;">{% if request.user.is_authenticated %}<a style="cursor: pointer!important;"  href="/profile/{{ request.user.id }}/#tab2"class="mvc">My Vouchers</a>{% else %} <a href="#" style="cursor: pointer!important;">My Vouchers {% endif %}</a></li>
+        {#                    <li>{% if request.user.is_authenticated %}<a href="/profile/{{ request.user.id }}#tab3" style="">My Activity </a>{% else %} <a href="#" style="">My Activity {% endif %}</a></li>#}
+                            {% if request.user.is_authenticated %}<li><a href="/logout">Logout</a></li>{% endif %}
+                            {% comment %}<li><a href="#" style="height: 0;">{% if request.user.is_authenticated %}<a href="/logout/" style="">LOGOUT</a>{% else %}<a href="#login-form" class="fancybox" id="login-popup-button" style="">LOGIN</a>{% endif %}</a></li>{% endcomment %}
+                        </ul>
+                        {% endif %}
+                </div>
+
+          </div><!--.row-->
+
+        </div>
+{#        <div class="navbar-header ">#}
+{#          <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">#}
+{#          <span class="sr-only">Toggle navigation</span>#}
+{#          <span class="icon-bar"></span>#}
+{#          <span class="icon-bar"></span>#}
+{#          <span class="icon-bar"></span>#}
+{#          </button>#}
+{#        </div>#}
+        <div class="collapse navbar-collapse mobile_nav">
+            <ul class="navbar-left mobile_number_left" style="list-style: none;">
+                <li class="dropdown-menu-left" style=""><a href="#" style="text-decoration: none; font-family: 'MarketFresh',sans-serif" ><span data-tooltip-content="#tooltip_content" style="padding-right: 15px;"><i class="fa fa-phone get-back" style="color: #f00025;"></i> 8376840610</span></a>
+                    <div id="mob_tooltp" class="hovs arrow_box " style="margin-top: 6%;padding-top: 2px;padding-bottom: 10px; margin-left: -30px;padding-right: 15px; padding-left: 15px; border-radius: 10px;">
+                        <p class="hov-box">Mon - Sat, 9 am to 9 pm</p>
+                    </div>
+                </li>
+            </ul>
+          <ul class="nav navbar-nav">
+            <li class="dropdown-menu-left">
+                <a  href="/how-this-works" style="text-decoration: none;padding-top: 0px;">
+                    <span data-tooltip-content="#tooltip_content" style="font-family: 'MarketFresh',sans-serif">How This Works?</span>
+                </a>
+                 <div id="mob_tooltp" class="hovs arrow_box " style="width: 420px;height: 310px;margin-left: -50%; border-radius: 10px;padding-left: 0px;padding-right: 0px;padding-top: 15px;padding-bottom: 0px;margin-top: -6px;">
+                      <div class="col-md-12 col-xs-12" style="border-bottom: 1px ridge; padding-bottom: 10px; padding-left: 0px;">
+                          <div class="col-md-3 col-xs-3" style="padding-left: 0px;">
+                                <img class="center-block" src="{% static 'images/icons/search-college.png' %}" style="max-height: 40px;margin-top: 5px;">
+                          </div>
+                          <div class="col-md-9 col-xs-9" style="padding-right: 0px;padding-left: 0px;">
+                                <p class="hov-box"><span style="color:#f00025; ">SEARCH COLLEGES</span> and scholarships for the desired course in the city you want to study in.</p>
+                          </div>
+                      </div>
+                      <div class="col-md-12 col-xs-12" style="border-bottom: 1px ridge; padding-bottom: 10px;padding-left: 0px;">
+                          <div class="col-md-3 col-xs-3" style="padding-left: 0px;">
+                                <img class="center-block" src="{% static 'images/icons/merit.png' %}" style="max-height:40px;margin-top: 15px;padding-left: 0px;">
+                          </div>
+                          <div class="col-md-9 col-xs-9" style="padding-right: 0px; padding-left: 0px;">
+                                <p class="hov-box">Share your performance in earlier exams and <span style="color:#f00025;">GET MERIT BASED SCHOLARSHIP OFFERS</span> from educational institutes.</p>
+                          </div>
+                      </div>
+                      <div class="col-md-12 col-xs-12" style="border-bottom: 1px ridge;padding-bottom: 10px; padding-left: 0px;">
+                          <div class="col-md-3 col-xs-3" style="padding-left: 0px;">
+                                <img class="center-block" src="{% static 'images/icons/pre-reg.png' %}" style="max-height: 40px; margin-top: 10px;">
+                          </div>
+                          <div class="col-md-9 col-xs-9" style="padding-right: 0px;padding-left: 0px;">
+                                <p class="hov-box"><span style="color:#f00025;">PRE REGISTER AND APPLY</span> for a seat with scholarship in the college & course of your choice</p>
+                          </div>
+                      </div>
+                      <div class="col-md-12 col-xs-12" style="padding-bottom: 10px; padding-left: 0px;margin-bottom: 10px;">
+                          <div class="col-md-3 col-xs-3" style="padding-left: 0px;">
+                                <img class="center-block" src="{% static 'images/icons/selection.png' %}" style="max-height: 35px;margin-top: 10px;">
+                          </div>
+                          <div class="col-md-9 col-xs-9" style="padding-right: 0px;padding-left: 0px;">
+                                <p class="hov-box">Complete the admission formalities after <span style="color:#f00025;"> SELECTION </span></p>
+                          </div>
+                      </div>
+                     <p class="text-center hov-box">Learn while you save money on your fees for the full course!</p>
+                 </div>
+            </li>
+            <li class="nav-item dropdown hidden-xs">
+              <a  href="#" class="dropdown-toggle hidden-xs hello" data-toggle="dropdown" role="button" aria-expanded="false" style="font-family: 'MarketFresh',sans-serif; padding: 0; color: #000; background-color: transparent;">{% if request.user.is_authenticated %}<span id="dropdown_username" style="font-family: 'MarketFresh',sans-serif; padding-top: 0px;color: #000;background-color: transparent;">Hello, {{ username }}!</span>{% else %}<a data-toggle="modal" data-target="#mymodal" style="margin-top:-10px;font-family: 'MarketFresh',sans-serif;" class="enter-logged-out">ENTER</a>{% endif %}</a>
+                {% if request.user.is_authenticated %}
+                <ul class="dropdown-menu dropdown-content" role="menu" style="padding-bottom: 0;margin-top: 1em;-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .175);box-shadow: 0 0 1px  rgba(0, 0, 0, 0.6);">
+                    <li><a {% if request.user.is_authenticated %} href="/profile/{{ request.user.id }}" {% else %} href="#" {% endif %} style="">My Profile</a></li>
+                    <li><a {% if request.user.is_authenticated %} href="/profile/{{ request.user.id }}/#tab2" {% else %} href="#" {% endif %} style="">My Vouchers</a></li>
+{#                    <li class="mvc">{% if request.user.is_authenticated %}<a href="/profile/{{ request.user.id }}#tab2" style="">My Vouchers</a>{% else %} <a href="#" style="">My Vouchers {% endif %}</li>#}
+{#                    <li>{% if request.user.is_authenticated %}<a href="/profile/{{ request.user.id }}#tab3" style="">My Activity </a>{% else %} <a href="#" style="">My Activity {% endif %}</a></li>#}
+                    {% if request.user.is_authenticated %}<li><a href="/logout">Logout</a></li>{% endif %}
+                    {% comment %}<li><a href="#" style="height: 0;">{% if request.user.is_authenticated %}<a href="/logout/" style="">LOGOUT</a>{% else %}<a href="#login-form" class="fancybox" id="login-popup-button" style="">LOGIN</a>{% endif %}</a></li>{% endcomment %}
+                </ul>
+                {% endif %}
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+</div>
+</header>
+<!-- header #end -->
+    {% block content %}
+    {% endblock %}
+<script>
+{#    jQuery(".mvc").css('cursor', 'pointer');#}
+{#    jQuery(".mvc").on("click", function(){#}
+{#        console.log("Vouchers");#}
+{#        window.location = "/profile/{{ request.user.id }}#tab2";#}
+{#    })#}
+</script>
+<div class="signup-newsletter col-xs-12">
+    <div class="container">
+
+       <div class="col-xs-12 text-center">
+          <div class="letter-icon-red">
+          <img alt="Emailer Mailer" src="{% static 'images/emailer-icon.jpg' %}">
+          </div>
+      </div>
+      <div class="col-xs-12 news-letter-box">
+             <div class="col-xs-12 col-sm-6">
+             <span class="i-email-subscribe"><i class="icon-envelope-letter icons"></i></span>
+             <h3>Signup for Newsletter</h3>
+             <p>Get to know about new scholarships getting listed on Just Rokket and get insights into careers, exam prep tips and great stories.</p>
+             </div>
+             <div class="col-xs-12 col-sm-6">
+              <form method="post" class="sign-form sign-box-news" id="signupform" action="/newsletter/">{% csrf_token %}
+              <input type="email" required placeholder="Your email address" class="form-control  form-emailer-search form-control-new" name="email">
+        &nbsp;&nbsp;<button class="btn-red btn-medium" value="Sign up" type="submit" style="height: 43px;align-content: center;">Signup</button>
+                 </form>
+             <div class="col-xs-12 col-sm- col-md-12">
+                 {% for message in messages %}
+                     <p style="float: left;">{{ message }}</p>
+                  {% endfor %}
+             </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer id="colophon" class="site-footer">
+  <div class="container">
+     <div class="col-xs-12 col-md-12 col-lg-12">
+         <div class="col-xs-12 col-sm-4 footer-widget">
+              <aside class="" id="text-1">
+                  <h6 class="widget-title">About</h6>
+                  <ul>
+                    <li style="padding-bottom: 0px;"><a href="/about-us">About Us</a></li>
+                    <li style="padding-bottom: 0px;"><a href="/pricing">Pricing</a></li>
+                    <li style="padding-bottom: 0px;"><a href="/partner-institutions">Partner Institutions</a></li>
+                    <li style="padding-bottom: 0px;"><a href="http://blog.justrokket.com" target="_blank">Just Rokket Diary</a></li>
+                  </ul>
+              </aside>
+         </div>
+         <div class="col-xs-12 col-sm-4 footer-widget">
+             <aside class="widget_text" id="text-1">
+                 <h6 class="widget-title">Support</h6>
+                 <ul>
+                    <li style="padding-bottom: 0px;"><a href="/how-this-works">How This Works</a></li>
+                    <li style="padding-bottom: 0px;"><a href="/faq">FAQ's</a></li>
+                    <li style="padding-bottom: 0px;"><a href="/tnc">Terms of Use</a></li>
+                    <li style="padding-bottom: 0px;"><a href="/privacy-policy">Privacy Policy</a></li>
+                    <li style="padding-bottom: 0px;"><a href="/why-students-can-depend-on-us">Why You Can Depend on us</a></li>
+                 </ul>
+             </aside>
+        </div>
+        <div class="col-xs-12 col-sm-4 footer-widget footer-widget-lastChild">
+           <aside class="widget_quickcontact">
+              <h6 class="widget-title">Institutions</h6>
+                 <ul>
+                    <li style="padding-bottom: 0px;"><a href="mailto:sales@justrokket.com">Become A Partner</a></li>
+                    <li style="padding-bottom: 0px;"><a href="/how-just-rokket-helps-partner-institutions">How Just Rokket Helps You</a></li>
+                 </ul>
+                 <h6 class="foo-col" style="margin-top: 25px;margin-bottom: 0px;"><a class="foo-col" href="/contact-us">Contact Us</a></h6>
+{#                 <h6 class="foo-col" style="margin-top: 21px;"><a class="foo-col" href="/refund-policy">Refund Policy</a></h6>#}
+           </aside>
+        </div>
+     </div>
+  </div>
+ <div class="footer-copyright">
+     <div class="container">
+          <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
+              <div class="CopyrightTestBottm">
+                  Copyright &copy; 2017 Explore Edu Tech Private Limited.
+              </div>
+          </div>
+      </div>
+ </div>
+</footer>
+<!-- loginform popup start -->
+          <!-- Modal -->
+          <div class="modal modal-fadeIn" id="mymodal" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content ">
+                <div class="modal-body">
+                    <div class="modal-header">
+                     <a type="button" class="close" data-dismiss="modal">Close</a>
+                 </div>
+                    <p class="text-center" style="font-size: larger;margin-bottom: 2em;">Create your account to join the Rokket Community</p>
+                    <div class="text-center button" style="margin-top: 1em;">
+                        <a href="{% provider_login_url "facebook" method="js_sdk" %}" class="btn btn-facebook" style="color: #fff;text-decoration: none!important; "><i class="fa fa-facebook-f fa-lg"></i> Sign up with facebook</a>
+                    </div>
+                    <p class="text-center" style="margin-top: 1em; margin-bottom: 0;">No Facebook Account?</p>
+                    <p class="text-center" style="font-size: 14px;font-weight: 700;"><a class="signup-email blue-color" style="cursor: pointer; text-decoration: none; margin-bottom: 1em;">Create an account with your Email</a></p>
+                    <p class="text-center" style="font-size: larger; margin-bottom: 0;">Already have an account?</p>
+                    <p class="text-center">Sign in through <a class="signin-email blue-color" style="cursor: pointer;text-decoration: none!important;font-size: 14px; font-weight: 700;">Email</a> or <a class="fb-login blue-color" href="{% provider_login_url "facebook" method="js_sdk" %}" style="cursor: pointer;text-decoration: none!important;font-size: 14px; font-weight: 700;">Facebook</a></p>
+                    <div class="form-login-email" style="display: none;">
+                        <form id="login" action="/user-login/" method="POST" >
+                            {% csrf_token %}
+                            <p class="recovery-line" style="display: none">An email has been sent to your registered email</p>
+                            <div style="height: 20px;"><span id="email-errors"></span></div>
+                            <div style="margin: 10px">
+
+                                <center><span style="">{{ login_form.email }}</span></center>
+                            </div>
+                            <div style="height: 10px;"><span id="password-errors"></span></div>
+                            <div style="margin: 10px">
+                                <center><span style="">{{ login_form.password }}</span></center>
+                            </div>
+                            <div class="text-center button  " style="margin-top: 1em;">
+                                <input class="btn-orange " name="Login" type="submit" value="Sign In" >
+
+
+
+                            </div>
+
+
+
+                            <div class="row remeber" style="margin-bottom: 1em;">
+                                <center><a class="forgot-password" href="#password-reset" >Forgot Password?</a></center>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="forgot-password-form" style="display: none;">
+                            <form class="recover" action="/forgot-password/" method="POST">{% csrf_token %}
+                                <center><label for="recovery-email">Enter your registered email</label> </center>
+                                <div style="height: 20px"><span id="recovery-email-errors"></span></div>
+                                <center><input name="email" type="text" placeholder="Email"></center>
+                                <div class="text-center button" style="margin-top: 1em;">
+                                    <input class="btn-orange recover-button" name="Login" type="submit" value="Send Recovery Email">
+                                </div>
+                                <center><div class="recover-button-after"></div></center>
+                            </form>
+                    </div>
+                    <div class="form-signup" style="display: none;">
+                        <form id="sign-up" action="/signup/" method="POST" style="margin-bottom: 1.5em;">
+                          {% csrf_token %}
+                            <div style="height: 20px;"><span id="signup-email-errors"></span><span id="signup-confirm-password-errors"></span><span id="signup-password-errors"></span></div>
+                            <center>{{ signup_form.signup_email }}</center>
+                            <div style="height: 5px;"></div>
+                            <center>{{ signup_form.signup_password }}</center>
+                            <div style="height: 5px;"></div>
+                            <center>{{ signup_form.signup_confirm_password }}</center>
+                            <div class="text-center button" style="margin-top: 1em;">
+                                <center><input class="btn-orange" name="Login" type="submit" value="Sign Up"></center>
+                            </div>
+                            <div class="col-xs-12 col-md-12 text-center" style="margin-bottom: 1em;">
+                                <p style="color: #b7b7b7;">Go through our <a class="privacy-policy" href="/privacy-policy" style="text-decoration: none;">Privacy Policy</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+{#<div id="register-form" style="">#}
+{#     <div class="row">#}
+{#     <h3>Register</h3>#}
+{#    <p>Please Register to Create a New Account</p>#}
+{#     <form id="register" autocomplete="off">#}
+{#        <input name="name" type="text" placeholder="Name" >#}
+{#        <input name="username" type="text" placeholder="Username" >#}
+{#        <input name="email" type="text" placeholder="Email" >#}
+{#        <input name="password" type="text" placeholder="Password" >#}
+{#        <input name="confirmpassword" type="text" placeholder="Confirm Password" >#}
+{##}
+{#        <div class="row new-login">#}
+{#             Already have an account? <a href="#">Login to your account! </a>#}
+{#        </div>#}
+{#        <div class="text-center button">#}
+{#          <input name="create-account" type="button" value="Create an Account">#}
+{#        </div>#}
+{#    </form>#}
+{#    </div>#}
+{#</div>#}
+<div id="password-reset" style="display:none; overflow-x: hidden;">
+     <div class="row" style="padding: 10px 50px 10px 50px;">
+     <h3 class="text-center">Forgot password?</h3>
+    <p class="text-center">Enter Your Registered Email ID</p>
+     <form id="password-reset" autocomplete="off">
+        <center><input name="email" type="text" placeholder="Email"></center>
+        <div class="text-center button">
+          <input name="create-account" type="button" value="Recover">
+        </div>
+    </form>
+    </div>
+</div>
+<script src="{% static 'vendor/flexslider/jquery.flexslider-min.js' %}"></script>
+<script src="{% static 'js/theme.js' %}"></script>
+<script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/fancybox/js/jquery.fancybox.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/fancybox/js/custom.fancybox.js' %}"></script>
+<script src="{% static 'js/wow.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.0.0/jquery.bootstrap-growl.min.js"></script>
+<script>
+    new WOW().init();
+    jQuery.noConflict();
+</script>
+<script>
+  jQuery('.close').on('click', function() {
+      jQuery("div.forgot-password-form").hide(300);
+      jQuery("div.form-signup").hide(300);
+      jQuery("div.form-login-email").hide(300);
+      location.reload()
+  })
+</script>
+<script>
+    jQuery(document).ready(function () {
+        jQuery('#id_signup_email').css('margin-bottom', '5px');
+        jQuery('#id_signup_password').css('margin-bottom', '5px');
+        jQuery('#id_email').css('margin-bottom', '5px');
+    })
+</script>
+<script>
+  jQuery("a.signin-email").on("click", function () {
+        jQuery("div.forgot-password-form").hide(300);
+        jQuery("div.form-signup").hide(300);
+        jQuery("div.form-login-email").toggle(400);
+  });
+ jQuery("a.signup-email").on("click", function () {
+   jQuery("div.forgot-password-form").hide(300);
+   jQuery("div.form-login-email").hide(300);
+   jQuery("div.form-signup").toggle(400);
+ });
+ </script>
+ <script>
+  jQuery("a.forgot-password").on("click", function () {
+     jQuery("div.form-login-email").hide(300);
+     jQuery("div.forgot-password-form").toggle(400);
+  });
+ </script>
+{% for message in messages %}
+  {% if 'error' in message.tags %}
+      <script>
+        jQuery(document).ready(function () {
+            jQuery.bootstrapGrowl("{{ message }}", {
+              ele: 'body',
+              type: 'info',
+              offset: {from: 'top', amount: 200},
+              align: 'right',
+              width: 350,
+              delay: 8000,
+              allow_dismiss: true,
+              stackup_spacing: 10
+            })
+        })
+      </script>
+    {% endif %}
+{% endfor %}
+<script type="text/javascript">
+  jQuery('#sign-up').on('submit', function() {
+    jQuery('#signup-email-errors').html('');
+    jQuery('#email-errors').html('');
+{#    jQuery('#id_signup_password').removeAttr('style')#}
+{#    jQuery('#id_signup_confirm_password').removeAttr('style')#}
+    jQuery('#signup-password-errors').html('');
+    jQuery('#signup-confirm-password-errors').html('');
+{#    jQuery('#id_signup_email').removeAttr('style')#}
+    console.log("SignUpform")
+    jQuery.ajax({
+        type: jQuery(this).attr('method'),
+        url: '/signup2/',
+        data: jQuery(this).serialize(),
+        dataType: 'json',
+        success: function(response) {
+            if (response.msg == "Signup Successfull"){
+              location.reload();
+                console.log("Reaload attempted and failed")
+            }
+            if (response.msg){
+              jQuery('#signup-email-errors').html(response.msg);
+              jQuery('#signup-email-errors').attr('style', 'color: red; margin-left: 5px;');
+              jQuery('#signup-password-errors').html('')
+              jQuery('#id_signup_password').removeAttr('style')
+            }
+            if (response.form.signup_email && response.form.signup_password && response.form.signup_confirm_password){
+              jQuery('#signup-email-errors').html(response.form.signup_email[0])
+              jQuery('#id_signup_email').attr('style', 'border: 1px solid red');
+              jQuery('#signup-email-errors').attr('style', 'color: red;margin-left: 5px;');
+              jQuery('#signup-password-errors').html(response.form.signup_password[0]);
+              jQuery('#id_signup_password').attr('style', 'border: 1px solid red;');
+              jQuery('#signup-password-errors').attr('style', 'color: red;margin-left: 5px;')
+              jQuery('#signup-confirm-password-errors').html(response.form.signup_confirm_password[0]);
+              jQuery('#id_signup_confirm_password').attr('style', 'border: 1px solid red;');
+              jQuery('#signup-confirm-password-errors').attr('style', 'color: red;margin-left: 5px;')
+            }
+            if (response.form.signup_email && response.form.signup_password){
+              jQuery('#signup-email-errors').html(response.form.signup_email[0])
+              jQuery('#id_signup_email').attr('style', 'border: 1px solid red');
+              jQuery('#signup-email-errors').attr('style', 'color: red;margin-left: 5px;');
+              jQuery('#signup-password-errors').html(response.form.signup_password[0]);
+              jQuery('#id_signup_password').attr('style', 'border: 1px solid red;');
+              jQuery('#signup-password-errors').attr('style', 'color: red;margin-left: 5px;')
+            }
+            if (response.form.signup_confirm_password && response.form.signup_password){
+              jQuery('#signup-confirm-password-errors').html(response.form.signup_confirm_password[0])
+              jQuery('#id_signup_confirm_password').attr('style', 'border: 1px solid red');
+              jQuery('#signup-confirm-password-errors').attr('style', 'color: red;margin-left: 5px;');
+              jQuery('#signup-password-errors').html(response.form.signup_password[0]);
+              jQuery('#id_signup_password').attr('style', 'border: 1px solid red;');
+              jQuery('#signup-password-errors').attr('style', 'color: red;margin-left: 5px;')
+            }
+            if (response.form.signup_password){
+              jQuery('#signup-password-errors').html(response.form.signup_password[0])
+              jQuery('#id_signup_password').attr('style', 'border: 1px solid red;');
+              jQuery('#signup-password-errors').attr('style', 'color: red;margin-left: 5px;')
+            }
+            if (response.form.signup_confirm_password){
+              jQuery('#signup-confirm-password-errors').html(response.form.signup_confirm_password[0])
+              jQuery('#id_signup_confirm_password').attr('style', 'border: 1px solid red;');
+              jQuery('#signup-confirm_password-errors').attr('style', 'color: red; margin-left: 5px;')
+              jQuery('#signup-confirm-password-errors').attr('style', 'color: red; margin-left: 5px;')
+            }
+
+        },
+        error: function(response) {
+          jQuery('#email-errors').html(response.form)
+          jQuery('#email-errors').attr(response)
+        }
+    });<a  href="someotherpage.php" >Your Link</a>
+    return false;
+  });
+</script>
+<script type="text/javascript">
+  jQuery('#login').on('submit', function() {
+
+      jQuery('#email-errors').html('')
+{#    jQuery('#id_email').removeAttr('style')#}
+    console.log("LoginForm")
+    jQuery.ajax({
+        type: jQuery(this).attr('method'),
+        url: this.action,
+        data: jQuery(this).serialize(),
+        dataType: 'json',
+        success: function(response) {
+            if (response.msg == "Login Successfull"){
+
+              location.reload();
+
+            } else {
+                jQuery('#email-errors').html(response.msg);
+            }
+            if (response.msg){
+
+              jQuery('#email-errors').attr('style', 'color: red;margin-left: 5px;');
+              jQuery('#password-errors').html('')
+              jQuery('#id_password').removeAttr('style')
+            }
+            if (response.form.email ){
+              jQuery('#email-errors').html(response.form.email[0])
+              jQuery('#id_email').attr('style', 'border: 1px solid red');
+              jQuery('#email-errors').attr('style', 'color: red;margin-left: 5px;');
+              jQuery('#password-errors').html(response.form.password[0]);
+              jQuery('#id_password').attr('style', 'border: 1px solid red;');
+              jQuery('#password-errors').attr('style', 'color: red;margin-left: 5px;')
+            }
+            if (response.form.password){
+              jQuery('#password-errors').html(response.form.password[0])
+              jQuery('#id_password').attr('style', 'border: 1px solid red;');
+              jQuery('#password-errors').attr('style', 'color: red;margin-left: 5px;')
+            }
+
+        },
+        error: function(response) {
+          jQuery('#email-errors').html(response.form)
+          jQuery('#email-errors').attr(response)
+        }
+    });
+    return false;
+  });
+
+    // Recover password AJAX
+    jQuery(".recover").on("submit", function () {
+        jQuery(".recover-button-after").html("Sending Recovery Email...");
+        jQuery.ajax({
+            type: jQuery(this).attr('method'),
+            url: this.action,
+            data: jQuery(this).serialize(),
+            dataType: 'json',
+            success: function (response) {
+                console.log(response, response.msg);
+                jQuery(".recover-button-after").html(response.msg);
+            },
+            error: function(response) {
+               jQuery(".recover-button-after").html("This does not look like a valid email address.");
+            }
+        });
+    return false;
+    })
+</script>
+<script type="text/javascript">
+  jQuery(function(){
+    jQuery("input[type='text']").removeAttr('required');
+    jQuery("input[type='email']").removeAttr('required');
+    jQuery("input[type='password']").removeAttr('required');
+  });
+    
+    jQuery(".close").on("click", function () {
+        jQuery("input[name='email']").val('');
+        jQuery(".recover-button-after").html('');
+        jQuery("div.form-login-email").hide(300)
+    });
+    jQuery('.modal').on('hidden.bs.modal', function () {
+        jQuery(".modal-body").modal("close");
+            jQuery("div.forgot-password-form").hide(300);
+            jQuery("div.form-login-email").hide(300)
+    })
+</script>
+<script>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ ga('create', 'UA-97635762-1', 'auto');
+ ga('send', 'pageview');
+</script>
+
+<!-- changes in hello/help dropdown-->
+
+<script>
+    jQuery(document).ready(function() {
+        jQuery(".hello").click(function() {
+         if(jQuery('.mobile_nav').hasClass('in')) {
+             jQuery('.mobile_nav').removeClass('in');
+         }
+        });
+    });
+
+</script>
+
+
+
+</body>
+</html>

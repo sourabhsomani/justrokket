@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% block meta %}
+
+{% endblock meta %}
+{% block title %}
+<title>Just Rokket</title>
+{% endblock title %}
+
+{% block content %}
+
+    <style>
+        input[type=range].custom {
+        -webkit-appearance: none;
+        background-color: #d7d7d7;
+        height: 3px;
+        outline: none!important;
+    }
+        input[type=range].custom::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        background-color: #f00025;
+        width: 10px;
+        height: 20px;
+        outline: none!important;
+    }
+    </style>
+    <div class="breadcrumb-section" style="background:url({% static 'images/banner-image.jpg' %}); background-size: cover;">
+	    <div class="container">
+            <div class="row">
+                <header class="entry-header">
+                <h1 class="entry-title">Colleges Available </h1>
+                </header>
+            </div>
+        </div>
+    </div>
+    <section class="screen2-bg">
+        <div class="row" style="background-color: #fff;padding-top: 40px;padding-bottom: 30px;">
+            <div class="container mb-0">
+                <div class="col-md-12 col-sm-12">
+                    <div class="col-md-3">
+                        <label for="fader" style="font-family: 'Raleway',sans-serif!important;margin-bottom: 10px;">
+                            Your maximum budget
+                        </label>
+                        <input class="custom" type="range" min="10" max="{{ view.get_max_value }}" value="{{ view.get_max_value }}" id="fader" step="1" oninput="outputUpdate(value)">
+                        <output style="float: right;color:#f00025;font-family: 'Raleway',sans-serif!important;" for="fader" id="value" class="faderoutput">
+                            Rs {{ view.get_max_value }}
+                        </output>
+                        <br>
+                    </div>
+                    <div class="col-md-3 col-md-offset-1">
+                         <label for="fader2" style="font-family: 'Raleway',sans-serif!important;margin-bottom: 10px;">
+                             Distance from {{ view.get_selected_city.name }}
+                         </label>
+                        <input class="custom" type="range" min="1" max="100" value="1" id="fader2" step="1" oninput="outputUpdateDistance(value)">
+                        <output style="float: right;color:#f00025;font-family: 'Raleway',sans-serif!important;" for="fader2" id="distance" class="fader2output">
+                            1 Km
+                        </output>
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-xs-12 search-count-mobile" style="padding-top: 2%;">
+                        <span>Offers found for your search: <b><span id="college-count"></span></b></span>
+                    </div>
+                </div>
+            </div>
+            <script>
+                window.onunload = function(){};
+                function outputUpdate(value) {
+                    document.querySelector('#value').value = "Rs " + value;
+                }
+                function outputUpdateDistance(value) {
+                        document.querySelector('#distance').value = value + " KM";
+                        distancefilter(value);
+                }
+                jQuery(document).ready(function () {
+                    console.log("window loaded");
+                    jQuery(".faderoutput").html("Rs " + jQuery("#fader").val());
+                    jQuery(".fader2output").html(jQuery("#fader2").val() + "KM");
+                    costfilter();
+                    distancefilter(jQuery("#fader2").val());
+                    NoCollegesToShow();
+{#                    jQuery("#fader2").val(1);#}
+{#                    jQuery("#fader").val({{ view.get_max_value }})#}
+                })
+            </script>
+        </div>
+        <div class="container" style="margin-top: 25px;">
+            {% if view.get_course_type == "cat" %}
+                <i class="fa fa-info-circle"></i>&nbsp; Results are with minimum fees in case fees varies by course.
+            {% endif %}
+            {% if view.get_results %}
+                {% for college in view.get_results %}
+
+            <div class="panel panel-default college-panel" style="background-color: #fff" data-cost-filter="visible" data-distance="visible" data-cost="{{ college.final_fee }}" data-city-lat="{{ college.city_lat }}" data-city-long="{{ college.city_long }}" data-city-id="{{ college.city_id }}">
+                <div class="panel-body panel-new-cont">
+                    <div class="col-md-2 col-xs-12 col-sm-2 col-lg-2">
+                        <div class="image-boxes image-boxes-mobile">
+                            <img class="center-block" src="{{ college.logo }}" style="object-fit: contain!important;">
+                            <center><a class="hidden-xs" href="{{ college.website }}" target="_blank">
+                                {{ college.website|truncatechars:20 }}
+                            </a></center>
+                        </div>
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-12 col-lg-10">
+                        <h3 class="raleway-heading mt-0">
+                            {{ college.course_name }}
+                        </h3>
+                        <div class="col-md-4 pl-0">
+                            <h5 class="raleway" style="color: rgb(101,101,101)">
+                                {{ college.name }}
+                            </h5>
+                            <a class="hidden-md hidden-lg hidden-sm" href="{{ college.website }}" target="_blank">
+                                {{ college.website }}
+                                <a style="color: #666;">
+                                    <p class="collge-cmps">
+                                        {{ college.campus }} Campus &nbsp;<i class="fa fa-info-circle"></i>
+                                    </p>
+                                </a>
+                            <div class="hovs arrow_box" style="margin-top: 10%;padding-top: 20px;margin-left:30px;padding-bottom: 10px;padding-right: 15px; padding-left: 15px; border-radius: 10px;">
+                                <p class="raleway" style="color: #333;">
+                                    {{ college.street1 }}, {{ college.street2 }}, {{ college.city }}, {{ college.state }}.
+                                </p>
+                            </div>
+                            <p class="raleway-heading raleway-heading-custtm mb-0">Session starts in {{ college.session_start|date:"M Y" }}</p>
+                        </div>
+                        <div class="col-md-8 pl-0-new">
+                        <div class=" table-responsive">
+                            <table class="border-cover-container">
+                                <tbody>
+                                    <tr>
+                                        <td class="mobile-box-new" style="border: 1px solid #d7d7d7;">
+                                            <div class="col-md-12 p-0">
+                                                <center><b class="raleway fees-per-font" style="color: #333; font-size:18px;">Fees Per {{ college.fee_unit }}</b></center>
+                                                <center><b class="raleway" style="color:#187e89; font-size:18px;">Rs. {{ college.final_fee }}</b>&nbsp;&nbsp; <b style="text-decoration: line-through; color:#b7b7b7; font-size:18px;">Rs. {{ college.cost }}</b></center>
+                                            </div>
+                                        </td>
+                                        <td style="max-width: 8px;margin: 0px;padding: 0px 8px 0px 0px;">
+
+                                        </td>
+                                        <td style="border: 1px solid #d7d7d7;" >
+                                            <div class="col-md-9" style="padding-left: 0px;">
+                                                <center><b class="raleway" style="color: #333; font-size:18px;">Your Scholarship offer</b></center>
+                                                <center><b class="raleway" style="color: #b7b7b7;">(Applicable for full course)</b></center>
+                                            </div>
+                                            <div class="col-md-3" style="padding-right: 0px; padding-left: 0px;">
+                                                <center><h3 style="font-size: 24px;color: #187e89;margin-top: 10px;">{{ college.scholarship }} %</h3></center>
+                                            </div>
+                                        </td>
+
+
+                                    </tr>
+                                    <tr >
+                                        <td class="bottn-box-red-cont" colspan="3" style="border: 0px solid #ccc;" >
+                                            <form style="border:0px solid red;" class="form" action="/selection/" method="POST">{% csrf_token %}
+                                                <input name="college" value="{{ college.id }}" style="display: none;">
+                                                <input name="scholarship" value="{{ college.scholarship }}" style="display: none;">
+                                                <input name="fee" value="{{ college.cost }}" style="display: none;">
+                                                <input name="final_fee" value="{{ college.final_fee }}" style="display: none;">
+                                                <input name="course_name" value="{{ college.course_name }}" style="display: none;">
+                                                <input name="college_qualification" value="{{ college.college_qualification }}" style="display: none;">
+                                                <input name="search" value="{{ view.get_search }}" style="display: none;">
+                                                <input name="seats" value="{{ college.seats }}" style="display: none;">
+                                                <input name="decrement_from" value="{{ college.decrement_from }}" style="display: none;">
+                                                <input name="cc_obj" value="{{ college.cc_obj }}" style="display: none;">
+                                                <button class="btn btn-orange button-red-new" style="width: 100%; height:40px;" type="submit">I am INTERESTED in this seat! <i class="lnr lnr-arrow-right"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                {% endfor %}
+            {% else %}
+{#                <div class="alert alert-info">#}
+{#                    We are sorry, we couldn't find a college to match your needs. :(#}
+{#                </div>#}
+{#                <a class="btn btn-orange btn-medium" role="button" href="/">#}
+{#                    Search Again#}
+{#                </a>#}
+{#                <br><br>#}
+            {% endif %}
+             <div class="error-message">
+                 <div class="alert alert-info">
+                        We are sorry, We couldn't find a college to match your needs. :(
+                </div>
+                 <a class="btn btn-orange btn-medium" role="button" href="/">
+                    Search Again
+                </a>
+                <br><br>
+             </div>
+        </div>
+        <script>
+            jQuery(".error-message").hide();
+            function distance(lat1, lon1, lat2, lon2, unit) {
+                var radlat1 = Math.PI * lat1/180
+                var radlat2 = Math.PI * lat2/180
+                var theta = lon1-lon2
+                var radtheta = Math.PI * theta/180
+                var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta)
+                dist = Math.acos(dist)
+                dist = dist * 180/Math.PI
+                dist = dist * 60 * 1.1515
+                if (unit=="K") { dist = dist * 1.609344 }
+                if (unit=="N") { dist = dist * 0.8684 }
+                return dist
+            }
+            function costfilter(){
+                jQuery(".college-panel").each(
+                    function () {
+                        if (jQuery(this).data("distance") == "hidden"){
+                            jQuery(this).show()
+                        }
+                        console.log("each, cost ", jQuery(this).data("cost"));
+                        if (parseInt(jQuery(this).data("cost")) > parseInt(jQuery("#fader").val())){
+                            console.log("hide");
+                            jQuery(this).hide();
+                            jQuery(this).data("cost-filter", "hidden")
+                        }
+                        else{
+                            console.log("show");
+                            jQuery(this).show();
+                            jQuery(this).data("cost-filter", "visible")
+                        }
+                        NoCollegesToShow();
+                        jQuery("#college-count").text(updateCollegeCount())
+                    }
+                )
+            }
+            function distancefilter(max) {
+                lat1 = {{ view.get_selected_city.lat }};
+                lon1 = {{ view.get_selected_city.long }};
+                jQuery( ".college-panel" ).each(function( index ) {
+                    if (jQuery(this).data("cost-filter") !== "hidden"){
+                        jQuery(this).show();
+                    }
+                  c_distance = distance(lat1, lon1, jQuery(this).data("city-lat"), jQuery(this).data("city-long"), "K");
+                    console.log("Distance is ", c_distance);
+                    if (c_distance>max){
+                        console.log("Filtering and hiding by distance.");
+                        jQuery(this).hide();
+                        jQuery(this).data("distance", "hidden")
+                    }
+                    else{
+                        jQuery(this).data("distance", "visible");
+                    }
+                });
+                jQuery("#college-count").text(updateCollegeCount())
+                }
+            jQuery("#fader").on("change", function () {
+                console.log("Cost changed");
+                costfilter();
+                distancefilter(jQuery("#fader2").val());
+                NoCollegesToShow();
+            });
+            jQuery( ".college-panel" ).each(function( index ) {
+                  if (jQuery(this).data("city-id") != {{ view.get_selected_city.id }}){
+                      console.log("selected ", {{ view.get_selected_city.id }}, " panel ", jQuery(this).data("city-id"));
+                      jQuery(this).hide();
+                  }
+                });
+
+        </script>
+        <script>
+            function updateCollegeCount(){
+                colCount=0;
+                jQuery( ".college-panel" ).each(function( index ) {
+                    if (jQuery(this).is(":visible")){
+                        colCount += 1;
+                    }
+                });
+                console.log("Counting Colleges ", colCount);
+                return colCount;
+            }
+            function NoCollegesToShow(){
+                if (updateCollegeCount() == 0){
+                    console.log("Zero Colleges to show");
+                    jQuery(".error-message").show()
+                }
+                else{
+                    jQuery(".error-message").hide();
+                }
+            }
+            jQuery(document).ready(NoCollegesToShow());
+            jQuery(document).ready(
+                    jQuery("#college-count").text(updateCollegeCount())
+            )
+        </script>
+    </section>
+{% endblock %}

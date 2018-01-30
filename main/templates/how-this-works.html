@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% block meta %}
+    <title>How This Works - Just Rokket</title>
+	<meta charset="utf-8">
+	<meta name="language" content="en-us">
+	<meta name="robots" content="noodp"/>
+	<link rel="canonical" href="https://justrokket.com/how-this-works/"/>
+	<meta name="description"content="4 easy steps to admission with scholarship: Search for colleges for the course you want to study in your city, share your performance in earlier exams, pre-register and complete the formalities after selection.">
+	<meta name="copyright" content="2017 Explore Edu Tech Private Limited">
+	<meta name="content-language" content="EN">
+	<meta name="publisher" content="https://justrokket.com/">
+    <meta name="contact" content="service@justrokket.com">
+    <meta property="og:image" content="{% static 'featured.jpg' %}">
+	<meta name="theme-color" content="#187e89">
+	<!--Facebook Tags-->
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="How This Works - Just Rokket">
+	<meta property="og:description" content="4 easy steps to admission with scholarship: Search for colleges for the course you want to study in your city, share your performance in earlier exams, pre-register and complete the formalities after selection.">
+	<meta property="og:url" content="https://justrokket.com/how-this-works/">
+	<meta property="og:site_name" content="Just Rokket | Scholarships with admission">
+	<meta property="og:image" content="{% static 'featured.jpg' %}">
+
+	<!--Twitter Tags-->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:url" content="https://justrokket.com/how-this-works/">
+	<meta name="twitter:title" content="How This Works - Just Rokket">
+	<meta name="twitter:description" content="4 easy steps to admission with scholarship: Search for colleges for the course you want to study in your city, share your performance in earlier exams, pre-register and complete the formalities after selection.">
+	<meta name="twitter:image" content="{% static 'featured.jpg' %}">
+
+	<!--Google+ Tags-->
+	<meta itemprop="name" content="How This Works - Just Rokket">
+	<meta itemprop="description" content="4 easy steps to admission with scholarship: Search for colleges for the course you want to study in your city, share your performance in earlier exams, pre-register and complete the formalities after selection.">
+	<meta itemprop="image" content="{% static 'featured.jpg' %}">
+{% endblock meta %}
+
+{% block content %}
+    <div class="breadcrumb-section" style="background:url({% static 'images/banner-image.jpg' %}); background-size: cover;">
+        <div class="container">
+            <div class="row">
+                <header class="entry-header">
+                <h1 class="entry-title">How This Works</h1>
+                </header><!-- .entry-header -->
+            </div> <!--row #end  -->
+        </div>
+    </div><!-- Breadcrumb #end -->
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12" style="padding-top: 2em;padding-bottom: 2em;background-color: #fff;">
+            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 center-block">
+              <p class="text-center" style="font-size:23px; margin-bottom:2px;">Learn while you save money on your fees for the full course!</p>
+            </div>
+          <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 mt-e2">
+              <div class="col-md-10 col-xs-12 col-sm-12 col-lg-10 col-md-offset-2 col-lg-offset-2"  style="border: 2px solid #e7e7e7;padding: 20px;min-height: 14em;">
+                  <div class="col-md-9 col-xs-8 col-sm-8">
+                        <p class="pull-right" style="padding-top: 5%;"><span style="color:#f00025; ">SEARCH COLLEGES</span> and scholarships for the desired course in the city you want to study in.</p>
+                  </div>
+                  <div class="col-md-3 col-xs-4 col-sm-4">
+                        <img class="center-block" src="{% static 'images/icons/search-college.png' %}" style="height: 80px">
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 mt-e2">
+              <div class="col-md-10 col-xs-12 col-sm-12 col-lg-10" style="border: 2px solid #e7e7e7;padding: 20px;min-height: 14em;">
+                  <div class="col-md-3 col-xs-4 col-sm-4">
+                        <img class="center-block" src="{% static 'images/icons/merit.png' %}" style="height: 80px">
+                  </div>
+                  <div class="col-md-9 col-xs-8 col-sm-8">
+                        <p class="pull-left">Share your performance in earlier exams and <span style="color:#f00025;">GET MERIT BASED SCHOLARSHIP OFFERS</span> from educational institutes.</p>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 mt-e2">
+              <div class="col-md-10 col-xs-12 col-sm-12 col-lg-10 col-md-offset-2 col-lg-offset-2 " style="border: 2px solid #e7e7e7;padding: 20px;min-height: 14em;">
+                  <div class="col-md-9 col-xs-8 col-sm-8">
+                        <p class="pull-right"><span style="color:#f00025;">PRE REGISTER AND APPLY</span> for a seat with scholarship in the college & course of your choice</p>
+                  </div>
+                  <div class="col-md-3 col-xs-4 col-sm-4">
+                        <img class="center-block" src="{% static 'images/icons/pre-reg.png' %}" style="height: 80px">
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 mt-e2">
+              <div class="col-md-10 col-xs-12 col-sm-12 col-lg-10" style="border: 2px solid #e7e7e7;padding: 20px;min-height: 14em;">
+                  <div class="col-md-3 col-xs-4 col-sm-4">
+                        <img class="center-block" src="{% static 'images/icons/selection.png' %}" style="height: 80px">
+                  </div>
+                  <div class="col-md-9 col-xs-8 col-sm-8">
+                        <p class="pull-left">Complete the admission formalities after <span style="color:#f00025;"> SELECTION </span>.</p>
+                  </div>
+              </div>
+          </div>
+
+     </div>
+
+{% endblock %}

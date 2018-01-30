@@ -1,0 +1,538 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% block title %}
+<title>Just Rokket</title>
+{% endblock title %}
+{% block content %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe-ui-default.js"></script>
+    {% for data in view.get_data %}
+        <div class="breadcrumb-section" style="background:url({% static 'images/banner-image.jpg' %}); background-size: cover;">
+            <div class="container">
+                <div class="row">
+                    <header class="entry-header">
+                    <h1 class="entry-title">{{ data.college }}</h1>
+                    </header>
+                </div>
+            </div>
+        </div>
+    <section class="pt-20 pb-20" style="background-color: #e7e7e7;">
+        <div class="container">
+            <div class="panel panel-default" style="background-color: #fff;">
+                <div class="panel-body">
+                    <div>
+                        <div class="col-md-2">
+                            <div class="image-box-responsive" style="height: 170px; width: 170px; background-color: #f5f5f5;">
+                                <img src="{{ data.logo }}" style="object-fit: contain;">
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+
+                            <div id="border-right-custtm-new" class="col-md-6 border-rgt-new con-box-mob" >
+                                <h4 class="raleway-heading mt-0">{{ data.course_name }}</h4>
+                                <h5 class="raleway-subheading" style="color: #333;font-weight: bold;">{{ data.college }}</h5>
+                                <p class="raleway-heading raleway-heading-new-custtm" style="font-weight: lighter;">
+                                    {{ data.campus }} Campus&nbsp;
+                                    <a style="color: #333;" href="#" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-html="true" title="" data-content="{{ data.address_s1|safe|linebreaksbr }}, {{ data.address_s2|safe|linebreaksbr }}, {{ data.address_city|safe|linebreaksbr }}, {{ data.address_state|safe|linebreaksbr }}."> <i class="fa fa-info-circle"></i></a>
+                                </p>
+
+                                    <div class="row">
+                                        <div class="col-md-9 raleway-heading">
+                                            Session starts in {{ data.session_start_date|date:"M Y" }}
+                                        </div>
+                                        <div class="col-md-3 pl-0">
+                                            <div class="raleway left-blue-border"><span class="bule-seat_text">{{ data.seats }}</span> Seats
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                            <div class="col-md-6">
+                                <div id="afect-text-custmm" class="p-10">
+                                    <br>
+                                    <ul class="tick">
+                                        {% for af_cr in data.af_cr.all %}
+                                            <a id="to-the-left" data-toggle="popover" data-trigger="hover" data-html="true" title="" data-content="{{ af_cr.description|safe|linebreaksbr }}" style="text-decoration: none;"><li class="iconTimes" style="display: block;margin: -1%;word-break: break-all;">{{ af_cr.text|safe|linebreaksbr }}</li></a>
+                                        {% endfor %}
+                                        {% if data.rec_app %}
+                                            <a id="to-the-left" data-toggle="popover" data-trigger="hover" data-html="true" title="" data-content="{{ data.rec_app.description|safe|linebreaksbr }}" style="text-decoration: none;"> <li class="iconTimes" style="display: block;margin: -1%;word-break: break-all;">{{ data.rec_app.text|safe|linebreaksbr }}</li></a>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="p-20" style="background-color: #fff;">
+                <div class="row">
+                    <div class="col-md-4 hidden-xs">
+                        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+                            <!-- Background of PhotoSwipe.
+                                 It's a separate element as animating opacity is faster than rgba(). -->
+                            <div class="pswp__bg"></div>
+                            <!-- Slides wrapper with overflow:hidden. -->
+                            <div class="pswp__scroll-wrap">
+                                <!-- Container that holds slides.
+                                    PhotoSwipe keeps only 3 of them in the DOM to save memory.
+                                    Don't modify these 3 pswp__item elements, data is added later on. -->
+                                <div class="pswp__container">
+                                    <div class="pswp__item"></div>
+                                    <div class="pswp__item"></div>
+                                    <div class="pswp__item"></div>
+                                </div>
+                                <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+                                <div class="pswp__ui pswp__ui--hidden">
+                                    <div class="pswp__top-bar">
+                                        <!--  Controls are self-explanatory. Order can be changed. -->
+                                        <div class="pswp__counter"></div>
+                                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                                        <button class="pswp__button pswp__button--share" title="Share"></button>
+                                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                                        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                                        <!-- element will get class pswp__preloader--active when preloader is running -->
+                                        <div class="pswp__preloader">
+                                            <div class="pswp__preloader__icn">
+                                              <div class="pswp__preloader__cut">
+                                                <div class="pswp__preloader__donut"></div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                                        <div class="pswp__share-tooltip"></div>
+                                    </div>
+                                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                                    </button>
+                                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                                    </button>
+                                    <div class="pswp__caption">
+                                        <div class="pswp__caption__center"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            jQuery(document).ready(function () {
+                               var pswpElement = document.querySelectorAll('.pswp')[0];
+                                // build items array
+                                var items = [
+                                    {% for image in data.images %}
+                                        {
+                                            src: "{{ image.src }}",
+                                            w: {{ image.width }},
+                                            h: {{ image.height }}
+                                        }{% if not forloop.last %},{% endif %}
+                                    {% endfor %}
+                                ];
+                                // define options (if needed)
+                                var options = {
+                                    // optionName: 'option value'
+                                    // for example:
+                                    index: 0 // start at first slide
+                                };
+                                // Initializes and opens PhotoSwipe
+                                var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+                                jQuery(".open-gallery").on("click", function(){
+                                    gallery.init();
+                                });
+                            });
+                        </script>
+                        <div class="image-box tricky" style=" height: 215px;">
+                            <img src="{{ data.pimage }}" style="object-fit: contain;" class="open-gallery tricky_image">
+                        </div>
+                        <style>
+                            .image-box:hover{
+                                cursor: pointer;
+                            }
+                        </style>
+
+                        <iframe height="400px;" width="100%" src="https://www.google.com/maps/embed/v1/view?key=AIzaSyCvEO0vQiXp82XMLYbuZ8UxE17TD8yqrNY&center={{ data.lat }},{{ data.long }}&zoom=17&maptype=roadmap" style="border:none; margin-top: 15px;"></iframe>
+
+                    </div>
+                    <div class="col-md-8">
+                        <div class="">
+                            <div class="col-md-4 pr-0">
+                                <div class="panel panel-default" style="border: 1px solid #c7c7c7;height: 85px; margin-bottom: 5px; border-radius: 0;">
+                                    <div class="panel-body" style="padding: 10px;">
+                                        <center><h4 class="raleway" style="display: inline; vertical-align: middle;">Fees per year</h4></center>
+                                        <center><h4 class="raleway"><span style="color:#187e89;">Rs. {{ data.final_fee }}</span>&nbsp;&nbsp;<span style="color:#b7b7b7; text-decoration: line-through;">Rs. {{ data.fee }}</span> </h4></center>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 pr-0" style="">
+                                <div class="panel panel-default" style="border: 1px solid #c7c7c7;height: 85px; margin-bottom: 5px; border-radius: 0;">
+                                    <div class="panel-body" style="padding-top: 10px;">
+                                        <center><h4 class="raleway" style="display: inline; vertical-align: middle;">Savings per year</h4></center>
+                                        <center><h4 class="raleway" style="color:#187e89;">Rs. {{ data.savings }}</h4></center>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 pr-0">
+                                <div class="panel panel-default" style="border: 1px solid #c7c7c7;height: 85px; margin-bottom: 5px;border-radius: 0;" >
+                                    <div class="panel-body" style="padding-top: 5px;">
+                                        <center><h4 class="raleway" style="display: inline; vertical-align: middle;">Scholarship</h4> <h4 style="color: green; display: inline; vertical-align: middle;">{{ data.scholarship }} %</h4></center>
+                                        <center><b class="raleway" style="color: #b7b7b7;">( Till Course End )</b></center>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-10 pr-0">
+                                <div class="panel panel-default" style="height: 50px; margin: 0px; border-radius: 0;">
+                                    <button class="btn btn-lg finalize btn-orange new-im-intrested" style="color:white; width: 100%; height: 100%; border-radius: 0; right: 0px;" >I WANT THIS ROKKET OFFER <i class="lnr lnr-arrow-right"></i></button>
+                                </div>
+                                <script>jQuery(".finalize").on("click", function(){window.location="/finalize/{{ view.get_selection }}"})</script>
+                            </div>
+                            <div class="hidden-lg hidden-md hidden-sm mt-e1 ml-20">
+                                <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+                            <!-- Background of PhotoSwipe.
+                                 It's a separate element as animating opacity is faster than rgba(). -->
+                            <div class="pswp__bg"></div>
+                            <!-- Slides wrapper with overflow:hidden. -->
+                            <div class="pswp__scroll-wrap">
+                                <!-- Container that holds slides.
+                                    PhotoSwipe keeps only 3 of them in the DOM to save memory.
+                                    Don't modify these 3 pswp__item elements, data is added later on. -->
+                                <div class="pswp__container">
+                                    <div class="pswp__item"></div>
+                                    <div class="pswp__item"></div>
+                                    <div class="pswp__item"></div>
+                                </div>
+                                <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+                                <div class="pswp__ui pswp__ui--hidden">
+                                    <div class="pswp__top-bar">
+                                        <!--  Controls are self-explanatory. Order can be changed. -->
+                                        <div class="pswp__counter"></div>
+                                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                                        <button class="pswp__button pswp__button--share" title="Share"></button>
+                                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                                        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                                        <!-- element will get class pswp__preloader--active when preloader is running -->
+                                        <div class="pswp__preloader">
+                                            <div class="pswp__preloader__icn">
+                                              <div class="pswp__preloader__cut">
+                                                <div class="pswp__preloader__donut"></div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                                        <div class="pswp__share-tooltip"></div>
+                                    </div>
+                                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                                    </button>
+                                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                                    </button>
+                                    <div class="pswp__caption">
+                                        <div class="pswp__caption__center"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            jQuery(document).ready(function () {
+                               var pswpElement = document.querySelectorAll('.pswp')[0];
+                                // build items array
+                                var items = [
+                                    {% for image in data.images %}
+                                        {
+                                            src: "{{ image.src }}",
+                                            w: {{ image.width }},
+                                            h: {{ image.height }}
+                                        }{% if not forloop.last %},{% endif %}
+                                    {% endfor %}
+                                ];
+                                // define options (if needed)
+                                var options = {
+                                    // optionName: 'option value'
+                                    // for example:
+                                    index: 0 // start at first slide
+                                };
+                                // Initializes and opens PhotoSwipe
+                                var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+                                jQuery(".open-gallery").on("click", function(){
+                                    gallery.init();
+                                });
+                            });
+                        </script>
+                        <div class="image-box tricky" style=" height: 215px;">
+                            <img src="{{ data.pimage }}" style="object-fit: contain;" class="open-gallery tricky_image">
+                        </div>
+                        <style>
+                            .image-box:hover{
+                                cursor: pointer;
+                            }
+                        </style>
+
+                        <iframe height="400px;" width="100%" src="https://www.google.com/maps/embed/v1/view?key=AIzaSyCvEO0vQiXp82XMLYbuZ8UxE17TD8yqrNY&center={{ data.lat }},{{ data.long }}&zoom=17&maptype=roadmap" style="border:none; margin-top: 15px;"></iframe>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 mt-20">
+                         <!-- SPACE ZERO ( Event based boxes )-->
+                            {% if view.get_eb1 %}
+                                <div class="" eb1>
+                                    {% for object in view.get_eb1 %}
+                                    <div>
+                                        <div class="preview col-md-{{ view.get_col }}" data-description="#descriptione0" >
+                                           <center>
+                                                <div class="well" style="max-height: 150px;height: 150px;  border: 1px solid #d7d7d7!important; max-width:200px;">
+                                                <a style="text-decoration: none;outline: none; text-underline: none;" {% if object.description %}data-toggle="popover" data-placement="bottom" data-trigger="hover" data-html="true" title="" data-content="{{ object.description|safe|linebreaksbr }}"{% endif %}><center><i class="{% if object.icon_lib %}{{ object.icon_lib }} {{ object.icon_name }} {{ object.icon_size }}{% endif %}" style="color:{{ object.icon_color }};"></i></center>
+                                                <p class="text-center screen3-boxes"><span>{{ object.preview }}</span></p></a>
+{#                                                <p id="descriptione0" style="visibility: hidden; width: 100%; margin-top: -10%; margin-left: 10px;">{{ object.description }}</p></center>#}
+                                                </div>
+                                           </center>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            {% if view.get_eb2 %}
+                                <div class="" eb2>
+                                    {% for object in view.get_eb2 %}
+                                        {% if object.true %}
+                                            <div>
+                                                <div class="preview col-md-{{ view.get_col }}" data-description="#descriptione1" >
+                                                    <center>
+                                                        <div class="well" style="max-height: 150px;height: 150px;  border: 1px solid #d7d7d7!important;max-width:200px;">
+                                                        <a style="text-decoration: none;outline: none; text-underline: none;" {% if object.description %}data-toggle="popover" data-placement="bottom" data-trigger="hover" data-html="true" title="" data-content="{{ object.description|safe|linebreaksbr }}{% endif %}"><center><i class="{% if object.icon_lib %}{{ object.icon_lib }} {{ object.icon_name }} {{ object.icon_size }}{% endif %}" style="color:{{ object.icon_color }};"></i></center>
+                                                        <p class="text-center screen3-boxes"><span style="font-weight: bold;">{{ object.preview }}</span></p></a>
+{#                                                      <p id="descriptione1" style="visibility: hidden; width: 100%; margin-top: -10%; margin-left: 10px;">{{ object.description }}</p></center>#}
+                                                        </div>
+                                                    </center>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        <!-- END SPACE ZERO -->
+                        <!-- SPACE ONE -->
+                            <div>
+                                {% for box in view.get_boxes %}
+                                    {% if box %}
+                                        <div>
+                                            <div class="preview col-md-{{ view.get_col }}" data-description="#description{{ forloop.counter }}" >
+                                                <center>
+                                                    <div class="well" style="max-height: 150px;height: 150px; border: 1px solid #d7d7d7!important;max-width:200px;">
+                                                    <a style="text-decoration: none;outline: none; text-underline: none;" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-html="true" title="" {% if box.description %}data-content="{{ box.description|safe|linebreaksbr }}{% endif %}"><center><i class="{% if box.icon_lib %}{{ box.icon_lib }} {{ box.icon_name }} {{ box.icon_size }}{% endif %}" style="color:{{ box.icon_color }};"></i></center>
+                                                        <p class="text-center screen3-boxes"><span style="font-weight: bold;">{{ box.preview }}</span></p></a>
+                                                        {% comment %}<p id="descriptione1" style="visibility: hidden; width: 100%; margin-top: -10%; margin-left: 10px;">{{ object.description }}</p></center>{% endcomment %}
+                                                    </div>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        <!-- END SPACE ONE -->
+                        </div>
+
+{#                        <div class="row" style="margin-top:250px;"></div>#}
+
+                   <script>
+                        jQuery(document).ready(function () {
+                            if(jQuery(window).width() < 767){
+                                jQuery("a#to-the-left").attr("data-placement", "top");
+                                jQuery('[data-toggle="popover"]').popover();
+                                }
+                            else if(jQuery(window).width() > 767) {
+                                jQuery("a#to-the-left").attr("data-placement", "left");
+                                jQuery('[data-toggle="popover"]').popover();
+                            }
+                        });
+                </script>
+
+                        <!-- SPACE THREE -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel-group" id="accordion" style="margin-left: 2%;margin-right: 2%;">
+
+                                {% if view.get_important_info %}
+                                    <!--A1-->
+                                    <div class="panel panel-default" style="margin-top: 10px;">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" style="outline: none; border: none; text-underline-mode: none; text-decoration: none;">
+                                            <div class="panel-heading" style="height: 50px;" href="#collapse1">
+                                              <h4 class="panel-title raleway-heading" style="padding-top: 7px; outline: none;">
+
+                                                Important Info <i id="accord" class="change colr-red-pluse fa fa-plus" style="float: right;"></i>
+
+                                              </h4>
+                                            </div>
+                                        </a>
+                                        <div id="collapse1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                          <div class="panel-body">
+                                                {% if view.get_eb1 %}
+                                                    <ul class="tick mb-0">
+                                                    {% for box in view.get_eb1 %}
+                                                        <li style="list-style: none; word-break: break-all;"><a id="to-the-right" class="preview ac-pre" data-toggle="popover" data-trigger="hover" data-html="true" title="" {% if box.description2 %}data-content="{{ box.description2|safe|linebreaksbr }}{% endif %}">{{ box.preview2 }}</a></li>
+
+                                                        {% comment %}<span>{{ box.description2 }}</span>{% endcomment %}
+                                                    {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                          <ul class="tick mb-0">
+                                                {% for statement in view.get_important_info %}
+                                                    <li style="list-style: none; word-break: break-all;"><a id="to-the-right" class="preview ac-pre" data-toggle="popover" data-trigger="hover" data-html="true" title="" {% if statement.description %}data-content="{{ statement.description|safe|linebreaksbr }}{% endif %}">{{ statement.preview }}</a></li>
+
+                                                {% endfor %}
+                                          </ul>
+                                          </div>
+                                        </div>
+                                    </div>
+                                <!-- END A1-->
+                                {% endif %}
+
+
+                                {% if view.get_other_benefits %}
+                                <!--A2-->
+                                <div class="panel panel-default" style="margin-top: 15px;">
+                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" style="outline: none; border: none; text-underline-mode: none; text-decoration: none;">
+                                     <div class="panel-heading" style="height: 50px;" href="#collapse2">
+                                          <h4 class="panel-title raleway-heading" style="padding-top: 7px;">
+
+                                                Other Benefits <i class="change colr-red-pluse fa fa-plus" style="float: right;"></i>
+                                          </h4>
+                                    </div>
+                                 </a>
+                                <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                  <div class="panel-body">
+                                    <ul class="tick mb-0">
+
+                                      {% for statement in view.get_other_benefits %}
+                                            <li style="list-style: none; word-break: break-all;"><a id="to-the-right" class="preview ac-pre" data-toggle="popover" data-trigger="hover" data-html="true" title="" {% if statement.description %}data-content="{{ statement.description|safe|linebreaksbr }}{% endif %}">{{ statement.preview }}</a></li>
+
+                                        {% endfor %}
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                                {% endif %}
+                                <!-- END A2-->
+
+
+                                <!--A3-->
+                                <div class="panel panel-default" style="margin-top: 15px;">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" style="outline: none; border: none; text-underline-mode: none; text-decoration: none;">
+                                    <div class="panel-heading" style="height: 50px;">
+                                      <h4 class="panel-title raleway-heading" style="padding-top: 7px;">
+
+                                            Info Scholarship <i class="change colr-red-pluse fa fa-plus" style="float: right;"></i>
+                                      </h4>
+                                    </div>
+                                </a>
+                                <div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                  <div class="panel-body">
+                                        {% if view.get_eb2 %}
+                                            {% for box in view.get_eb2 %}
+                                                <ul class="tick mb-0">
+                                                {% if box.true %}
+                                                    <li style="display: block;word-break: break-all; list-style: none;"><span class="preview"><a id="to-the-right" class="ac-pre" data-toggle="popover" data-placement="right" data-trigger="hover" data-html="true" title="" data-content="{{ box.description2|safe|linebreaksbr }}">{{ box.preview2 }}</a></span></li><br>
+                                                    {% comment %}<span>{{ box.description2 }}</span>{% endcomment %}
+                                                {% endif %}
+                                                {% if not box.true %}
+                                                    <li style="display: block;word-break: break-all;list-style: none;"><span class="preview"><a id="to-the-right" class="ac-pre" data-toggle="popover" data-placement="right" data-trigger="hover" data-html="true" title="" data-content="{{ box.description3|safe|linebreaksbr }}">{{ box.preview3 }}</a></span></li><br>
+
+                                                    {% comment %}<span>{{ box.description3 }}</span>{% endcomment %}
+                                                {% endif %}
+                                                </ul>
+                                            {% endfor %}
+                                        {% endif %}
+                                      {% for statement in view.get_info_scholarship %}
+                                          <ul class="tick mb-0">
+                                            <li style="display: block;word-break: break-all; list-style: none;"><a id="to-the-right" class="preview ac-pre" data-toggle="popover" data-trigger="hover" data-html="true" title="" {% if statement.description %}data-content="{{ statement.description|safe|linebreaksbr }}{% endif %}">{{ statement.preview }}</a></li>
+                                          </ul>
+                                        {% endfor %}
+                                  </div>
+                                </div>
+                              </div>
+                                <!-- END A3-->
+
+                                <!--A4-->
+                                {% if view.get_admission_process %}
+                                <div class="panel panel-default" style="margin-top:15px;">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse4" style="outline: none; border: none; text-underline-mode: none; text-decoration: none;">
+                                    <div class="panel-heading" style="height: 50px;">
+                                      <h4 class="panel-title raleway-heading" style="padding-top: 7px;">
+
+                                        Info - Admission Process <i class="change fa colr-red-pluse fa-plus" style="float: right;"></i>
+                                      </h4>
+                                    </div>
+                                </a>
+                                <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                  <div class="panel-body">
+{#                                        {% if view.get_eb1 %}#}
+{#                                            <ul class="tick mb-0">#}
+{#                                            {% for box in view.get_eb1 %}#}
+{#                                                <li style="display: block;word-break: break-all;list-style: none;"><a class="preview" data-toggle="popover" data-placement="right" data-trigger="hover" data-html="true" title="" {% if box.description %}data-content="{{ box.description|safe|linebreaksbr }}{% endif %}"><span class="preview">{{ box.preview2 }}</span></a></li>#}
+{#                                                <span>{{ box.description2 }}</span>#}
+{#                                            {% endfor %}#}
+{#                                            </ul>#}
+{#                                        {% endif %}#}
+                                        <ul class="tick mb-0">
+                                      {% for statement in view.get_admission_process %}
+                                            <li style="display: block;word-break: break-all;list-style: none;"><a id="to-the-right" class="preview" data-toggle="popover" data-trigger="hover" data-html="true" title="" {% if statement.description %}data-content="{{ statement.description|safe|linebreaksbr }}{% endif %}">{{ statement.preview }}</a></li>
+                                        {% endfor %}
+                                        </ul>
+                                  </div>
+                                </div>
+                              </div>
+                                {% endif %}
+                                <!-- END A1-->
+
+                            </div>
+                            </div>
+                        </div>
+                        <!-- END SPACE THREE -->
+                    </div>
+                        <script>jQuery(".finalize").on("click", function(){window.location="/finalize/{{ view.get_selection }}"})</script>
+                </div>
+                </div>
+        </div>
+    </section>
+        <script>
+                jQuery(document).ready(function () {
+                    if(jQuery(window).width() < 767){
+                        jQuery("a#to-the-right").attr("data-placement", "top");
+                        jQuery('[data-toggle="popover"]').popover();
+                        }
+                    else if(jQuery(window).width() > 767) {
+                        jQuery("a#to-the-right").attr("data-placement", "right");
+                        jQuery('[data-toggle="popover"]').popover();
+                    }
+                });
+        </script>
+        <script>
+            jQuery(".preview").mouseover(function () {
+                jQuery(jQuery(this).data("description")).css('visibility','visible');
+            });
+            jQuery(".preview").mouseout(function () {
+                jQuery(jQuery(this).data("description")).css('visibility','hidden');
+            });
+        </script>
+        <script>
+            var selectIds = $('#collapse1,#collapse2,#collapse3,#collapse4');
+                $(function ($) {
+                    selectIds.on('show.bs.collapse hidden.bs.collapse', function () {
+                        $(this).prev().find('.colr-red-pluse').toggleClass('fa-plus fa-minus');
+                    })
+                });
+        </script>
+
+        <-- photo error fix-->
+            <script>
+                jQuery(".pswp__button--close").onclick(function () {
+
+                    jQuery(".pswp--open").css('display', 'none')
+                })
+            </script>
+    {% endfor %}
+{% endblock %}

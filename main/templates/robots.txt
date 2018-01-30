@@ -1,0 +1,8 @@
+User-agent: *
+Sitemap: https://justrokket.com/sitemap.xml
+Disallow: https://justrokket.com/accounts/login/
+Disallow: https://justrokket.com/accounts/signup/
+Disallow: https://justrokket.com/accounts/password/reset/
+Disallow: https://justrokket.com/accounts/social/login/cancelled/
+
+

@@ -1,0 +1,1093 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load humanize %}
+{% block title %}
+<title>Just Rokket</title>
+{% endblock title %}
+{% block content %}
+    <style type="text/css">
+        ul li{
+            list-style-type: none;
+            font-size: 14px;
+            color: red;
+            margin-bottom: 5px;
+        }
+        .errorlist > .col-md-11 > p{
+                color: red;
+            } 
+        .errorlist.form-group{
+                border: 1px solid red;
+            } 
+        
+        .error_heading{
+            color: red;
+            margin-left: 30px;
+        }
+        .nostyle{
+            text-decoration: none;
+            color: inherit;
+        }
+        .nostyle:hover{
+            cursor: default;
+            color: inherit;
+        }
+        .close{
+            display:none;
+        }
+        .text{
+            overflow:hidden;
+        }
+        .agreement_text{
+            border: 1px solid red;
+        }
+    select{
+        border-radius: 0!important;
+        color: #666!important;
+    }
+    </style>
+    {%  if request.user.is_authenticated %}
+    <script></script>
+    {% else %}
+    <script>
+        jQuery(document).ready(function(){
+                jQuery("#mymodal").modal({
+                    backdrop: 'static'
+                });
+        });
+    </script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.min.js"></script>
+    {% endif %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css" />
+    <link rel="stylesheet" href="{% static 'vendor/fancybox/css/fancybox.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+    <script src="{% static 'vendor/masked.js' %}"></script>
+    <div class="breadcrumb-section" style="background:url({% static 'images/banner-image.jpg' %}); background-size: cover;">
+        <div class="container">
+            <div class="row">
+                <header class="entry-header">
+                <h1 class="entry-title">Your Profile</h1>
+                </header>
+            </div>
+        </div>
+    </div>
+    <section class="screen4-bg pt-30">
+         <div class="container">
+            <div class="row">
+                <ul class="nav nav-tabs nav-tabs-red nav-new-heading-tabs raleway">
+                    <li class="active"><a href="#profile" data-toggle="tab" style="padding-left: 1em;padding-right: 1em;">Profile</a></li>
+                    <li><a id="2" href="#payment" disabled="disabled">Payment</a></li>
+                </ul>
+            </div>
+        </div>
+        <style>
+            .disabled:hover{
+            cursor: not-allowed;
+            }
+        </style>
+    <div class="container">
+        <div class="row">
+            <div class="tab-content clearfix" style="margin-bottom: 2em;">
+                <div id="profile" class="tab-pane fade clearfix in active white-bg active tab-container-body">
+                    <div class="col-md-7">
+                        <p class="error_heading">
+                            {% if form.errors %}
+                                Please correct the following errors highlighted below
+                            {% endif %}
+                        </p>
+                        <div class="panel panel-default panel-profile-box">
+                            <div class="">
+                                <form id="form-parsley" class="form" action="/finalize/{{ pk }}" method="POST">
+                                    {% csrf_token %}
+                                        <div class="screen4-headings mb-e1 forea">
+                                            <h3 class="raleway">Profile</h3>
+                                        </div>
+                                        <fieldset class="fieldset-cusstom" style="border:none;">
+                                            <div {% if form.name.errors %} class="form-group errorlist form-mb" {% else %} class="form-group form-mb" {% endif %}>
+                                                {{ form.name }}
+                                            </div>
+                                            <div {% if form.id_type.errors %} class="form-group errorlist form-mb id_type" {% else %} class="form-group form-mb id_type" {% endif %}>
+                                                {{ form.id_type }}
+                                            </div>
+                                            <div {% if form.id_no.errors %} class="form-group errorlist form-mb" {% else %} class="form-group form-mb" {% endif %}>
+                                                {{ form.id_no }}
+                                            </div>
+                                            <div class="col-md-6 pl-0 mobile-form-spacing">
+                                                <div {% if form.dob.errors %} class="form-group errorlist form-mb" {% else %} class="form-group form-mb" {% endif %}>
+                                                    {{ form.dob }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 pl-0 pr-0 mobile-form-spacing">
+                                                <div {% if form.gender.errors %} class="form-group errorlist form-mb" {% else %} class="form-group form-mb" {% endif %}>
+                                                    {{ form.gender }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 pl-0 pr-0">
+                                                    <div>
+                                                        <div {% if form.email.errors %} class="form-group errorlist form-mb" {% else %} class="form-group form-mb" {% endif %}>
+                                                            {{ form.email }}
+{#                                                        {% if request.user.is_authenticated and request.user.profile.email_verified %}<script>jQuery("#id_email").prop("readonly", true);</script>{% endif %}#}
+                                                        </div>
+                                                    </div>
+{#                                                    <div class="col-md-6 custom-button" {% if request.user.is_authenticated and request.user.profile.email_verified %}style="visibility: hidden"{% endif %}>#}
+{#                                                        <center>#}
+{#                                                            <a class="verify" >#}
+{#                                                                Send Email Verification Code#}
+{#                                                            </a>#}
+{#                                                        </center>#}
+{#                                                    </div>#}
+{#                                                <div class="col-md-12 pl-0 pr-0 form-mb">#}
+{#                                                    <div class="{% if form.verify_email_otp.errors %}form-group errorlist {% endif %} col-md-12 pl-0 pr-0">#}
+{#                                                        {% if request.user.is_authenticated and not request.user.profile.email_verified %}#}
+{#                                                            {{ form.verify_email_otp }}#}
+{#                                                            {% comment %}#}
+{#                                                            <input class="form-control-1 otp" id="id_otp" maxlength="10" name="otp" placeholder="OTP Sent to Email" type="text"> {% endcomment %}<!-- OTP Mobile Class is needed -->#}
+{#                                                        {% endif %}#}
+{#                                                    </div>#}
+{#                                                </div>#}
+                                             </div>
+                                            <div class="col-md-12 pl-0 pr-0 ">
+
+                                                <div>
+                                                    <div {% if form.phone.errors %} class="form-group errorlist form-mb" {% else %} class="form-group form-mb" {% endif %}>
+                                                        {{ form.phone }}
+{#                                                    {% if request.user.is_authenticated and request.user.profile.mobile_verified %}<script>jQuery("#id_phone").prop("readonly", true);</script>{% endif %}#}
+                                                    </div>
+                                                </div>
+{#                                                <div class="col-md-6 custom-button" {% if request.user.is_authenticated and request.user.profile.mobile_verified %}style="visibility:hidden"{% endif %}>#}
+{#                                                    <center>#}
+{#                                                        <a class="verify-mobile">#}
+{#                                                            Send Mobile Verification Code#}
+{#                                                        </a>#}
+{#                                                    </center>#}
+{#                                                </div>#}
+{#                                                <div class="{% if form.verify_email_otp.errors %}form-group errorlist {% endif %} col-md-12 pl-0 pr-0" {% if request.user.is_authenticated and request.user.profile.mobile_verified %}style="visibility: hidden"{% endif %}>#}
+{#                                                    {{ form.verify_sms_otp }}#}
+{#                                                    {% comment %}#}
+{#                                                    <input class="form-control-1 otp-mobile" id="id_otp_mobile" maxlength="10" name="otp_mobile" placeholder="OTP Sent to Mobile" type="text"> <!-- OTP Mobile Class is needed -->#}
+{#                                                    {% endcomment %}#}
+{#                                                </div>#}
+                                             </div>
+                                        </fieldset>
+{#                                        {% if request.user.is_authenticated and request.user.profile.email_verified and request.user.profile.mobile_verified %}#}
+{#                                            <div class="row" style="margin-top: -100px"></div>#}
+{#                                        {% endif %}#}
+                                        <div class="{% if form.notInCollege.errors %} errorlist row {% else %} row {% endif %}" id="notInCollege" style="padding-left:3%; padding-bottom: 3%; padding-top: 3%;">
+                                            <div  class="col-md-1 col-xs-1 col-sm-1 pl-0 pr-0 x ">
+                                                {{ form.notInCollege}}
+                                            </div>
+                                            <div  class="col-md-10 col-xs-10 col-sm-10 pl-0 pr-0" style="padding-left: 0px;">
+                                                <p style="text-align: left; font-size: 12px;margin-bottom: 5px;">I am not yet admitted in this institution.</p>
+                                            </div>
+                                        </div>
+                                        <div class="screen4-headings mb-e1">
+                                            <h3 class="raleway">Residential Details</h3>
+                                        </div>
+                                        <fieldset class="fieldset-cusstom" style="border:none; padding-bottom: 0px;padding-top: 0px;">
+                                            <div {% if form.house.errors %} class="form-group errorlist form-mb" {% else %} class="form-group form-mb" {% endif %}>
+                                                {{ form.house }}
+                                            </div>
+                                            <div {% if form.street.errors %} class="form-group errorlist form-mb" {% else %} class="form-group form-mb" {% endif %}>
+                                                {{ form.street }}
+                                            </div>
+                                            <div {% if form.city.errors %} class="form-group col-md-6 errorlist pl-0 form-mb pl-0 mobile-form-spacing" {% else %}  class="form-group col-md-6 pl-0 form-mb pl-0 mobile-form-spacing" {% endif %}>
+                                                {{ form.city }}
+                                            </div>
+
+                                            <div {% if form.pin.errors %} class="form-group col-md-6 errorlist pl-0 form-mb pr-0 mobile-form-spacing" {% else %} class="form-group col-md-6 pl-0 form-mb pr-0 mobile-form-spacing" {% endif %}>
+                                                {{ form.pin }}
+                                            </div>
+                                            <div {% if form.district.errors %} class="form-group col-md-6 errorlist form-mb pl-0 mobile-form-spacing" {% else %} class="form-group col-md-6 form-mb pl-0 mobile-form-spacing" {% endif %}>
+                                                {{ form.district }}
+                                            </div>
+                                            <div {% if form.state.errors %} class="form-group col-md-6 errorlist form-mb pl-0 pr-0 mobile-form-spacing" {% else %} class="form-group col-md-6 form-mb pl-0 pr-0 mobile-form-spacing" {% endif %}>
+                                                {{ form.state }}
+                                            </div>
+                                            <div {% if form.country.errors %} class="form-group errorlist form-mb" {% else %} class="form-group form-mb" {% endif %} style="margin-bottom:14px !important;">
+                                                {{ form.country }}
+                                            </div>
+                                        </fieldset>
+                                        {% comment %}
+                                        {% if ask_school %}
+                                            <fieldset style="border:none;padding-top: 0px;">
+                                                <div class="form-group form-mb">
+                                                    {{ form.school }}
+                                                </div>
+                                                <div class="form-group form-mb">
+                                                    {{ form.school_location }}
+                                                </div>
+                                                <div class="form-group form-mb">
+                                                    {{ form.class_12_year }}
+                                                </div>
+                                                {% for exam in get_c_exams %}
+                                                    <div class="form-group form-mb">
+                                                        <input class="form-control-1" style="font-size: 11px;" name="c_exm_{{ forloop.counter }}"  placeholder="Year of {{ exam.name }}">
+                                                    </div>
+                                                {% endfor %}
+                                            </fieldset>
+                                        {% endif %}
+                                        
+                                        {% if ask_college %}
+                                            
+                                            <fieldset style="border:none; padding-bottom: 0px;padding-top: 0px;">
+                                                <div class="form-group form-mb">
+                                                    {{ form.college_name }}
+                                                </div>
+                                                <div class="form-group form-mb">
+                                                    {{ form.college_location }}
+                                                </div>
+                                                <div class="form-group form-mb">
+                                                    {{ form.graduation_year }}
+                                                </div>
+                                                {% for exam in get_c_exams %}
+                                                    <div class=" form-group form-mb">
+                                                        <input class="form-control-1" style="font-size: 12px;" name="c_exm_{{ forloop.counter }}"  placeholder="Year of {{ exam.name }}">
+                                                    </div>
+                                                {% endfor %}
+                                            </fieldset>
+                                        {% endif %}
+                                        {% endcomment %}
+                                        {% if ask_school %}
+                                                <fieldset style="border:none;padding-top: 0; padding-bottom: 0;" class="pr-0">
+                                                    <div class="{% if form.parent_email.errors %} errorlist {% endif %}form-group form-mb pr-0 pl-0" style="margin-bottom: 5px !important;margin-right: 0px;padding-right:0px;">
+
+                                                        {{ form.parent_email }}
+                                                    </div>
+                                                </fieldset>
+                                        {% endif %}
+                                        {% if get_agreements %}
+                                            <fieldset style="border:none;padding-top: 0; padding-bottom: 0;">
+                                                <h3 class="raleway-heading">Important remarks and rules</h3>
+                                                        <p class="raleway" style="font-size: smaller; color: #333;">Please read the following rules carefully to continue:</p>
+                                                <div {% if form.tnc.errors %}class="agreement_text" {% endif %} style="max-height: 200px; overflow-y: scroll; overflow-x: hidden; padding: 0px; margin-bottom: 20px;">
+                                                        {% for s in get_agreements %}
+                                                            <li style="list-style-type: none; font-size: 12px;word-break: break-all;margin-bottom: 10px;">
+                                                                {{ s }}
+                                                            </li>
+                                                        {% endfor %}
+                                                    <div style="padding-left:0px"  class="{% if form.tnc.errors %} errorlist col-md-12 {% else %} col-md-12 {% endif %}">
+                                                        <div class="col-md-1 col-xs-2 col-sm-2 pl-0">
+                                                            {{ form.tnc }}
+                                                        </div>
+                                                       {% if ask_college %}
+                                                            <div class="col-md-10 col-xs-10 col-sm-10 pl-0 pr-0" >
+                                                                <p style="text-align: left; font-size: 12px; float: left;">I understand & agree with the aforesaid college rules and the <a href="/tnc/" target="_blank"><b style="text-decoration: underline;">Terms of Use</b></a></p>
+                                                            </div>
+
+                                                        {% endif %}
+                                                        {% if ask_school %}
+                                                            <div class="col-md-11 col-xs-10 col-sm-10"  style="margin-left: -5px;padding-left: 0px;">
+                                                                <p style="text-align: left; font-size: 12px;">The parent / legal guardian of the candidate understands & agrees with the aforesaid college rules and the <a href="/tnc/"><b style="text-decoration: underline">Terms of Use</b></a></p>
+                                                            </div>
+                                                        {% endif %}
+                                                        <br><br>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        {% endif %}
+                                        <style>
+                                            input[type=text], input[type=number], textarea{
+                                                font-size: 11px!important;
+                                            }
+                                            label {
+                                              display: block;
+                                              padding-left: 15px;
+                                              text-indent: -15px;
+                                            }
+
+
+                                            input[type="text"]{
+                                                width: 100%;
+                                                background-color:#fff;
+                                                border:1px solid #d7d7d7;
+                                                -webkit-border-radius: 0 !important;
+                                                -moz-border-radius: 0 !important;
+                                                border-radius: 0 !important;
+                                                -webkit-box-shadow:none;
+                                                box-shadow:none;
+                                                -webkit-transition:none;
+                                                -o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                                                transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+
+                                            }
+                                            input[type="text"]:focus{
+                                                border:1px solid #d7d7d7;
+
+                                             outline:none;
+                                             -webkit-box-shadow:none;
+                                             box-shadow:none;
+                                            }
+                                            #id_email{
+                                                width: 100%;
+                                                background-color:#fff;
+                                                border:1px solid #d7d7d7;
+                                                -webkit-border-radius: 0 !important;
+                                                -moz-border-radius: 0!important;
+                                                border-radius: 0 !important;
+                                                -webkit-box-shadow:none;
+                                                box-shadow:none;
+                                                -webkit-transition:border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+                                                -o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                                                transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+
+                                            }
+                                            textarea{
+                                                width: 100%;
+                                                background-color:#fff;
+                                                border:1px solid #d7d7d7;
+                                                -webkit-border-radius: 0 !important;
+                                                -moz-border-radius: 0!important;
+                                                border-radius: 0 !important;
+                                                -webkit-box-shadow:none;
+                                                box-shadow:none;
+                                                -webkit-transition:none;
+                                                -o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+                                                transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+
+                                            }
+                                            textarea:focus{
+                                                border:1px solid #d7d7d7;
+                                                outline:none;
+                                                -webkit-border-radius: 0 !important;
+                                                -moz-border-radius: 0!important;
+                                                border-radius: 0 !important;
+                                                -webkit-box-shadow:none;
+                                            }
+                                            #id_email:focus{
+                                                border:1px solid #d7d7d7;
+                                                outline:none;
+                                                -webkit-box-shadow:none;
+                                            }
+                                        </style>
+                                    <button style="margin-bottom: 15px;" class=" btn-red proceed red-btn-submit-mob" type="submit">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        {% for college in get_college %}
+                            <div class="">
+                                <div class="panel" style="width: 100%; border:1px solid black;">
+                                    <div class="panel" style="border: 4px solid #0070C0; margin: 20px; ">
+                                        <div class="row">
+                                            <div class="col-md-8 col-md-offset-1">
+                                                <div class="row" style="margin-top: 20px;">
+                                                </div>
+                                                <center style="color:black; font-size: 15px;">
+                                                    Just Rokket Scholarship Offer
+                                                </center>
+                                                <center>
+                                                    <span style="font-size: 11px;">
+                                                        Voucher Number:
+                                                    </span>
+                                                    <b style="color:black; margin-left: 10px; font-size: 11px;">
+                                                        {{ college.coupon_code }}
+                                                    </b>
+                                                </center>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="row" style="margin-top: 10px;"></div>
+                                                <center>
+                                                    <img src="{% static 'images/icons/circle50x50.jpg' %}" width="50px" height="50px" style="height:50px; width:50px; max-height:50px; max-width:50px;">
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <div class="row" style="margin-top: 20px;"></div>
+                                            <div class="col-md-12">
+                                                <div class="panel" style="border: 2px solid rgb(0, 112, 192); width:90%; margin-left: 5%;">
+                                                    <center>
+                                                        <a class="j_name nostyle" style="font-size: 10.5px;">
+                                                            Student Name
+                                                        </a>,
+                                                        <a class="nostyle j_dob" style="font-size: 10.5px;">
+                                                            Dob
+                                                        </a>,
+                                                        <a class="nostyle j_id_type" style="font-size: 10.5px;">
+                                                            Govt ID Proof Type
+                                                        </a>,
+                                                        <a class="nostyle j_id_no" style="font-size: 10.5px;">
+                                                            ID Number
+                                                        </a>
+                                                    </center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="row" style="margin-top: 20px;"></div>
+                                            <div class="col-md-12">
+                                                <div class="panel" style="width: 80%; margin-left: 10%;">
+                                                    <center>
+                                                        <p style="font-size: 12px;">
+                                                            The following scholarship offer is made to student for the following partner institution
+                                                        </p>
+                                                    </center>
+                                                    <center>
+                                                        {% for s in get_scholarship_details %}
+                                                            <div class="panel" style="background-color: red; width: 50%; height: 30px; margin-top: 20px;padding-bottom: 15px;">
+                                                                <b style="color: whitesmoke; font-size: smaller;">
+                                                                    {{ s.scholarship }} % Scholarship
+                                                                </b>
+                                                            </div>
+                                                            {% comment %}<div class="panel" style="background-color: red; width: 80%; height: 30px; margin-top: 40px;">{% endcomment %}
+                                                            <center>
+                                                                <b style="color: red; margin-bottom:15px;font-weight: 400; font-size: smaller;">
+                                                                    {{ s.college.name }}<br>{{ s.college.campus }} Campus
+                                                                </b>
+                                                            </center>
+                                                           {% comment %} </div>{% endcomment %}
+                                                            {% comment %}<div class="panel" style="background-color: red; width: 80%; height: 30px; margin-top: -5px;">{% endcomment %}
+                                                            <center>
+                                                                <b style="color: red;font-size: smaller; font-weight: 400;">
+                                                                    {{ s.college_qualification.qualification }}<br>{{ s.college_qualification.session.get_session }}
+                                                                </b>
+                                                            </center>
+                                                            {% comment %}</div>{% endcomment %}
+                                                        {% endfor %}
+                                                    </center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="panel" style="width:80%; margin-left: 10%;">
+                                                <center>
+                                                    <p style="font-size: 10px; line-height: 93%">
+                                                        The above scholarship offer is valid subject to the terms and conditions, stated and agreed to, being satisfied.
+                                                    </p>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+{#                        <div class="" style="padding-left: 0px; padding-right: 0px; margin-top: 1em;">#}
+{#                            <div class="acc-bg">#}
+{#                                <!-- accordion #start-->#}
+{#                                <div class="panel panel-default">#}
+{#                                    <div class="panel-heading white-bg">#}
+{#                                        <h5 class="panel-title">#}
+{#                                            <a href="#custom-collapse-1" style="text-decoration: none;" data-toggle="collapse" class="collapsed rale-a">#}
+{#                                                How can I be sure that I am going to get the Rokket offer of scholarship ?#}
+{#                                            </a><span class="caret" style="float: right;margin-top: 0.3em;"></span>#}
+{#                                        </h5>#}
+{#                                    </div>#}
+{#                                    <div class="panel-collapse collapse" id="custom-collapse-1">#}
+{#                                      <div class="panel-body acc-body" style="font-size: small;">#}
+{#                                          ‘Just Rokket’ has a partnership with the institution you are applying to, along with similar partnerships with other colleges and universities listed on this site. The scholarship offered for the full duration of your course in this college is a part of the partnership between the institution and us. You will receive a full written confirmation of this scholarship from the institution as part of their admission offer documents.#}
+{#                                      </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="panel panel-default mb-0">#}
+{#                                    <div class="panel-heading white-bg">#}
+{#                                        <h5 class="panel-title">#}
+{#                                            <a href="#custom-collapse-2" style="text-decoration: none;"  data-toggle="collapse" class="collapsed rale-a">#}
+{#                                                How will I be able to avail the Rokket offer of scholarship in college ?#}
+{#                                            </a><span class="caret" style="float: right;margin-top: 0.3em;"></span>#}
+{#                                        </h5>#}
+{#                                    </div>#}
+{#                                    <div class="panel-collapse collapse" id="custom-collapse-2">#}
+{#                                        <div class="panel-body acc-body" style="font-size: small;">#}
+{#                                            You need to submit a copy of the scholarship voucher (issued by us) while submitting your documents (or their copies) at the time of completing the admission formalities. When you join the college, please submit a copy of your scholarship voucher with the accounts (fees) department and ensure their records are already updated with your name (since we would have coordinated with the college).#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+                            <div style="border: 1px solid #b7b7b7; padding: 15px 10px 5px 10px; margin-top: 2em;">
+                                  <h5  class="pre-reg-text">
+                                      The pre-registration wih 'Just Rokket' does not replace the registration and/or other fees required to be paid to the institution.
+                                  </h5>
+                            </div>
+{#                        </div>#}
+{#                        <!-- accordion #end-->#}
+                        <div class="box-club clearfix">
+                            <div class="col-md-12 mt-20">
+                                <div class="col-md-3">
+                                    <img src="{% static 'images/icons/refund.png' %}" style="height:50px;">
+                                </div>
+                                <div class="col-md-9">
+                                    <h5 style="font-weight: bold;color:#333;padding-top: 2%;font-size: medium;">
+                                        Assured Refunds
+                                    </h5>
+                                </div>
+                                <div class="col-md-12" style="margin-top: 1em;">
+                                    <h5 style="font-weight: 500;color: #333; font-size: small;">
+                                        Your entire pre-registration money is refundable in case you have not joined the college.
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-e1">
+                                <div class="col-md-3" style="padding-right: 0px;">
+                                    <img src="{% static 'images/icons/confirmation.png' %}" style="height:55px;">
+                                </div>
+                                <div class="col-md-9" >
+                                    <h5 style="font-weight: bold;color:#333; font-size: medium;">
+                                        Confirmation of Selection
+                                    </h5>
+                                    <h5 style="font-weight: 500; color: #333; font-size:small;">
+                                        Within {{ get_college.0.college_qualification.conf_within }} days
+                                        <br>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="payment" class="tab-pane fade clearfix white-bg">
+                    <div class="col-md-12">
+                        <div class="col-md-8 col-xs-12 col-sm-12 pl-0">
+                            <div class="screen4-headings">
+                                <h3 class="panel-title" style="padding: 1em 0;">Pay Pre Registration Amount</h3>
+                            </div>
+                            <div class="clearfix">
+                                <div class="col-md-12 pl-0 pr-0  clearfix" style="min-height: 200px; margin-top: 1em;margin-bottom: 1em;">
+                                    <div class="col-md-4">
+                                        <div style="min-height: 200px; max-height: 200px; border: 1px ridge #ffc000; padding: 10px; ">
+                                            <p class="text-center" style="font-size: 15px;color: #000; line-height:normal; padding-top: 38%;">
+                                                <span>Payment Of <span style="color: #f00025;font-weight: 900;">Rs. {{ amount }}</span> is required.&nbsp;</span>
+                                                {% comment %}<a style="color: #fff;" href="#" data-toggle="popover" data-placement="bottom" data-trigger="hover" title="" data-content="Pre registration fees is a method to differentiate between students who are serious about a seat with scholarship and those who are not. Ultimately, the money paid as pre registration is recovered by the way of refund by the college." >
+                                                <i class="fa fa-info-circle"></i>
+                                                </a>{% endcomment %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div style="min-height: 200px; max-height: 200px; padding: 10px; border: 1px ridge #ffc000;">
+                                            <p class="text-center" style="font-size: 15px;color: #000; line-height:normal;padding-top: 10%;">
+                                                <span style="text-decoration: underline;">
+                                                You Recover This Money Immediately!
+                                                </span> &nbsp;
+                                                {% comment %}<a style="color: white;" href="#" data-toggle="popover" data-placement="bottom" data-trigger="hover" title="" data-content="The adjustment of the amount is done usually in the 1st installment of fees made to the college" >
+                                                <i class="fa fa-info-circle"></i>
+                                                </a>{% endcomment %}<br> <br>
+                                                <span><b style="color: #f00025;">Rs {{ amount }}</b> Paid by you here is refunded by college.</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div style="min-height: 200px; max-height: 200px; padding: 10px;border: 1px ridge #ffc000;">
+                                            <p class="text-center" style="font-size: 15px;color: #000; line-height:normal;padding-top:10%;">
+                                                <span style="text-decoration: underline;">
+                                                What You Gain
+                                                </span>
+                                                <br> <br> <br>
+                                                You save <b style="color: #f00025;">Rs. {{ get_scholarship_details.0.savings|intcomma }}</b> per year and <b style="color: #f00025;">Rs. {{ get_scholarship_details.0.total_savings|intcomma }}</b> for the duration of the course.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% for college in get_college %}
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="border: 1px solid #b7b7b7; padding: 10px;">
+                                    <div class="col-md-12 mt-e1 mt-top-padd pl-0 pr-0">
+                            <div class="col-md-4 img-container random-class mid-box" style="background-color: #f4f4f4;">
+                                <center><img src="{{ college.logo }}" style="object-fit: contain; height: 180px; width: 180px;"></center>
+                            </div>
+                            <div class="col-md-8">
+                                <h4 class="raleway-heading raleway-heading-new">
+                                    {{ college.course_title }}
+                                </h4>
+                                <h4 class="raleway-subheading raleway-subheading">
+                                    {{ college.college.name }}
+                                    <a style="color: black;" href="#" data-toggle="popover" data-placement="bottom" data-trigger="hover" title="" data-content="{{ college.college.street_1 }}, {{ college.college.street_2 }}, {{ college.college.city }}, {{ college.college.state }}.">
+                                    <i class="fa fa-info-circle"></i>
+                                    </a>
+                                </h4>
+                                <div class="col-md-12 pl-0">
+                                    <div class="col-md-6 pl-0">
+                                        <h4 class="raleway-subheading raleway-subheading">
+                                            Session: 2017-2019
+                                        </h4>
+                                    </div>
+                                    <div class="col-md-6 pl-0">
+                                        <h4 class="raleway-subheading raleway-subheading">
+                                            Duration: {{ college.duration }} Years
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-e1" style="border-top: 1px ridge;padding-top: 5%;">
+                            <h4 class="raleway-heading mb-e2">Student Details</h4>
+                            <p><span class="raleway-heading">Name</span>&nbsp;:&nbsp; &nbsp;<span class="raleway-para j_name">{{ request.user.profile.name}}</span></p>
+                            <p><span class="raleway-heading">Govt ID Type</span>&nbsp;:&nbsp; &nbsp;<span class="raleway-para j_id_type">{{ request.user.profile.id_type}}</span></p>
+                            <p><span class="raleway-heading">Govt ID No.</span>&nbsp;:&nbsp; &nbsp;<span class="raleway-para j_id_no">{{ request.user.profile.id_no}}</span></p>
+                            <p><span class="raleway-heading">Date Of Birth</span>&nbsp;:&nbsp; &nbsp;<span class="raleway-para j_dob">{{ request.user.profile.dob}}</span></p>
+                            <p><span class="raleway-heading">Gender</span>&nbsp;:&nbsp; &nbsp;<span class="raleway-para j_gender">{{ request.user.profile.gender}}</span></p>
+                            <div class="panel panel-default">
+                                {% for i in get_scholarship_details %}
+                                <div class="col-md-4 col-sm-12 col-xs-12">
+                                    <div class="panel panel-default" style="border: 1px solid #c7c7c7;height: 85px; margin-bottom: 5px; border-radius: 0;">
+                                        <div class="panel-body p-10">
+                                            <center><h5 class="raleway" style="display: inline; vertical-align: middle;">Fees per year</h5></center>
+                                            <center><h5 class="raleway"><span style="color:#187e89;">Rs. {{ i.final_fee }}</span>&nbsp;&nbsp;<span style="color:#b7b7b7; text-decoration: line-through;">Rs. {{ i.fee }}</span> </h5></center>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 col-xs-12">
+                                    <div class="panel panel-default" style="border: 1px solid #c7c7c7;height: 85px; margin-bottom: 5px; border-radius: 0;">
+                                        <div class="panel-body p-10 ">
+                                            <center><h5 class="raleway" style="display: inline; vertical-align: middle;">Savings per year</h5></center>
+                                            <center><h5 class="raleway" style="color:#187e89;">Rs. {{ i.savings }}</h5></center>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-sm-12 col-xs-12">
+                                    <div class="panel panel-default" style="border: 1px solid #c7c7c7;height: 85px; margin-bottom: 5px;border-radius: 0;" >
+                                        <div class="panel-body p-10">
+                                            <center><h5 class="raleway" style="display: inline; vertical-align: middle;">Scholarship</h5> <h4 style="color: green; display: inline; vertical-align: middle;">{{ i.scholarship }} %</h4></center>
+                                            <center><b class="raleway" style="color: #b7b7b7;">( Till Course End )</b></center>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="col-md-12 mt-e1 p-0">
+                        <form class="form" action="https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12 p-10">
+                                    <input type="hidden" id="encRequest" name="encRequest" value={{ encryption }}>
+                                    <input type="hidden" name="access_code" id="access_code" value= {{ access_code }}>
+
+                                        <button type="submit" class="btn btn-orange mobile-red-payment-btn" style="width: 100%; padding: 15px;">Proceed to Payment</button>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                        <div class="col-md-4 col-xs-12 col-sm-12">
+                            <div class="col-xs-12 col-sm-12 box-club mt-0 pl-0 pr-0">
+                                <div class="col-md-12 pl-0 pr-0">
+                                    <div class="col-md-3 mt-e1">
+                                        <img src="{% static 'images/icons/refund.png' %}" style="height:50px;">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <h5 class="panel-title" style="color:#333;padding-top: 10%">
+                                            Assured Refunds
+                                        </h5>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12" style="margin-top: 1em;">
+                                        <h5 style="font-weight: 500; font-size: small; color: #333;">
+                                            Your entire pre-registration money is refundable in case you have not joined the college.
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+{#                            <div class="col-xs-12 col-sm-12 mt-e2" style="padding-left: 0px; padding-right: 0px;">#}
+{#                                <div class="acc-bg">#}
+{#                                    <!-- accordion #start-->#}
+{#                                    <div class="panel panel-default">#}
+{#                                        <div class="panel-heading white-bg">#}
+{#                                            <h5 class="panel-title">#}
+{#                                                <a href="#custom-collapse-3" style="text-decoration: none;" data-toggle="collapse" class="collapsed rale-a">#}
+{#                                                    How can I be sure that I am going to get the Rokket offer of scholarship ?#}
+{#                                                </a><span class="caret" style="float: right;margin-top: 0.3em;"></span>#}
+{#                                            </h5>#}
+{#                                        </div>#}
+{#                                        <div class="panel-collapse collapse" id="custom-collapse-3">#}
+{#                                          <div class="panel-body acc-body" style="font-size: small;">#}
+{#                                              ‘Just Rokket’ has a partnership with the institution you are applying to, along with similar partnerships with other colleges and universities listed on this site. The scholarship offered for the full duration of your course in this college is a part of the partnership between the institution and us. You will receive a full written confirmation of this scholarship from the institution as part of their admission offer documents.#}
+{#                                          </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="panel panel-default mb-0">#}
+{#                                        <div class="panel-heading white-bg">#}
+{#                                            <h5 class="panel-title">#}
+{#                                                <a href="#custom-collapse-4" style="text-decoration: none;"  data-toggle="collapse" class="collapsed rale-a">#}
+{#                                                    How will I be able to avail the Rokket offer of scholarship in college ?#}
+{#                                                </a><span class="caret" style="float: right;margin-top: 0.3em;"></span>#}
+{#                                            </h5>#}
+{#                                        </div>#}
+{#                                        <div class="panel-collapse collapse" id="custom-collapse-4">#}
+{#                                            <div class="panel-body acc-body" style="font-size: small;">#}
+{#                                                You need to submit a copy of the scholarship voucher (issued by us) while submitting your documents (or their copies) at the time of completing the admission formalities. When you join the college, please submit a copy of your scholarship voucher with the accounts (fees) department and ensure their records are already updated with your name (since we would have coordinated with the college).#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div style="border: 1px solid #b7b7b7; padding: 15px 10px 5px 10px; margin-top: 2em;">#}
+{#                                      <h5 class="pre-reg-text">#}
+{#                                          The pre-registration wih 'Just Rokket' does not replace the registration and/or other fees required to be paid to the institution.#}
+{#                                      </h5>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <!-- accordion #end-->#}
+                            <div class="col-md-12 pl-0 pr-0">
+                                <div style="border: 1px solid #b7b7b7; padding: 15px 10px 5px 10px; margin-top: 2em;">
+                                      <h5 class="pre-reg-text">
+                                          The pre-registration wih 'Just Rokket' does not replace the registration and/or other fees required to be paid to the institution.
+                                      </h5>
+                                </div>
+                            </div>
+                            <div class=" col-xs-12 col-sm-12 box-club">
+                                <div class="mt-e1">
+                                    <div class="col-md-3 col-xs-3 col-sm-3" style="padding-right: 0px;">
+                                        <img src="{% static 'images/icons/confirmation.png' %}" style="height:55px;">
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-lg-9" style=" padding-right:0px;min-height: 80px;" >
+                                        <h5 class="panel-title" style="padding-bottom: 0;">
+                                            Confirmation of Selection
+                                            <br>
+                                            <h5 style="font-weight: 500;color: #333;font-size: small;">
+                                                Within {{ get_college.0.college_qualification.conf_within }} days
+                                                <br>
+                                            </h5>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript" src="{% static 'vendor/fancybox/js/jquery.fancybox.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/fancybox/js/custom.fancybox.js' %}"></script>
+<script src="{% static 'js/wow.min.js' %}"></script>
+    <script>
+     new WOW().init();
+    // {% if request.user.is_authenticated and not request.user.profile.email_verified and not request.user.profile.mobile_verified %}
+    //     jQuery(".proceed").prop("disabled", true);
+    // {% endif %}
+{#    jQuery("#id_otp").addClass("otp");#}
+    jQuery("#id_email").addClass("email");
+    jQuery("#id_dob").addClass("dob");
+    jQuery("#id_phone").addClass("mobile");
+    jQuery("#id_phone").attr('data-parsley-maxlength', '10');
+    jQuery("#id_phone").attr('maxlength', '10');
+    jQuery("#id_phone").attr('data-parsley-minlength', '10');
+    jQuery("#id_phone").attr('minlength', '10');
+    jQuery('#id_phone').attr('data-parsley-minlength-message', 'Please enter a valid mobile number.');
+    jQuery('#id_phone').attr('data-parsley-length-message', ' ');
+    jQuery('#id_dob').attr('data-date-format', 'YYYY-MM-DD');
+    jQuery('#id_dob').attr('data-parsely-date-format', 'YYYY-MM-DD');
+    jQuery('#id_dob').attr('data-parsely-date-minDate', '1950-01-01');
+    jQuery('#id_dob').attr('data-parsely-date-minDate-message', 'This does not look correct.');
+        jQuery(function(){
+            jQuery("input[type=text]").removeAttr('required');
+            jQuery("input[type=email]").removeAttr('required');
+            jQuery("#id_college_location").removeAttr('required');
+            jQuery("#id_gender").removeAttr('required');
+            jQuery("#id_id_type").removeAttr('required');
+        });
+        emailVerified = false;
+        mobileVerified = true;
+{#        jQuery(".otp").keyup(#}
+{#            function () {#}
+{#                jQuery.get("/otp/"+jQuery(this).val()+"/e", function (data, status) {#}
+{#                    console.log("Data: " + data + "\nStatus: " + status);#}
+{#                    if (data=="Valid"){#}
+{#                        console.log("Valid OTP");#}
+{#                        jQuery(".otp").css("border", "1px solid green");#}
+{#                        emailVerified = true;#}
+{#                        jQuery(".proceed").prop("disabled", false);#}
+{#                        jQuery(".otp").fadeOut();#}
+{#                        jQuery(".email").prop("readonly", true);#}
+{#                        jQuery(".verify").text("Thanks for verifying!");#}
+{#                    }#}
+{#                    else if(data=="Invalid"){#}
+{#                        console.log("Invalid OTP");#}
+{#                        emailVerified = false;#}
+{#                        jQuery(".proceed").prop("disabled", true);#}
+{#                        jQuery(".otp").css("border", "1px solid red")#}
+{#                    }#}
+{#                })#}
+{#            }#}
+{#        );#}
+{##}
+{#        jQuery(".otp-mobile").keyup(#}
+{#            function () {#}
+{#                jQuery.get("/otp/"+jQuery(this).val()+"/m", function (data, status) {#}
+{#                    console.log("Data: " + data + "\nStatus: " + status);#}
+{#                    if (data=="Valid"){#}
+{#                        console.log("Valid OTP");#}
+{#                        jQuery(".otp-mobile").css("border", "1px solid green");#}
+{#                        mobileVerified = true;#}
+{#                        jQuery(".proceed").prop("disabled", false);#}
+{#                        jQuery(".otp-mobile").prop("disabled", true);#}
+{#                        jQuery(".otp-mobile").fadeOut();#}
+{#                        jQuery(".mobile").prop("readonly", true);#}
+{#                        jQuery(".verify-mobile").text("Thanks for verifying!");#}
+{##}
+{#                    }#}
+{#                    else if(data=="Invalid"){#}
+{#                        console.log("Invalid OTP");#}
+{#                        mobileVerified = false;#}
+{#                        jQuery(".proceed").prop("disabled", true);#}
+{#                        jQuery(".otp-mobile").css("border", "1px solid red")#}
+{#                    }#}
+{#                })#}
+{#            }#}
+{#        );#}
+{#        function isEmail(email) {#}
+{#            return true#}
+{#        }#}
+{##}
+{#        jQuery(".verify").on("click", function () {#}
+{#            if (emailVerified == false){#}
+{#                if (isEmail(jQuery(".email").val()) && jQuery(".email").val() != ""){#}
+{#                    jQuery(".verify").text("Sending Code...");#}
+{#                    jQuery.get("/v/"+jQuery(".email").val(), function(data, status){#}
+{#                        console.log("Data: " + data + "\nStatus: " + status);#}
+{#                    }).done(function () {#}
+{#                        setTimeout(#}
+{#                          function()#}
+{#                          {#}
+{#                            jQuery(".otp").prop("disabled", false);#}
+{#                            var v = jQuery(".verify");#}
+{#                            v.text("Successfully sent code. Send Again?")#}
+{#                          }, 2000);#}
+{#                    });#}
+{#                }#}
+{#                else{#}
+{#                    jQuery(".verify").text("Please enter a valid email and try again. ");#}
+{#                }#}
+{##}
+{#            }#}
+{#        });#}
+{#        mobileVerified = false;#}
+{#        jQuery(".verify-mobile").on("click", function () {#}
+{#            if (mobileVerified == false && jQuery(".mobile").val()!="" && jQuery(".mobile").val().length == 10){#}
+{#                jQuery(".verify-mobile").text("Sending Code...");#}
+{#                jQuery.get("/vm/"+jQuery(".mobile").val(), function(data, status){#}
+{#                    console.log("Data: " + data + "\nStatus: " + status);#}
+{#                }).done(function () {#}
+{#                    setTimeout(#}
+{#                      function()#}
+{#                      {#}
+{#                        jQuery(".otp-mobile").prop("disabled", false);#}
+{#                        var v = jQuery(".verify-mobile");#}
+{#                        v.text("Successfully sent code. Send Again?")#}
+{#                      }, 2000);#}
+{#                });#}
+{#            }#}
+{#            else{#}
+{#                jQuery(".verify-mobile").text("Please enter a valid mobile number and try again.");#}
+{#            }#}
+{#        });#}
+        jQuery(".dob").mask("9999-99-99",  {placeholder: 'YYYY-MM-DD' });
+
+    jQuery.noConflict();
+    jQuery('.fancybox').fancybox();
+        jQuery(document).ready(function() {
+            jQuery("input[type='checkbox']").removeAttr('required')
+            {% if request.user.is_authenticated %}
+                console.log("User is authenticated");
+            {% else %}
+                 jQuery("#login-popup-button").fancybox().trigger('click');
+                 jQuery('.fancybox-wrap').wrap(jQuery('<div></div>', {
+                    id: "newWrapper",
+                    class: 'fancybox-overlay fancybox-overlay-fixed',
+                    css: { 'width': 'auto', 'height': 'auto', 'display': 'block' }
+                  }));
+            {% endif %}
+        });
+
+        jQuery("#id_graduation_year").datepicker({
+            format: " yyyy", // Notice the Extra space at the beginning
+            viewMode: "years",
+            minViewMode: "years"
+        });
+        function changeName() {
+                console.log("Change name");
+                jQuery(".j_name").html(jQuery(".name").val());
+                if (jQuery(".name").val() == ""){
+                    jQuery(".j_name").html("Student Name");
+                }
+            }
+        jQuery(".name").on("keyup", function () {
+            changeName();
+        });
+        function changeDob() {
+                console.log("Change name");
+                jQuery(".j_dob").html(jQuery(".dob").val());
+                if (jQuery(".dob").val() == ""){
+                    jQuery(".j_dob").html("DOB");
+                }
+            }
+        jQuery(".dob").on("keyup", function(){
+            changeDob();
+        });
+        function changeIDType() {
+                console.log("Change name");
+                jQuery(".j_id_type").html(jQuery(".id_type option:selected").text());
+            }
+        jQuery(".id_type").on("change", function () {
+            changeIDType()
+        });
+        function changeGender() {
+                console.log("Change name");
+                jQuery(".j_gender").html(jQuery(".gender option:selected").text());
+            }
+        jQuery(".gender").on("keyup", function () {
+            changeGender();
+        });
+        function changeIDNo() {
+                console.log("Change name");
+                jQuery(".j_id_no").html("No: " + jQuery(".id_no").val());
+                if (jQuery(".id_no").val() == ""){
+                    jQuery(".j_id_no").html("ID Number");
+                }
+            }
+        jQuery(".id_no").on("keyup", function () {
+            changeIDNo();
+        });
+      jQuery(document).ready(function(){
+          jQuery('[data-toggle="popover"]').popover();
+      });
+    jQuery(document).ready(function () {
+        changeName();
+        changeDob();
+        changeIDNo();
+        changeIDType();
+        changeGender();
+    });
+    var url = document.location.toString();
+     var payment;
+        if (url.match('#')) {
+            jQuery('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+            if(url.split('#')[1]=="payment"){
+                payment=true;
+            }
+        }
+     jQuery('.nav-tabs a[href="#payment"]').on("click", function () {
+         if (payment){
+             window.location = url+"#profile"
+         }
+     });
+    jQuery(".proceed").on("click", function () {
+{#        if (!mobileVerified){#}
+{#            jQuery(".otp-mobile").css("border", "1px solid red").focus();#}
+{#        }#}
+{#        if (!emailVerified){#}
+{#            jQuery(".otp").css("border", "1px solid red").focus();#}
+{#        }#}
+    //     if ((emailVerfied && mobileVerified) || {% if request.user.profile.email_verified and request.user.profile.mobile_verifeid %}true{% else %}false{% endif %}){
+    //         jQuery(".proceed").prop("disabled", false);
+    //         jQuery(".form").submit();
+    //     }
+    });
+    function checkCheckBoxes(){
+        if (jQuery("#notInCollege").is(":checked")){
+            jQuery("#notInCollege").css('color', 'black');
+
+            return true
+        }
+        else
+            jQuery("#notInCollege").css('color', 'red')
+
+        return false
+    }
+     jQuery(document).ready(function () {
+         if (jQuery(".text").has(".errorlist")){
+             jQuery(".text").css("border", "1px solid red");
+         }
+     });
+
+    function checkCheckBoxes(){
+        if ( jQuery("#tnc").is(":checked")){
+            jQuery("#tnc").css('color', 'black');
+            return true
+        }
+        return false
+    }
+     jQuery(document).ready(function () {
+         if (jQuery(".text").has(".errorlist")){
+             jQuery(".text").css("border", "1px solid red");
+         }
+     });
+    // jQuery(".form").submit(function (e) {
+    //     var form = this;
+    //         if (checkCheckBoxes()){
+    //             form.submit()
+    //         }
+    //         else{
+    //             e.preventDefault()
+    //             if (!jQuery("#notInCollege").is(":checked")){
+    //                 jQuery("#notInCollege").focus();
+    //                 jQuery("#notInCollege").css('color', 'red');
+
+    //             }
+    //             else{
+    //                 jQuery("#tnc").focus();
+    //                 jQuery("#tnc").css('color', 'red');
+    //             }
+    //             console.log("Please accept terms and conditions, and make sure you're not already in the same college")
+    //     }
+    // })
+
+    </script>
+    <script>
+        jQuery(document).ready(function () {
+            jQuery('#id_country').val('India');
+       })
+    </script>
+    <script>
+        jQuery(document).ready(function () {
+            jQuery('#id_dob').on("change", function () {
+                var dob = jQuery('#id_dob').val();
+                var res = dob.split("-");
+                if (res[0] < '1950' || parseInt(res[1]) < 1 || parseInt(res[1]) > 12 || parseInt(res[2]) < 1 || parseInt(res[2]) > 31 ){
+                    console.log("Invalid DOB")
+                    jQuery('input#id_dob').css('border', '1px solid red');
+                } else{
+                    console.log("Valid DOB")
+                    jQuery('input#id_dob').css('border', '1px solid #d7d7d7');
+                }
+            })
+        })
+    </script>
+    <script>
+        jQuery(document).ready(function () {
+            jQuery('#id_pin').removeAttr('type');
+            jQuery('#id_pin').attr('type', 'number');
+            jQuery("#id_pin").attr('data-parsley-maxlength', '6');
+            jQuery("#id_pin").attr('maxlength', '6');
+            jQuery("#id_pin").attr('data-parsley-minlength', '6');
+            jQuery("#id_pin").attr('minlength', '6');
+            jQuery('#id_pin').attr('data-parsley-minlength-message', 'Please enter a valid PIN.');
+            jQuery('#id_pin').attr('data-parsley-length-message', ' ');
+
+        })
+    </script>
+    {% comment %}<script>
+        jQuery(".form").submit(function () {
+            if (jQuery("#form-parsley").valid()){
+                jQuery("a#2").attr('data-toggle', 'tab');
+            }
+        });
+    </script>{% endcomment %}
+    <script>
+    jQuery(document).ready(function () {
+        jQuery("#form-parsley").parsley();
+        if($('.x').is) {
+            $('.x').css('border-top:1px solid red');
+        }
+    })
+    </script>
+    <style>
+        .verify:hover, .verify-mobile:hover{
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        jQuery(".forea").on("click", function () {
+            var url = document.location.toString();
+            window.location.replace(url+"#profile")
+        })
+    </script>
+    <script>jQuery("#id_pin").attr("maxlength", "6")</script>
+    <script>jQuery("#id_district").attr("maxlength", "25")</script>
+    <script>jQuery("#id_state").attr("maxlength", "25")</script>
+    <script>jQuery("#id_country").attr("maxlength", "25")</script>
+    <script>jQuery("#id_city").attr("maxlength", "25")</script>
+    <script>jQuery("#id_id_no").attr("maxlength", "25")</script>
+{% endblock %}
+

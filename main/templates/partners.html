@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load crispy_forms_tags %}
+{% block meta %}
+<title>Partner Institutions - Just Rokket</title>
+	<meta charset="utf-8">
+	<meta name="language" content="en-us">
+	<meta name="robots" content="noodp"/>
+	<link rel="canonical" href="https://justrokket.com/partner-intitutions" />
+	<meta name="description"content="List your institution on Just Rokket and get applications from students looking for admission into MBA, Engineering, MCA, Pharmacy, Education, Design, Journalism and lots of other courses.">
+	<meta name="copyright" content="2017 Explore Edu Tech Private Limited">
+	<meta name="content-language" content="EN">
+	<meta name="publisher" content="https://justrokket.com/">
+    <meta name="contact" content="service@justrokket.com">
+    <meta property="og:image" content="{% static 'featured.jpg' %}">
+	<meta name="theme-color" content="#187e89">
+	<!--Facebook Tags-->
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Partner Institutions - Just Rokket">
+	<meta property="og:description" content="List your institution on Just Rokket and get applications from students looking for admission into MBA, Engineering, MCA, Pharmacy, Education, Design, Journalism and lots of other courses.">
+	<meta property="og:url" content="https://justrokket.com/partner-intitutions">
+	<meta property="og:site_name" content="Just Rokket | Scholarships with admission">
+	<meta property="og:image" content="{% static 'featured.jpg' %}">
+
+	<!--Twitter Tags-->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:url" content="https://justrokket.com/partner-intitutions">
+	<meta name="twitter:title" content="Partner Institutions - Just Rokket">
+	<meta name="twitter:description" content="List your institution on Just Rokket and get applications from students looking for admission into MBA, Engineering, MCA, Pharmacy, Education, Design, Journalism and lots of other courses.">
+	<meta name="twitter:image" content="{% static 'featured.jpg' %}">
+
+	<!--Google+ Tags-->
+	<meta itemprop="name" content="Partner Institutions - Just Rokket">
+	<meta itemprop="description" content="List your institution on Just Rokket and get applications from students looking for admission into MBA, Engineering, MCA, Pharmacy, Education, Design, Journalism and lots of other courses.">
+	<meta itemprop="image" content="{% static 'featured.jpg' %}">
+{% endblock meta %}
+
+{% block content %}
+
+    <div class="breadcrumb-section" style="background:url({% static 'images/banner-image.jpg' %}); background-size: cover;">
+	    <div class="container">
+            <div class="row">
+                <header class="entry-header">
+                <h1 class="entry-title">Partner Institutions-Just Rokket</h1>
+                </header>
+            </div>
+        </div>
+    </div>
+
+    <section class="" style="padding-bottom: 0;padding-top: 0;">
+                <div class="container">
+                    <div class="row about-us-main-box">
+                    <div class="col-md-12">
+                        <p>
+                            On Just Rokket, get options for admission into top colleges for MBA, Engineering, MCA, Pharmacy, Education, Design, Journalism and lots of other courses. In case you are looking to do B.com or B.A or B.Sc or any other graduation or post graduation course, apply to top colleges here and get admission along with scholarships. Colleges and universities on Just Rokket are the best options to study the courses in Delhi, Gurgaon, Noida, Bengaluru, Mumbai, Hyderabad, Chennai, Pune, Jaipur, Lucknow, Kolkata and states of UP, Punjab, Rajasthan, Gujarat, Maharashtra, Karnataka and Tamil Nadu, amongst cities and states of India.
+                        </p>
+                    </div>
+
+                        <div class="row">
+                            {% for college in view.get_p_colleges %}
+
+                                {% comment %}{% if forloop.counter < 4 %}{% endcomment %}
+                                <div class="col-md-12">
+                                    <div class="panel panel-default" style="">
+                                        <div class="panel-body" style="background-color: white;">
+
+                                            <div class="col-md-3 col-sm-3">
+                                                <center>
+                                                    <img class="partner-image" src="{{ college.college.logo.url }}">
+                                                </center>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3" style="padding-top: 2%;">
+                                                <span style="font-weight: bold; font-size: larger;">{{ college.college.title }}</span><br>
+                                                <span style="font-size: larger;">{{ college.college.description }}</span><br>
+                                                    <span style="font-size: smaller;">{{ college.college.city }}</span><br>
+                                                    <span style="font-size: smaller;">{{ college.college.state }}</span>
+
+                                                {% comment %}<div class="col-md-9 col-sm-9" style="min-height: 62px;">
+                                                    <span style="font-size: smaller;">{{ college.description }}</span>
+                                                </div>{% endcomment %}
+                                            </div>
+
+                                            <div class="col-md-12 col-sm-12 col-xs-12 mt-e1">
+                                                {% for qualification in college.qualifications %}
+                                                    <div class="col-md-6 col-xs-12 col-sm-12 p-10">
+                                                        <div class="partners-box">
+                                                            <h4>{{ qualification.name }}</h4>
+                                                            <p style="word-break: break-all;">
+                                                                {% for course in qualification.courses %}
+                                                                    {{ course }}{% if not forloop.last %},{% else %}.{% endif %}
+                                                                {% endfor %}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+{#                                            <center>#}
+{#                                                <div class="col-md-12 col-sm-12">#}
+{#                                                <div class="row about-us-main-box">#}
+{#                                                    <table>#}
+{#                                                        <tr>#}
+{#                                                            {% for qualification in college.qualifications %}#}
+{#                                                                <td class="text-center">{{ qualification.name }}</td>#}
+{#                                                            {% endfor %}#}
+{#                                                        </tr>#}
+{#                                                        <tr>#}
+{#                                                            {% for qualification in college.qualifications %}#}
+{#                                                               <td class="text-center">#}
+{#                                                                    {% for course in qualification.courses %}#}
+{#                                                                        {{ course }}{% if not forloop.last %},{% else %}.{% endif %}#}
+{#                                                                    {% endfor %}#}
+{#                                                                </td>#}
+{#                                                            {% endfor %}#}
+{#                                                        </tr>#}
+{#                                                    </table>#}
+{#                                                    </div>#}
+{#                                            </div>#}
+{#                                            </center>#}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="row" style="margin-bottom: 100px;"></div>
+                        </div>
+
+
+                   </div>   <!-- #course_list #end  -->
+
+                </div><!-- #container #end  -->
+           </section><!-- #popular-courses #end  -->
+
+{% endblock %}
