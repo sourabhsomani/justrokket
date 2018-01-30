@@ -28,12 +28,12 @@ DEBUG = True
 
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost'
-    'alpha.justrokket.com',
+    'localhost:8000',
+    'localhost:9000',
     'beta.justrokket.com',
     'www.justrokket.com',
-    'blog.justrokket.com'
+    'justrokket.com',
+    '127.0.0.1'
 ]
 
 
@@ -50,13 +50,17 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django.contrib.humanize',
     'main',
-    'admin_reorder',
+    # 'admin_reorder',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'import_export',
-
+    'qa',
+    'taggit',
+    'hitcount',
+    'django_markdown',
+    'storages',
 ]
 
 
@@ -94,7 +98,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'admin_reorder.middleware.ModelAdminReorder',
+    # 'admin_reorder.middleware.ModelAdminReorder',
 ]
 
 ROOT_URLCONF = 'explore.urls'
@@ -112,18 +116,19 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'main.context_processors.login_form',
                 'main.context_processors.username',
+
             ],
         },
     },
 ]
 
-# AUTHENTICATION_BACKENDS = (
-#     # Needed to login by username in Django admin, regardless of `allauth`
-#     'django.contrib.auth.backends.ModelBackend',
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
 
-#     # `allauth` specific authentication methods, such as login by e-mail
-#     'allauth.account.auth_backends.AuthenticationBackend',
-# )
+    # `allauth` specific authentication methods, such as login by e-mail
+    # 'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 WSGI_APPLICATION = 'explore.wsgi.application'
 
@@ -131,18 +136,33 @@ WSGI_APPLICATION = 'explore.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'explore',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'localhost',
-        'PORT': '5432',
+if 'RDS_DB_NAME' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+        }
     }
-}
 
 
+else :
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         }
+#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -158,6 +178,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
 ]
+
+
+
+#blah
+
+
+
 
 
 # Internationalization
@@ -187,107 +214,154 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
-ADMIN_REORDER = (
+# ADMIN_REORDER = (
 
-    # Rename app
-    {'app': 'auth', 'label': 'Authorisation'},
-
-
-    # models with custom name
-    {'app': 'main', 'label': 'General', 'models': (
-        'main.City',
-        'main.State',
-        'main.District',
-        'main.ApprovalPeriod',
-        'main.Newsletter',
-    )},
-
-# models with custom name
-    {'app': 'main', 'label': 'College', 'models': (
-        'main.College',
-        'main.GAScore',
-    )},
+#     # Rename app
+#     {'app': 'auth', 'label': 'Authorisation'},
 
 
-# models with custom name
-    {'app': 'main', 'label': 'Qualification', 'models': (
-        'main.Qualification',
-        'main.CollegeQualification',
-    )},
+#     # models with custom name
+#     {'app': 'main', 'label': 'General', 'models': (
+#         'main.City',
+#         'main.State',
+#         'main.District',
+#         'main.ApprovalPeriod',
+#         'main.Newsletter',
+#     )},
 
-# models with custom name
-    {'app': 'main', 'label': 'Course', 'models': (
-        'main.Course',
-        'main.CollegeCourse',
-    )},
-
-
-# models with custom name
-    {'app': 'main', 'label': 'Exam', 'models': (
-        'main.CompetitiveExam',
-        'main.QualifyingExam',
-        'main.District',
-    )},
-
-# models with custom name
-    {'app': 'main', 'label': 'Static', 'models': (
-        'main.Rec_app',
-        'main.AFCR',
-        'main.GeneralKeyword',
-        'main.SpecializedKeyword',
-        'main.StaticText',
-        'main.StatementGroup',
-        'main.EmailTemplate',
-    )},
+# # models with custom name
+#     {'app': 'main', 'label': 'College', 'models': (
+#         'main.College',
+#         'main.GAScore',
+#     )},
 
 
-# models with custom name
-    {'app': 'main', 'label': 'Analytics', 'models': (
-        'main.Search',
-        'main.Selection',
-        'main.SpecializedKeyword',
-    )},
+# # models with custom name
+#     {'app': 'main', 'label': 'Qualification', 'models': (
+#         'main.Qualification',
+#         'main.CollegeQualification',
+#     )},
+
+# # models with custom name
+#     {'app': 'main', 'label': 'Course', 'models': (
+#         'main.Course',
+#         'main.CollegeCourse',
+#     )},
 
 
-# models with custom name
-    {'app': 'main', 'label': 'Website', 'models': (
-        'main.PartnerCollege',
-        'main.Rokketeer',
-        'main.BlogPost',
-    )},
+# # models with custom name
+#     {'app': 'main', 'label': 'Exam', 'models': (
+#         'main.CompetitiveExam',
+#         'main.QualifyingExam',
+#         'main.District',
+#     )},
+
+# # models with custom name
+#     {'app': 'main', 'label': 'Static', 'models': (
+#         'main.Rec_app',
+#         'main.AFCR',
+#         'main.GeneralKeyword',
+#         'main.SpecializedKeyword',
+#         'main.StaticText',
+#         'main.StatementGroup',
+#         'main.EmailTemplate',
+#     )},
 
 
-# models with custom name
-    {'app': 'main', 'label': 'Events', 'models': (
-        'main.Event1',
-        'main.Event2',
-    )},
+# # models with custom name
+#     {'app': 'main', 'label': 'Analytics', 'models': (
+#         'main.Search',
+#         'main.Selection',
+#         'main.SpecializedKeyword',
+#     )},
 
-# models with custom name
-    {'app': 'main', 'label': 'System', 'models': (
-        'main.OTP',
-        'main.Profile',
-        'main.Image',
-        'main.Configuration',
-    )},
 
-    {'app': 'main', 'label': 'Payment', 'models': (
-        'main.Month',
-        'main.Order',
-    )},
+# # models with custom name
+#     {'app': 'main', 'label': 'Website', 'models': (
+#         'main.PartnerCollege',
+#         'main.Rokketeer',
+#         'main.BlogPost',
+#     )},
 
-    {'app': 'socialaccount', 'label': 'SocialAccount', 'models': (
-        'socialaccount.socialaccount',
-        'socialaccount.socialtoken', 
-        'socialaccount.socialapp'
-    )},
-)
 
-SITE_ID = 1
+# # models with custom name
+#     {'app': 'main', 'label': 'Events', 'models': (
+#         'main.Event1',
+#         'main.Event2',
+#     )},
+
+# # models with custom name
+#     {'app': 'main', 'label': 'System', 'models': (
+#         'main.OTP',
+#         'main.Profile',
+#         'main.Image',
+#         'main.Configuration',
+#     )},
+
+#     {'app': 'main', 'label': 'Payment', 'models': (
+#         'main.Month',
+#         'main.Order',
+#     )},
+
+#     {'app': 'socialaccount', 'label': 'SocialAccount', 'models': (
+#         'socialaccount.socialaccount',
+#         'socialaccount.socialtoken'
+#         'socialaccount.socialapp'
+#     )},
+# )
+
+SITE_ID = 26
 ACCOUNT_ADAPTER = 'main.adapters.AccountAdapter'
 TEST_SITE_URL = "https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction"
 PROD_SITE_URL = "https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction"
 MERCHANT_ID = "121888"
-TEST_ACCESS_CODE = "AVYQ68EA93CA90QYAC" 
-TEST_WORKING_KEY = "09D5C2D76F821B3A45FA33CC6478774D"
-BASE_URL = "http://www.justrokket.com"
+TEST_ACCESS_CODE = "AVLT69EB43CE98TLEC"
+TEST_WORKING_KEY = "AB0BC34257CC908376CAFAB78F0732B2"
+BASE_URL = "http://alpha.justrokket.com"
+
+
+
+QA_SETTINGS = {
+    'qa_messages': True,
+    'qa_description_optional': False,
+    'reputation': {
+        'CREATE_QUESTION': 0,
+        'CREATE_ANSWER': 0,
+        'CREATE_ANSWER_COMMENT': 0,
+        'CREATE_QUESTION_COMMENT': 0,
+        'ACCEPT_ANSWER': 0,
+        'UPVOTE_QUESTION': 0,
+        'UPVOTE_ANSWER': 0,
+        'DOWNVOTE_QUESTION': 0,
+        'DOWNVOTE_ANSWER': 0,
+    }
+}
+
+
+# dev
+# SOCIAL_AUTH_FACEBOOK_KEY = '2210708758954510'  # App ID
+# SOCIAL_AUTH_FACEBOOK_SECRET ='9915f053b458e7ae46609d7555b16a43' #app key
+
+
+#facebook production
+
+SOCIAL_AUTH_FACEBOOK_KEY = '187560551789381'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET ='227dc58ce5a76cf2ea1503fb7e2a0024' #app key
+
+
+
+
+
+AWS_ACCESS_KEY_ID = "AKIAIRJHVVKZP7BB22HQ"
+AWS_SECRET_ACCESS_KEY = "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"
+AWS_STORAGE_BUCKET_NAME =  'justrokket1-bucket'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+
+
+# STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# DEFAULT_FILE_STORAGE = 'explore.storage_backends.MediaStorage'

@@ -1,0 +1,385 @@
+{% extends "qa/base.html" %}
+{% load staticfiles %}
+{% block content %}
+{% load i18n %}
+{% load custom_tags %}
+
+<div class="row">
+
+
+  <div class="col-md-8 col-sm-8 qa__left">
+
+    <div class="qa__Search row">
+
+          <!-- <div class="col-md-12 btn__wrapper text-center">
+            <a href="/community/" class="btn btn__primary  btn__primary--sm u__padding12X36">COMMUNITY</a>
+            <a href="/admissions/" class="btn btn__secondry btn__secondry--sm u__margin--left-6">COLLEGE ADMISSION</a>
+          </div> -->
+          <div class="col-md-12">
+            <div class="text-center">
+                <h3>Hi! Welcome to the community</h3>
+                <p>Ask a question to COMMUNITY EXPERTS</p>
+            </div>
+            <div class="qa__search_resultWrapper">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">#</span>
+                <input type="text" class="form-control" placeholder="Please input minimum 3 characters to search here" aria-describedby="basic-addon1" id="js_search"/>
+              </div>
+              <div class="qa__search_result">
+                <ul>
+                </ul>
+              </div>
+            </div>
+          </div>
+     </div>
+     <div class="qa__answerWrapper">
+       <ul class="nav nav-tabs nav-justified" style="display:none">
+          <li role="presentation" {% if active_tab == 'latest' %}class="active"{% endif %}><a href="#latest" data-toggle="tab"><span class="glyphicon glyphicon-th-list"></span> Latest</a></li>
+          <li role="presentation" {% if active_tab == 'unans' %}class="active"{% endif %}><a href="#unans" data-toggle="tab"><span class="glyphicon glyphicon-question-sign"></span> Unanswered <span class="badge">{{ totalnoans }}</span></a></li>
+          <li role="presentation" {% if active_tab == 'reward' %}class="active"{% endif %}><a href="#reward" data-toggle="tab"><span class="glyphicon glyphicon-star"></span> Most Rewarding <span class="badge">{{ reward | length }}</span></a></li>
+       </ul>
+       <br/>
+       <div class="tab-content container-fluid">
+        <div class="tab-pane {% if active_tab == 'latest' %}active{% endif %}" id="latest">
+            <!-- {% for content in blogcontent%}
+            <div class="qa__q-card">
+                <h4><a href="{{content.url}}">{{content.title}}</a></h4>
+                <p>{{content.body_content}}</p>
+                <span>{{content.tag_set.all}}</span>
+              </div>
+            {%endfor%} -->
+           {% if questions %}
+           {% for question in questions %}
+           {% if forloop.counter|divisibleby:2 %}
+              {{ blogcontent|get_blog_content:forloop.counter|safe }}
+           {%endif %}
+           <!-- <h1>{{blogcontent.2.body_content}}</h1> -->
+           <div class="qa__q-card">
+               <div class="row">
+                 <div class="col-md-12">
+                   <div class="text-right">
+                     <span>
+                       <small>{{ question.num_answers }} Answer | </small>
+                     </span>
+                     <span>
+                       <small>{{ question.hit_count.hits }} Views | </small>
+                     </span>
+                     <small> {{ question.pub_date }}</small>
+                   </div>
+                 </div>
+                  <div class="col-xs-12 col-sm-12 col-md-12 qa__user">
+                     <div class="row">
+                          <div class="col-sm-4 col-md-2">
+                              
+                              {% if question.user.profile_image %}<img src="{{question.user.profile_image.url}}" alt="" class="img-circle img-responsive" />
+                              {% else%}
+                              <img src="{% static "qa/User_Placeholder.svg" %}" alt="" class="img-circle img-responsive" />
+                              {% endif %}
+
+
+                          </div>
+                          <div class="col-sm-6 col-md-8">
+                              <h4>
+                                {% comment %} <a href="{% url 'qa_profile' question.user.user.id question.user.name|cut:' ' %}">{{question.user.name}}</a> {% endcomment %}
+                                <a href="javascript:void(0);">{{question.user.name}}</a>
+                              </h4>
+                              <!-- <small>
+                                <cite title="San Francisco, USA">San Francisco, USA
+                              </cite></small> -->
+                              <!-- <small>
+                                <cite>{{question.user.get_user_type_display}}
+                              </cite></small> -->
+                              <p>
+                                  {{question.user.email}}
+                              </p>
+
+                          </div>
+                     </div>
+                  </div>
+                  <div class="col-md-12">
+                     <!-- {% if question.reward %}<span class="glyphicon glyphicon-fire" aria-hidden="true"></span>{% endif %} -->
+                    <div class="qa__tag">
+                      <span>#</span>
+                         {{ question.tag.name }} | {{ question.title }}
+                    </div>
+                    <h3 class="qa__q-title"><span class="">Q</span><a href="{% url 'qa_detail' question.id %}">{{ question.description }}</a></h3>
+                  </div>
+               </div>
+           </div>
+           {% endfor %}
+           {{ blogcontent|get_blog_content_remaining:questions.count|safe }}
+           <div class="pagination">
+              {% if is_paginated %}
+              <div class="pagination">
+                 <span class="page-links">
+                 {% if page_obj.has_previous %}
+                 <a href="{% url 'qa_index' %}?page={{ page_obj.previous_page_number }}">previous</a>
+                 {% endif %}
+                 <span class="page-current">
+                 Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                 </span>
+                 {% if page_obj.has_next %}
+                 <a href="{% url 'qa_index' %}?page={{ page_obj.next_page_number }}">next</a>
+                 {% endif %}
+                 </span>
+              </div>
+              {% endif %}
+           </div>
+           {% else %}
+           <div class="alert alert-warning" role="alert">No Questions are available!</div>
+           {% endif %}
+        </div>
+        <div class="tab-pane {% if active_tab == 'unans' %}active{% endif %}" id="unans">
+           {% if noans %}
+           {% for question in noans %}
+           <div class="row">
+              <div class="col-sm-1 ans">
+                 <small>
+                    <div class="ques">{{ question.num_answers }}</div>
+                    Answers
+                 </small>
+              </div>
+              <div class="col-sm-1 ans">
+                 <small>
+                    <div class="ques">{{ question.hit_count.hits }}</div>
+                    Views
+                 </small>
+              </div>
+              <p>
+                 {% if question.num_answers %}<span class="glyphicon glyphicon-fire" aria-hidden="true"></span>{% endif %} <a class="ques" href="{% url 'qa_detail' question.id %}">{{ question.title }}</a>
+                 <br/>
+
+
+                    <tag>{{ question.tag.name }}</tag>
+
+
+
+                 <small> {{ question.pub_date }}</small>
+              </p>
+           </div>
+           <hr>
+           {% endfor %}
+           {% else %}
+           <div class="alert alert-warning" role="alert">No Questions are available!</div>
+           {% endif %}
+           <div class="pagination">
+              <span class="step-links">
+              {% if noans.has_previous %}
+              <a href="?noans_page={{ noans.previous_page_number }}&active_tab=unans">previous</a>
+              {% endif %}
+              <span class="current">
+              Page {{ noans.number }} of {{ noans.paginator.num_pages }}.
+              </span>
+              {% if noans.has_next %}
+              <a href="?noans_page={{ noans.next_page_number }}&active_tab=unans">next</a>
+              {% endif %}
+              </span>
+           </div>
+        </div>
+        <div class="tab-pane {% if active_tab == 'reward' %}active{% endif %}" id="reward">
+           {% if reward %}
+           {% for question in reward %}
+           <div class="row">
+              <div class="col-sm-1 ans">
+                 <small>
+                    <div class="ques">{{ question.num_answers }}</div>
+                    Answers
+                 </small>
+              </div>
+              <div class="col-sm-1 ans">
+                 <small>
+                    <div class="ques">{{ question.hit_count.hits }}</div>
+                    Views
+                 </small>
+              </div>
+              <p>
+                 {% if question.num_answers %}<span class="glyphicon glyphicon-fire" aria-hidden="true"></span>{% endif %} <a class="ques" href="{% url 'qa_detail' question.id %}">{{ question.title }}</a>
+                 <br/>
+
+
+                    <tag>{{ question.tag.name }}</tag>
+
+
+
+                 <small> {{ question.pub_date}}</small>
+              </p>
+           </div>
+           <hr>
+           {% endfor %}
+           {% else %}
+           <div class="alert alert-warning" role="alert">No Questions are available!</div>
+           {% endif %}
+        </div>
+     </div>
+     </div>
+  </div>
+
+  <div class="col-md-4 col-sm-4 qa__right">
+
+    <div class="row qa__qButton">
+      <div class="col-md-12">
+        <a class="btn btn-lg " href="{% url 'qa_create_question' %}">I Want To Ask A Question</a>
+      </div>
+    </div>
+
+     <!-- <div class="panel panel-default">
+        <div class="panel-body">
+           <h4>Total Questions: {{ totalcount }}</h4>
+           <h4>Total Answers: {{ anscount }}</h4>
+        </div>
+     </div> -->
+
+     <!-- contact us -->
+     <!-- tags -->
+     <div class="qa__popularTag">
+       <div class="row ">
+         <div class="col-md-12">
+            <h3 class="title">Popular Tags</h3>
+         </div>
+          <div class="col-md-12">
+             {# {% for tag in tags %} #}
+              {# <a href="/question-listing/tag/{{ tag.name }}">#{{ tag.name }}</a> #}
+             {# {% endfor %} #}
+             <a href="/question-listing/tag/marketing">#marketing</a>
+             <a href="/question-listing/tag/finance">#finance</a>
+             <a href="/question-listing/tag/computerscience">#computerscience</a>
+             <a href="/question-listing/tag/class12board">#class12board</a>
+             <a href="/question-listing/tag/jee">#jee</a>
+             <a href="/question-listing/tag/cat">#cat</a>
+             <a href="/question-listing/tag/mat">#mat</a>
+             <a href="/question-listing/tag/mba">#mba</a>
+             <a href="/question-listing/tag/pgdm">#pgdm</a>
+             <a href="/question-listing/tag/btech">#btech</a>
+             <a href="/question-listing/tag/amityuniversity">#amityuniversity</a>
+             <a href="/question-listing/tag/studyinaustralia">#studyinaustralia</a>
+             <a href="/question-listing/tag/studyinamerica">#studyinamerica</a>
+          </div>
+        </div>
+     </div>
+
+     <!-- user profile -->
+     <div class="qa__communityMember">
+       <h3 class="title">COMMUNITY EXPERTS</h3>
+       <div class=" card">
+           
+           {% for expert in experts %}
+           <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                      <div class="row">
+                          <div class="col-sm-6 col-md-4">
+                              {% if expert.profile_image %}<img src="{{expert.profile_image.url}}" alt="" class="img-circle img-responsive" />
+                              {% else%}
+                              <img src="{% static "qa/User_Placeholder.svg" %}" alt="" class="img-circle img-responsive" />
+                              {% endif %}
+                          </div>
+                          <div class="col-sm-6 col-md-8">
+                              <h4>
+                              <a href="{% url 'qa_profile' expert.user.id expert.name|cut:' ' %}">
+                                  {{expert.name}}
+                                </a>
+                              </h4>
+                              <small>
+                                <cite title="San Francisco, USA">{{expert.get_user_type_display}}</cite>
+                              </small>
+                              <p>
+                                  {{expert.who_i_am}}
+                              </p>
+
+                          </div>
+                      </div>
+              </div>
+           </div>
+           {%endfor%}
+
+           <div class="row">
+             <div class="col-md-12">
+               <div class="text-right">
+                   <a href="/community-page">Show More</a>
+               </div>
+             </div>
+           </div>
+      </div>
+     </div>
+     {% if noans.count %}
+       <div class="panel panel-warning">
+          <div class="panel-heading">
+             <h3 class="panel-title">Unanswered Questions</h3>
+          </div>
+          <div class="panel-body">
+             <ul>
+                {% for question in noans %}
+                <li><a href="{% url 'qa_detail' question.id %}">{{ question.title }}</a></li>
+                {% endfor %}
+             </ul>
+          </div>
+       </div>
+     {% endif %}
+
+     {% comment %}
+     {% if user.is_authenticated %}
+       <div class="span3 well">
+          <center>
+             <a href="{% url 'qa_profile' user.id user.profile.name|cut:' ' %}" data-toggle="modal">
+             {% if user.profile.profile_image %}
+             <img src="{{ user.profile.profile_image.url }}" name="aboutme" width="100" height="100" class="img-circle">
+             {% else %}
+             <img src="{% static 'qa/user.png' %}" name="aboutme" width="100" height="100" class="img-circle">
+             {% endif %}
+             </a>
+             <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+             <a href="/profile/{{ user.id }}">My Profile</a> | <!--to consider-->
+             <a href="/logout/">Logout</a>
+          </center>
+     </div>
+     {% else %}
+     <a class="btn btn-block btn-success" href="/login"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login | Sign Up</a><br/>
+     {% endif %}{% endcomment %}
+  </div>
+</div>
+
+
+
+
+
+{% endblock content %}
+
+
+{% block js %}
+  <script>
+    $(function () {
+      var xhr;
+        if (document.location.pathname.indexOf("/question-listing/") == 0) {
+          var path_name=document.location.pathname;
+            var value=(path_name.indexOf("/question-listing/tag")==0)?path_name.replace("/question-listing/tag/","").replace("/",""):path_name.replace("/question-listing/","").replace("/","");
+            var abc = $('#js_search').val(value);
+        }
+        $('#js_search').on('keyup', function(e, value){
+              var abc = $('#js_search').val();
+              if(abc.length<3){return false;}
+              $('.qa__search_result ul').html('');
+              var url = '/question-listing/tag?q='+abc;
+              if(xhr && xhr.readyState != 4){
+                xhr.abort();
+              }
+              xhr=$.ajax({url: url, success: function(result){
+                  $('.qa__search_result ul').html('');
+                  result.map(function(item){
+                    $('.qa__search_result').show();
+                      var item = item ;
+                     $('.qa__search_result ul').append('<li><a href="/question-listing/tag/'+item+'" tar>'+item+'</a></li>');
+                  })
+              }});
+        });
+        $(document).on('click', function(e){
+            if( e.target.id != 'js_search') {
+              $(".qa__search_result").hide();
+            }
+        })
+        $('#js_search').on('focusout', function(){
+          <!-- $('.qa__search_result').hide(); -->
+          <!-- $('.qa__search_result ul').html(''); -->
+          console.log('sd')
+        })
+    });
+  </script>
+{% endblock js %}

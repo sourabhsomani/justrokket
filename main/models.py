@@ -1,10 +1,20 @@
-from django.utils.encoding import smart_unicode
+# from django.utils.encoding import smart_unicode
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from string import ascii_letters, whitespace, punctuation, digits
 import string
 # Create your models here.
+
+
+from django.db.models.signals import post_save,pre_save,m2m_changed
+from django.contrib.contenttypes.models import ContentType
+from qa.models import tag,Question,Answer
+
+
+import datetime
+
+from .utils import send_mail
 
 LEVEL_CHOICES = (
     ('G', 'G'),
@@ -69,7 +79,7 @@ class College(models.Model):
         return self.name
 
     def institution_address(self):
-        address = self.street_1 + " " + self.street_2 + " " + self.city.name + " " + self.district.name + " " + self.state.name 
+        address = self.street_1 + " " + self.street_2 + " " + self.city.name + " " + self.district.name + " " + self.state.name
         return address
 
 
@@ -94,11 +104,11 @@ class Qualification(models.Model):
     duration = models.IntegerField()
 
     def save(self, *args, **kwargs):
-        if not self.search_code and not self.pk:
-            val = Qualification.objects.latest('id').id
-            self.search_code = "QL" + str(val+1)
-        if not self.search_code:  
-            self.search_code = "QL"+ str(self.pk)
+        # if not self.search_code and not self.pk:
+        #     val = Qualification.objects.latest('id').id
+        #     self.search_code = "QL" + str(val+1)
+        # if not self.search_code:
+        #     self.search_code = "QL"+ str(self.pk)
         super(Qualification, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -111,11 +121,11 @@ class Course(models.Model):
     search_code = models.CharField(max_length=10, null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.search_code and not self.pk:
-            val = Course.objects.latest('id').id
-            self.search_code = "CO" + str(val+1)
-        if not self.search_code:  
-            self.search_code = "CO"+ str(self.pk)
+        # if not self.search_code and not self.pk:
+        #     val = Course.objects.latest('id').id
+        #     self.search_code = "CO" + str(val+1)
+        # if not self.search_code:
+        #     self.search_code = "CO"+ str(self.pk)
         super(Course, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -168,6 +178,9 @@ class CollegeQualification(models.Model):
     session = models.ForeignKey("Session", null=True, on_delete=models.SET)
     seats = models.IntegerField(null=True, blank=True)
     approval_period = models.ForeignKey("ApprovalPeriod", null=True, on_delete=models.SET_NULL)
+
+    college_quality_index=models.DecimalField(null=True,blank=True,max_digits=5,decimal_places=2)
+
     af_cr = models.ManyToManyField("AFCR",blank=True)
     session_start = models.DateField()
 
@@ -451,10 +464,11 @@ class StaticText(models.Model):
 
     def __str__(self):
         a = (self.preview[:75] + '..') if len(self.preview) > 75 else self.preview
-        return self.clean_text(self.type) + " : " + self.clean_text(a)
+        return self.type + " : " + a
+#return self.clean_text(self.type) + " : " + self.clean_text(a)
 
     def clean_text(self, text):
-        replace_punctuation = string.maketrans(string.punctuation, ' ' * len(string.punctuation))
+        replace_punctuation = str.maketrans(string.punctuation, ' ' * len(string.punctuation))
         try:
             text = text.decode('utf-8', 'ignore')
         except:
@@ -513,8 +527,28 @@ class Profile(models.Model):
         ('Driving Licence', 'Driving Licence')
     )
 
+
+    USER_TYPES = (
+
+        ('A','Applicant'),
+        ('SA','Student Advisor'),
+        ('EE','Education Expert'),
+        ('CE','Career Expert'),
+        ('FE','Foreign Expert'),
+
+    )
+    
+
+    YEAR_CHOICES = []
+    for r in range(1980, (datetime.datetime.now().year+1)):
+        YEAR_CHOICES.append((r,r))
+
+
+
+
     user = models.OneToOneField(User)
     name = models.CharField(max_length=100, null=True)
+    who_i_am = models.CharField(max_length=100, null=True, blank=True)
     dob = models.DateField(null=True)
     gender = models.CharField(max_length=15, choices=GENDER_CHOICES, null=True)
     otp = models.ForeignKey("OTP", blank=True, null=True, on_delete=models.SET_NULL)
@@ -531,6 +565,8 @@ class Profile(models.Model):
     college_location = models.CharField(max_length=200, null=True, blank=True)
     school = models.CharField(max_length=100, null=True, blank=True)
     school_location = models.CharField(max_length=100, null=True, blank=True)
+    school_qualification = models.CharField(max_length=100, null=True, blank=True)
+    school_course = models.CharField(max_length=100, null=True, blank=True)
     class_12_year = models.CharField(max_length=100, null=True, blank=True)
     graduation_year = models.CharField(max_length=10, null=True, blank=True)
     terms_conditions = models.BooleanField(default=False)
@@ -539,6 +575,42 @@ class Profile(models.Model):
     phone = models.CharField(null=True, blank=True, max_length=100)
     parent_email = models.EmailField(null=True, blank=False)
 
+    
+    
+    user_type = models.CharField(max_length=15, choices=USER_TYPES,null=True,blank=True,default='A')
+
+    #educational qualification fields
+
+    # college1 = models.ForeignKey(College,blank=True,null=True,related_name="col1")
+    # course1 = models.ForeignKey(Course,blank=True,null=True,related_name="course1")
+    # qualification1 = models.ForeignKey(Qualification,blank=True,null=True,related_name="qual1")
+    # year_of_passingout1 = models.CharField(max_length=4,choices=YEAR_CHOICES,null=True,blank=True)
+
+    # college2 = models.ForeignKey(College,blank=True,null=True,related_name="col2")
+    # course2 = models.ForeignKey(Course,blank=True,null=True,related_name="course2")
+    # qualification2 = models.ForeignKey(Qualification,blank=True,null=True,related_name="qual2")
+    # year_of_passingout2 = models.CharField(max_length=4,choices=YEAR_CHOICES,null=True,blank=True)
+
+    # college3 = models.ForeignKey(College,blank=True,null=True,related_name="col3")
+    # course3 = models.ForeignKey(Course,blank=True,null=True,related_name="course3")
+    # qualification3 = models.ForeignKey(Qualification,blank=True,null=True,related_name="qual3")
+    # year_of_passingout3 = models.CharField(max_length=4,choices=YEAR_CHOICES,null=True,blank=True)
+
+
+
+    #hobbies
+
+    my_interest = models.CharField(max_length=100,null=True,blank=True)
+    what_i_do_well = models.CharField(max_length=100,null=True,blank=True)
+    career_mission = models.CharField(max_length=100,null=True,blank=True)
+    interesting_about_me = models.CharField(max_length=100,null=True,blank=True)
+    my_extra_curri = models.CharField(max_length=100,null=True,blank=True)
+
+
+    #users class 12th info, optional but necessary for expert profiles
+
+
+
     mobile_verified = models.BooleanField(default=True)
     email_verified = models.BooleanField(default=True)
 
@@ -546,7 +618,40 @@ class Profile(models.Model):
         return self.address
 
     def __str__(self):
-        return self.user.email
+        return self.user.username
+
+
+
+
+
+
+
+# college educational qualification of a Profile
+class CollegeEduQual(models.Model):
+    """docstring for CollegeEducationalQual"""
+
+    YEAR_CHOICES = []
+    for r in range(1980, (datetime.datetime.now().year+1)):
+        YEAR_CHOICES.append((r,r))
+
+
+
+    college = models.ForeignKey(College,blank=True,null=True)
+    course = models.ForeignKey(Course,blank=True,null=True)
+    qualification = models.ForeignKey(Qualification,blank=True,null=True)
+    year_of_passing_out = models.IntegerField(choices=YEAR_CHOICES,blank=True,null=True,max_length=4)
+    profile = models.ForeignKey(Profile,null=False)
+
+
+    def __str__(self):
+        return profile.user.username
+
+
+
+
+
+
+
 
 
 class Image(models.Model):
@@ -676,6 +781,164 @@ class Newsletter(models.Model):
 
 
 
+class QuestionExpert(models.Model):
+    question = models.ForeignKey(Question)
+    assigned_to = models.ForeignKey(Profile)
+    answered = models.BooleanField(default=False)
+    def __str__(self):
+        return self.question.title+'-'+self.assigned_to.user.username
+
+
+class ForeignStudy(models.Model):
+    name = models.CharField(max_length=40)
+     
+    def __str__(self):
+        return self.name
+
+
+
+
+
+def create_tag(sender, instance,created, **kwargs):
+    
+    if created:
+
+        tag_name = instance.name
+        tag_name = tag_name.replace(" ","").lower()
+        tag.objects.create(name=tag_name,content_type=ContentType.objects.get_for_model(sender),object_id=instance.pk)
+
+#foreign study tag
+def create_tag_fs(sender, instance,created, **kwargs):
+    
+    if created:
+
+        tag_name = instance.name
+        tag_name = "studyin"+tag_name.replace(" ","").lower()
+        tag.objects.create(name=tag_name,content_type=ContentType.objects.get_for_model(sender),object_id=instance.pk)
+
+
+post_save.connect(create_tag, sender=College)
+post_save.connect(create_tag, sender=Course)
+post_save.connect(create_tag, sender=QualifyingExam)
+post_save.connect(create_tag, sender=CompetitiveExam)
+
+post_save.connect(create_tag_fs, sender = ForeignStudy)
+
+# create tag for qualification model instance just after its created
+def create_tag_qualification(sender, instance, created,**kwargs):
+
+    print("hi")
+    print(created)
+    if created:
+
+        tag_name = instance.qualification
+        tag_name = tag_name.replace(" ","").lower()
+        tag.objects.create(name=tag_name,content_type=ContentType.objects.get_for_model(sender),object_id=instance.pk)
+
+
+
+
+post_save.connect(create_tag_qualification, sender=Qualification)
+
+
+
+
+# from django.dispatch import receiver
+
+def update_assigned_to(sender, instance, created, **kwargs):
+
+
+
+    college_contenttype = ContentType.objects.get(model='college')
+    qualification_contenttype = ContentType.objects.get(model='qualification')
+    course_contenttype = ContentType.objects.get(model='course')
+
+
+
+    qe_contenttype = ContentType.objects.get(model='qualifyingexam')
+    ce_contenttype = ContentType.objects.get(model='competitiveexam')
+
+    # country_contenttype = ContentType.objects.get(model='course')
+
+    if instance.tag.content_type==college_contenttype:
+        college = College.objects.get(id=instance.tag.object_id)
+        #send this question only to students of this college
+        sa_relevant_profiles = Profile.objects.filter(collegeeduqual__college=college).filter(user_type='SA')
+        for expert in sa_relevant_profiles:
+            QuestionExpert.objects.create(question=instance,assigned_to=expert)
+
+    if instance.tag.content_type==qualification_contenttype:
+        list = ['CE']
+        qualification = Qualification.objects.get(id=instance.tag.object_id)
+        sa_relevant_profiles = Profile.objects.filter(collegeeduqual__qualification=qualification).filter(user_type='SA')
+        for expert in sa_relevant_profiles:
+            QuestionExpert.objects.create(question=instance,assigned_to=expert)
+        assign_and_mail_experts(list,instance)
+
+
+    if instance.tag.content_type==course_contenttype:
+
+        # user
+        # instance.assigned_to=
+        list = ['CE','EE']
+        course = Course.objects.get(id=instance.tag.object_id)
+        sa_relevant_profiles = Profile.objects.filter(collegeeduqual__course=course).filter(user_type='SA')
+        for expert in sa_relevant_profiles:
+            QuestionExpert.objects.create(question=instance,assigned_to=expert)
+        assign_and_mail_experts(list,instance)
+
+    if instance.tag.content_type==qe_contenttype:
+        list = ['EE']
+        assign_and_mail_experts(list,instance)
+
+    if instance.tag.content_type==ce_contenttype:
+        list = ['EE']
+        assign_and_mail_experts(list,instance)
+
+
+
+
+def assign_and_mail_experts(myList,instance):
+    print("hi")
+    print(Profile.objects.filter(user_type__in=myList))
+    expert_profile_list = Profile.objects.filter(user_type__in=myList)
+
+
+
+
+    for expert in expert_profile_list:
+        QuestionExpert.objects.create(question=instance,assigned_to=expert)
+        # send_mail(subject="hi",message="this is a message", recipient_list=[expert.parent_email])
+
+
+
+
+
+
+
+
+post_save.connect(update_assigned_to, sender=Question)
+
+
+#whenever answer is posted by an expert, update questionexpert for that question by setting answered to true 
+
+def update_questionexpert(sender, instance, **kwargs):
+    profile = instance.user
+    question = instance.question
+    relevant_qe_rows = QuestionExpert.objects.filter(assigned_to=profile).filter(question=question)
+    
+    
+
+
+    
+    for qe in relevant_qe_rows:
+        qe.answered = True
+        qe.save()
+
+#test comment
+    
+
+post_save.connect(update_questionexpert, sender=Answer)
 
 
 

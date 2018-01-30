@@ -23,13 +23,38 @@
         height: 20px;
         outline: none!important;
     }
+    .jr-progress-step{
+        height: 5px;
+        width: 100%;
+        background-color: #d7d7d7;
+        border-right: 5px solid #fff;
+    }
+    .jr-progress-step.complete{
+        background-color: #26b99a;
+    }
+    .nopadding{
+        padding:0;
+    }
     </style>
-    <div class="breadcrumb-section" style="background:url({% static 'images/banner-image.jpg' %}); background-size: cover;">
-	    <div class="container">
-            <div class="row">
-                <header class="entry-header">
-                <h1 class="entry-title">Colleges Available </h1>
-                </header>
+    <div class="breadcrumb-section" style="min-height:20px;">
+    </div>
+    <div class="row">
+        <div class="col-xs-3 nopadding">
+            <div class="jr-progress">
+                <div class="jr-progress-step complete"></div>
+            </div>
+        </div>
+        <div class="col-xs-3 nopadding">
+            <div class="jr-progress-step"></div>
+        </div>
+        <div class="col-xs-3 nopadding">
+            <div class="jr-progress">
+                <div class="jr-progress-step"></div>
+            </div>
+        </div>
+        <div class="col-xs-3 nopadding">
+            <div class="jr-progress">
+                <div class="jr-progress-step"></div>
             </div>
         </div>
     </div>
@@ -38,26 +63,26 @@
             <div class="container mb-0">
                 <div class="col-md-12 col-sm-12">
                     <div class="col-md-3">
-                        <label for="fader" style="font-family: 'Raleway',sans-serif!important;margin-bottom: 10px;">
+                        <label for="fader" style="font-family: 'Raleway',sans-serif!important;margin-bottom: 10px;font-size:16px;color: #3d3d3d;">
                             Your maximum budget
                         </label>
                         <input class="custom" type="range" min="10" max="{{ view.get_max_value }}" value="{{ view.get_max_value }}" id="fader" step="1" oninput="outputUpdate(value)">
-                        <output style="float: right;color:#f00025;font-family: 'Raleway',sans-serif!important;" for="fader" id="value" class="faderoutput">
+                        <output style="float: right;color:#f00025;font-family: 'Raleway',sans-serif!important;font-size: 18px;" for="fader" id="value" class="faderoutput">
                             Rs {{ view.get_max_value }}
                         </output>
                         <br>
                     </div>
                     <div class="col-md-3 col-md-offset-1">
-                         <label for="fader2" style="font-family: 'Raleway',sans-serif!important;margin-bottom: 10px;">
+                         <label for="fader2" style="font-family: 'Raleway',sans-serif!important;margin-bottom: 10px;font-size:16px;color: #3d3d3d;">
                              Distance from {{ view.get_selected_city.name }}
                          </label>
                         <input class="custom" type="range" min="1" max="100" value="1" id="fader2" step="1" oninput="outputUpdateDistance(value)">
-                        <output style="float: right;color:#f00025;font-family: 'Raleway',sans-serif!important;" for="fader2" id="distance" class="fader2output">
+                        <output style="float: right;color:#f00025;font-family: 'Raleway',sans-serif!important;font-size: 18px;" for="fader2" id="distance" class="fader2output">
                             1 Km
                         </output>
                     </div>
                     <div class="col-md-4 col-sm-12 col-xs-12 search-count-mobile" style="padding-top: 2%;">
-                        <span>Offers found for your search: <b><span id="college-count"></span></b></span>
+                        <span>Offers found for your search: <b><span id="college-count" style="color: #f00025;"></span></b></span>
                     </div>
                 </div>
             </div>
@@ -107,7 +132,7 @@
                             <h5 class="raleway" style="color: rgb(101,101,101)">
                                 {{ college.name }}
                             </h5>
-                            <a class="hidden-md hidden-lg hidden-sm" href="{{ college.website }}" target="_blank">
+                            <a class="hidden-md hidden-lg hidden-sm" href="{{ college.website }}" target="_blank"></a>
                                 {{ college.website }}
                                 <a style="color: #666;">
                                     <p class="collge-cmps">
@@ -120,19 +145,36 @@
                                 </p>
                             </div>
                             <p class="raleway-heading raleway-heading-custtm mb-0">Session starts in {{ college.session_start|date:"M Y" }}</p>
+                            <div class="" style="display: inline-flex;">
+                                <!--<p style="padding-left: 5px;">Confirmed Scholarship</p>-->
+                            </div>
                         </div>
                         <div class="col-md-8 pl-0-new">
                         <div class=" table-responsive">
                             <table class="border-cover-container">
                                 <tbody>
                                     <tr>
-                                        <td class="mobile-box-new" style="border: 1px solid #d7d7d7;">
+                                    <td class="mobile-box-new" style="border: 1px solid #d7d7d7;">
                                             <div class="col-md-12 p-0">
-                                                <center><b class="raleway fees-per-font" style="color: #333; font-size:18px;">Fees Per {{ college.fee_unit }}</b></center>
-                                                <center><b class="raleway" style="color:#187e89; font-size:18px;">Rs. {{ college.final_fee }}</b>&nbsp;&nbsp; <b style="text-decoration: line-through; color:#b7b7b7; font-size:18px;">Rs. {{ college.cost }}</b></center>
+                                                <center><b class="raleway fees-per-font" style="color: #333; font-size:16px;">Output Quality Index</b></center>
+                                                <center>
+                                                    <b class="raleway" style="color:#187e89; font-size:24px;">{{ college.college_quality_index }}</b>
+                                                </center>
                                             </div>
                                         </td>
-                                        <td style="max-width: 8px;margin: 0px;padding: 0px 8px 0px 0px;">
+                                        <td style="max-width: 8px;margin: 0px;padding: 0px 8px 0px 0px;"></td>
+                                        <td class="mobile-box-new" style="border: 1px solid #d7d7d7;">
+                                            <div class="col-md-12 p-0">
+                                                <center><b class="raleway fees-per-font" style="color: #333; font-size:16px;">Tuition Fees Per {{ college.fee_unit }}</b></center>
+                                                <center>
+                                                    <b class="raleway" style="color:#187e89; font-size:24px;">Rs. {{ college.final_fee }}</b>&nbsp;&nbsp; 
+                                                    {% if college.scholarship != 0 %}
+                                                        <b style="text-decoration: line-through; color:#b7b7b7; font-size:24px;">Rs. {{ college.cost }}</b>
+                                                    {% endif %}
+                                                </center>
+                                            </div>
+                                        </td>
+                                        <!--<td style="max-width: 8px;margin: 0px;padding: 0px 8px 0px 0px;">
 
                                         </td>
                                         <td style="border: 1px solid #d7d7d7;" >
@@ -143,8 +185,7 @@
                                             <div class="col-md-3" style="padding-right: 0px; padding-left: 0px;">
                                                 <center><h3 style="font-size: 24px;color: #187e89;margin-top: 10px;">{{ college.scholarship }} %</h3></center>
                                             </div>
-                                        </td>
-
+                                        </td>-->
 
                                     </tr>
                                     <tr >
@@ -160,7 +201,7 @@
                                                 <input name="seats" value="{{ college.seats }}" style="display: none;">
                                                 <input name="decrement_from" value="{{ college.decrement_from }}" style="display: none;">
                                                 <input name="cc_obj" value="{{ college.cc_obj }}" style="display: none;">
-                                                <button class="btn btn-orange button-red-new" style="width: 100%; height:40px;" type="submit">I am INTERESTED in this seat! <i class="lnr lnr-arrow-right"></i></button>
+                                                <button class="btn btn-orange button-red-new" style="width: 100%; height:40px;" type="submit">I am INTERESTED in this seat! <i class="fa fa-chevron-right"></i><!--<i class="fa fa-chevron-right">--></i></button>
                                             </form>
                                         </td>
                                     </tr>
@@ -169,6 +210,14 @@
                             </div>
                         </div>
                     </div>
+                    {% if college.scholarship != 0 %}
+                        <div class="col-md-12">
+                            <div style="border-top: 1px solid #ccc;padding: 8px 0 8px 0;height: 40px;">
+                                <div class="col-md-6 col-xs-12 col-sm-6"><img src="{% static 'images/confirmed-scholarships.png' %}" style="height: 30px;width: auto;"> Your scholarship offer on Just Rokket <span>{{ college.scholarship }} %</span></div>
+                                <div class="col-md-6 col-xs-12 col-sm-6 text-right">Applicable on tuition fees only, T&C apply</div>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
                 {% endfor %}
@@ -191,7 +240,214 @@
                 <br><br>
              </div>
         </div>
+
+{#        <div class="container new-registration" style="margin-top: 25px;">#}
+{#            <div class="row outer-box">#}
+{#              <div class="col-md-12 inner-box">#}
+{#                <div class="col-md-4">#}
+{##}
+{#                </div>#}
+{#                <div class="col-md-8">#}
+{#                  <div class="row">#}
+{#                      <div class="col-md-12">#}
+{#                            <center><h1 class="head-first">Interested in other colleges for admission & scholarship?</h1></center>#}
+{#                            <center><h4 class="head-second">Let us know your interest and we will speak to them on your behalf</h4></center>#}
+{#                            <button class="btn btn-orange button-red-new reg-interest" type="submit">Register my INTEREST </button>#}
+{#                      </div>#}
+{#                  </div>#}
+{#                </div>#}
+{#              </div>#}
+{#            </div>#}
+{#        </div>#}
+
+{#      Start-slider#}
+{#           <div class="container new-registration-second">#}
+{#            <div class="my-slider">#}
+{#                <ul class="dot-rem">#}
+{#                    <li>#}
+{#                        <div class="outer-box-second">#}
+{#                          <div class="col-md-12 inner-box">#}
+{#                            <div class="col-md-2">#}
+{#                                <img class="dummy-prof" src="{% static 'images/dummy_profpic.jpg' %}">#}
+{#                            </div>#}
+{#                            <div class="col-md-10">#}
+{#                              <div class="row">#}
+{#                                  <div class="col-md-12">#}
+{#                                     <div class="row">#}
+{#                                          <h3 class="hed">Bachelor of Business Administrartion (BBA) with specialization in Marketing</h3>#}
+{#                                        <span class="sub-hed" style="float: left">College of management Martund Singham Institute</span>#}
+{#                                     </div>#}
+{#                                    <div class="row mt-10">#}
+{#                                         <p class="mb-zero">Fill the form below & we will make this institute available to you soon.</p>#}
+{#                                         <div class="col-md-6 p0">#}
+{#                                             <input class="input-box" placeholder="Name">#}
+{#                                         </div>#}
+{#                                         <div class="col-md-6 pr-0">#}
+{#                                             <input class="input-box" placeholder="Phone Number">#}
+{#                                         </div>#}
+{#                                        <button class="btn btn-orange button-red-new reg-interest-second" type="submit">Register my INTEREST </button>#}
+{#                                    </div>#}
+{#                                 </div>#}
+{#                              </div>#}
+{#                            </div>#}
+{#                          </div>#}
+{#                        </div>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <div class="outer-box-second">#}
+{#                          <div class="col-md-12 inner-box">#}
+{#                            <div class="col-md-2">#}
+{#                                <img class="dummy-prof" src="{% static 'images/dummy_profpic.jpg' %}">#}
+{#                            </div>#}
+{#                            <div class="col-md-10">#}
+{#                              <div class="row">#}
+{#                                <div class="col-md-12">#}
+{#                                     <div class="row">#}
+{#                                          <h3 class="hed">Bachelor of Business Administrartion (BBA) with specialization in Marketing</h3>#}
+{#                                        <span class="sub-hed" style="float: left">College of management Martund Singham Institute</span>#}
+{#                                     </div>#}
+{#                                    <div class="row mt-10">#}
+{#                                         <p class="mb-zero">Fill the form below & we will make this institute available to you soon.</p>#}
+{#                                         <div class="col-md-6 p0">#}
+{#                                             <input class="input-box" placeholder="Name">#}
+{#                                         </div>#}
+{#                                         <div class="col-md-6 pr-0">#}
+{#                                             <input class="input-box" placeholder="Phone Number">#}
+{#                                         </div>#}
+{#                                        <button onclick="alert('s')" class="btn btn-orange button-red-new reg-interest-second" type="submit">Register my INTEREST </button>#}
+{#                                    </div>#}
+{#                                 </div>#}
+{#                              </div>#}
+{#                            </div>#}
+{#                          </div>#}
+{#                        </div>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <div class="outer-box-second">#}
+{#                          <div class="col-md-12 inner-box">#}
+{#                            <div class="col-md-2">#}
+{#                                <img class="dummy-prof" src="{% static 'images/dummy_profpic.jpg' %}">#}
+{#                            </div>#}
+{#                            <div class="col-md-10">#}
+{#                              <div class="row">#}
+{#                                 <div class="col-md-12">#}
+{#                                     <div class="row">#}
+{#                                          <h3 class="hed">Bachelor of Business Administrartion (BBA) with specialization in Marketing</h3>#}
+{#                                        <span class="sub-hed" style="float: left">College of management Martund Singham Institute</span>#}
+{#                                     </div>#}
+{#                                    <div class="row mt-10">#}
+{#                                         <p class="mb-zero">Fill the form below & we will make this institute available to you soon.</p>#}
+{#                                         <div class="col-md-6 p0">#}
+{#                                             <input class="input-box" placeholder="Name">#}
+{#                                         </div>#}
+{#                                         <div class="col-md-6 pr-0">#}
+{#                                             <input class="input-box" placeholder="Phone Number">#}
+{#                                         </div>#}
+{#                                        <button class="btn btn-orange button-red-new reg-interest-second" type="submit">Register my INTEREST </button>#}
+{#                                    </div>#}
+{#                                 </div>#}
+{#                              </div>#}
+{#                            </div>#}
+{#                          </div>#}
+{#                        </div>#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </div>#}
+{#        </div>#}
+
+
+{#        End-slider#}
+        <style>
+            .pr-0{
+                padding-right: 0;
+            }
+            .p0{
+                padding: 0;
+            }
+            .mt-10{
+                margin-top: 10px;
+            }
+            .mb-zero{
+                margin-bottom: 0px;
+                opacity: 0.6;
+            }
+            .input-box{
+                  padding: 0 5px 0 10px;
+                    height: 38px;
+            }
+            .input-box{
+                width: 100%;
+            }
+            .dummy-prof{
+                height: 160px;
+                position: absolute;
+                top: 10px;
+            }
+            ul .dot-rem{
+                list-style-type: none;
+            }
+            .inner-box{
+              border: 2px black;
+              height: 20px;
+            }
+            .outer-box{
+                background-image:url('{% static 'images/Asset 2@4x.png' %}');
+                background-repeat: no-repeat;
+                background-size: cover;
+                height:180px;
+                margin-bottom: 40px;
+            }
+            .outer-box-second{
+                background-image:url('{% static 'images/Asset 3@4x.png' %}');
+                background-repeat: no-repeat;
+                background-size: cover;
+                height:280px;
+                margin-bottom: 40px;
+            }
+            .head-first{
+                font-size: 22px;
+                padding-bottom: 0px;
+                margin-bottom: 0px;
+                float: right;
+            }
+            .head-second{
+                font-size: 16px;
+                float: right;
+            }
+            .reg-interest{
+                width: 70%;
+                float: right;
+            }
+            .reg-interest-second{
+                width: 100%;
+                float: right;
+            }
+            .new-registration-second{
+                display: none;
+            }
+            .th-border{
+                border: none!important;
+            }
+            table{
+                border: none;
+            }
+            .sub-hed{
+                font-size: 17px;
+                opacity: 0.6;
+            }
+            .hed{
+                margin-bottom: 0px;
+            }
+            .unslider-nav ol{
+{#                display: none;#}
+            }
+            ol{
+                display: none;
+            }
+        </style>
         <script>
+
+
             jQuery(".error-message").hide();
             function distance(lat1, lon1, lat2, lon2, unit) {
                 var radlat1 = Math.PI * lat1/180
@@ -286,6 +542,24 @@
             jQuery(document).ready(
                     jQuery("#college-count").text(updateCollegeCount())
             )
+        </script>
+    	<script>
+            jQuery(document).ready(function($) {
+                jQuery('.my-slider').unslider({
+                    arrows: {
+                        //  Unslider default behaviour
+                        prev: '<a class="unslider-arrow prev" style="margin-left: 46%;margin-top: -6%;"><&nbsp&nbsp&nbsp&nbsp&nbsp <span style="color: black;">View More Colleges</span></a>',
+                        next: '<a class="unslider-arrow next" style="margin-right: 38%;margin-top: -6%;"> ></a>',
+
+                    }
+                });
+                jQuery(".reg-interest").click(function(){
+                console.log("hey")
+                jQuery(".new-registration").hide();
+                jQuery(".new-registration-second").show();
+            });
+            });
+
         </script>
     </section>
 {% endblock %}

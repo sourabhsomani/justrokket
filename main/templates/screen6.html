@@ -9,13 +9,40 @@
         height: 18px;
         width: 18px;
     }
+    .jr-progress-step{
+        height: 5px;
+        width: 100%;
+        background-color: #d7d7d7;
+        border-right: 5px solid #fff;
+    }
+    .jr-progress-step.complete{
+        background-color: #26b99a;
+    }
+    .nopadding{
+        padding:0;
+    }
 </style>
-<div class="breadcrumb-section" style="background:url({% static 'images/banner-image.jpg' %}); background-size: cover;">
-<div class="container">
-    <div class="row">
-        <header class="entry-header">
-        <h1 class="entry-title">Thank You</h1>
-        </header>
+<div class="breadcrumb-section" style="min-height:20px;">
+
+</div>
+<div class="row">
+    <div class="col-xs-3 nopadding">
+        <div class="jr-progress">
+            <div class="jr-progress-step complete"></div>
+        </div>
+    </div>
+    <div class="col-xs-3 nopadding">
+        <div class="jr-progress-step complete"></div>
+    </div>
+    <div class="col-xs-3 nopadding">
+        <div class="jr-progress">
+            <div class="jr-progress-step complete"></div>
+        </div>
+    </div>
+    <div class="col-xs-3 nopadding">
+        <div class="jr-progress">
+            <div class="jr-progress-step complete"></div>
+        </div>
     </div>
 </div>
 </div>
@@ -23,7 +50,7 @@
 <div style="background-color: #fff;">
     <div class="container">
         <span class="rale-3 congratulation-text">
-        <h3>Congratulations for pre-registering for your ROKKET offer of scholarship</h3>
+        <h3>Congratulations for applying to the College</h3>
         </span>
     </div>
 </div>
@@ -70,23 +97,22 @@
             </div>
         </div>
         <div class="col-md-8 rocket-scholrship-body">
-            <ol type="1">
+            <ol type="1" style="display:block">
                 <li>The college will close the next steps towards admission as per schedule list below.<br>
                 <strong>Selection steps within</strong> {{ view.get_selection.college_qualification.nst_closure_within }} days.<br>
                 <strong>Declaration of results within</strong> {{ view.get_selection.college_qualification.conf_within }} days. 
                 </li>
                 <li>The selection steps for the admission are:<br>
                 <strong>{{ view.get_selection.college_qualification.next_selection_steps|linebreaks }}</strong></li>
-                <li>You are required to submit a copy of the 'ROKKET Scholarship' voucher along with the admission documents (proofs and college registration form) when submitting the same to the college registration. </li>
-                <li>A copy of the 'ROKKET Scholarship' voucher is also required to be submitted in the accounts department of the college when you join the college.</li>
-                <li>Information about the 'ROKKET Scholarship' offer and other details mentioned here are a part of the offer letter issued by the college after selection. Please ensure to confirm the same for any discrepancy</li>
-                {% if view.get_selection.search.screen_6_text %}<li>{{ view.get_selection.search.screen_6_text }}</li>{% endif %}
+                <li>You will be contacted by the Institution, you have applied to, for taking forward your application. </li>
+                <li>In case you have been offered a scholarship by an Institution, please ensure to confirm the applicability and conditions for the same while taking your admission process ahead with the institution. You may also look for the offer in writing as part of your admission documents.</li>
+                {# {% if view.get_selection.search.screen_6_text %}<li>{{ view.get_selection.search.screen_6_text }}</li>{% endif %} #}
             </ol>
             <!-- <div class="col-md-12 share-invite-box">
                 <h4> Share & Invite</h4>
                 <p class="please-send-text"><input class="red-checkbox red-checkbox-icon" type="checkbox" value="invites" checked>&nbsp; <font class="please-send-text">Please send an invite to all my friends to check out JUST ROKKET</font></p>
             </div> -->
-                <a class="btn btn-lg btn-orange View-button-profile" href="/profile/{{ view.request.user.id }}">View Your Profile<i class="lnr lnr-arrow-right"></i> </a>
+                <a class="btn btn-lg btn-orange View-button-profile" href="/profile/{{ view.request.user.id }}">View Your Profile<i class="fa fa-chevron-right"></i> </a>
         </div>
         <div class="col-md-4 duration-box-year-mobile hidden-xs">
             <center><img src="{{ view.get_selection.college.logo.url }}" style="min-height: 75px;max-height: 100px;"></center>
@@ -94,39 +120,6 @@
             <h4 class="text-bottm-bordr text-center">{{ view.get_selection.college.name }}</h4>
             <p class="text-center">{{ view.get_selection.college.street_1 }}, {{ view.get_selection.college.city }}<br>Session Starts in {{ view.get_selection.college_qualification.session_start|date:"M Y" }}</p><br>
             <p class="rale-3 text-center">Duration {{ view.get_selection.college_qualification.qualification.duration }} Years</p>
-            <div class="col-md-12">
-                <div class="row mt-e1">
-                    <div class="col-md-10 col-md-offset-1 pr-0 pl-0">
-                        <div class="panel panel-default panel-new-box" >
-                            <div class="panel-body box-mobile-center-text">
-                                <h4 class="raleway saving-text">Fees Per Year</h4>
-                                <h4 class="raleway"><span style="color:#187e89;">Rs. {{ view.get_selection.final_fee }}</span></h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-e1">
-                    <div class="col-md-10 col-md-offset-1 pr-0 pl-0" style="">
-                        <div class="panel panel-default panel-new-box">
-                            <div class="panel-body box-mobile-center-text">
-                                <h4 class="raleway saving-text">Savings Per Year</h4>
-                                <h4 class="raleway" style="color:#187e89;">Rs. {{ view.get_selection.savings }}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-e1">
-                    <div class="col-md-10 col-md-offset-1 pl-0 pr-0">
-                        <div class="panel panel-default panel-new-box">
-                            <div class="panel-body box-mobile-center-text">
-                                <h4 class="raleway saving-text" >Scholarship</h4> 
-                                <h4 style="color: green; display: inline; vertical-align: middle;">{{ view.get_selection.scholarship }} %</h4><br>
-                                <b class="raleway" style="color: #888;">( Till Course End )</b>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

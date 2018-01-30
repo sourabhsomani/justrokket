@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+{% providers_media_js %}
+{% block meta %}
+    <title>Scholarships with admission | Just Rokket</title>
+	<meta charset="utf-8">
+	<meta name="language" content="en-us">
+	<meta name="robots" content="noodp"/>
+	<link rel="canonical" href="https://justrokket.com" />
+	<meta name="description"content="Get scholarship with admission to top colleges for MBA, Engineering, Pharmacy, Education, Animation and lots of other courses. Apply online for admission to graduation and post graduation courses across colleges in India.">
+	<meta name="copyright" content="2017 Explore Edu Tech Private Limited">
+	<meta name="content-language" content="EN">
+	<meta name="publisher" content="https://justrokket.com/">
+    <meta name="contact" content="service@justrokket.com">
+    <meta property="og:image" content="{% static 'images/featured.jpg' %}">
+	<meta name="theme-color" content="#187e89">
+	<!--Facebook Tags-->
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Scholarships with admission | Just Rokket">
+	<meta property="og:description" content="Get scholarship with admission to top colleges for MBA, Engineering, Pharmacy, Education, Animation and lots of other courses. Apply online for admission to graduation and post graduation courses across colleges in India.">
+	<meta property="og:url" content="https://justrokket.com">
+	<meta property="og:site_name" content="Just Rokket | Scholarships with admission">
+	<meta property="og:image" content="{% static 'images/featured.jpg' %}">
+	<!--Twitter Tags-->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:url" content="https://justrokket.com">
+	<meta name="twitter:title" content="Scholarships with admission | Just Rokket">
+	<meta name="twitter:description" content="Get scholarship with admission to top colleges for MBA, Engineering, Pharmacy, Education, Animation and lots of other courses. Apply online for admission to graduation and post graduation courses across colleges in India.">
+	<meta name="twitter:image" content="{% static 'images/featured.jpg' %}">
+
+	<!--Google+ Tags-->
+	<meta itemprop="name" content="Scholarships with admission | Just Rokket">
+	<meta itemprop="description" content="Get scholarship with admission to top colleges for MBA, Engineering, Pharmacy, Education, Animation and lots of other courses. Apply online for admission to graduation and post graduation courses across colleges in India.">
+  <meta itemprop="image" content="{% static 'featured.jpg' %}">
+  <style>
+  .profiles .thumbnail{min-height: 310px;}
+  </style>
+    <!--unslider-->
+
+{% endblock meta %}
+
+{% block content %}
+    <style type="text/css">
+        .profiles{
+          margin-top: 48px;
+        }
+        .thumbnail{
+          padding: 0;
+          text-align: center;
+        }
+        .thumbnail a>img, .thumbnail>img{
+          margin: 0;
+          width: 100%;
+        }
+        .thumbnail a>img, .thumbnail>img {
+            margin: 0;
+            width: 100%;
+            max-height: 200px;
+            min-height: 200px;
+            object-fit: cover;
+        }
+        .caption h3{
+          color: #3d3d3d;
+          font-size: 24px;
+          margin: 0;
+          font-weight: 500;
+        }
+
+        .caption p{
+          color: #3d3d3d;
+          font-size: 14px;
+          margin: 0;
+          margin-top: 6px;
+          margin-bottom: 0;
+        }
+        .btn__primary{
+          background-color: #f00025;
+          color: #fff !important;
+          border: 1px solid #f00025;
+          padding: 12px 36px;
+          margin-bottom: 12px;
+          font-weight: 600;
+        }
+
+    </style>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-right">
+            <a href="/question-listing/new-question/" class="btn btn__primary">I Want To Ask A Question</a>
+        </div>
+      </div>
+      <div class="profiles">
+        <div class="row">
+          {% for expert in experts%}
+          <div class="col-sm-4 col-md-3">
+            <div class="thumbnail">
+              {% if expert.profile_image %}<img src="{{expert.profile_image.url}}" alt="">{% endif %}
+              <div class="caption">
+                <h3><a href="{% url 'qa_profile' user_id=expert.user.id name=expert.name|cut:' ' %}">{{expert.name}}</a></h3>
+                <p>{{expert.get_user_type_display}}</p>
+                <p>{{expert.who_i_am}}</p>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+
+        </div>
+    </div>
+  </div>
+
+{% endblock %}

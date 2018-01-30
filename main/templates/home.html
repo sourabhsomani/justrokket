@@ -4,579 +4,399 @@
 {% load socialaccount %}
 {% providers_media_js %}
 {% block meta %}
-    <title>Scholarships with admission | Just Rokket</title>
-	<meta charset="utf-8">
-	<meta name="language" content="en-us">
-	<meta name="robots" content="noodp"/>
-	<link rel="canonical" href="https://justrokket.com" />
-	<meta name="description"content="Get scholarship with admission to top colleges for MBA, Engineering, Pharmacy, Education, Animation and lots of other courses. Apply online for admission to graduation and post graduation courses across colleges in India.">
-	<meta name="copyright" content="2017 Explore Edu Tech Private Limited">
-	<meta name="content-language" content="EN">
-	<meta name="publisher" content="https://justrokket.com/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Scholarships with admission | Just Rokket</title>
+  <meta charset="utf-8">
+  <meta name="language" content="en-us">
+  <meta name="robots" content="noodp"/>
+  <link rel="canonical" href="https://justrokket.com" />
+  <meta name="description"content="Get scholarship with admission to top colleges for MBA, Engineering, Pharmacy, Education, Animation and lots of other courses. Apply online for admission to graduation and post graduation courses across colleges in India.">
+  <meta name="copyright" content="2017 Explore Edu Tech Private Limited">
+  <meta name="content-language" content="EN">
+  <meta name="publisher" content="https://justrokket.com/">
     <meta name="contact" content="service@justrokket.com">
-    <meta property="og:image" content="{% static 'featured.jpg' %}">
-	<meta name="theme-color" content="#187e89">
-	<!--Facebook Tags-->
-	<meta property="og:type" content="website">
-	<meta property="og:title" content="Scholarships with admission | Just Rokket">
-	<meta property="og:description" content="Get scholarship with admission to top colleges for MBA, Engineering, Pharmacy, Education, Animation and lots of other courses. Apply online for admission to graduation and post graduation courses across colleges in India.">
-	<meta property="og:url" content="https://justrokket.com">
-	<meta property="og:site_name" content="Just Rokket | Scholarships with admission">
-	<meta property="og:image" content="https://justrokket.com/featured-image">
-	<!--Twitter Tags-->
-	<meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:url" content="https://justrokket.com">
-	<meta name="twitter:title" content="Scholarships with admission | Just Rokket">
-	<meta name="twitter:description" content="Get scholarship with admission to top colleges for MBA, Engineering, Pharmacy, Education, Animation and lots of other courses. Apply online for admission to graduation and post graduation courses across colleges in India.">
-	<meta name="twitter:image" content="{% static 'featured.jpg' %}">
+    <meta property="og:image" content="{% static 'images/featured.jpg' %}">
+  <meta name="theme-color" content="#187e89">
+  <!--Facebook Tags-->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Scholarships with admission | Just Rokket">
+  <meta property="og:description" content="Get scholarship with admission to top colleges for MBA, Engineering, Pharmacy, Education, Animation and lots of other courses. Apply online for admission to graduation and post graduation courses across colleges in India.">
+  <meta property="og:url" content="https://justrokket.com">
+  <meta property="og:site_name" content="Just Rokket | Scholarships with admission">
+  <meta property="og:image" content="{% static 'images/featured.jpg' %}">
+  <!--Twitter Tags-->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://justrokket.com">
+  <meta name="twitter:title" content="Scholarships with admission | Just Rokket">
+  <meta name="twitter:description" content="Get scholarship with admission to top colleges for MBA, Engineering, Pharmacy, Education, Animation and lots of other courses. Apply online for admission to graduation and post graduation courses across colleges in India.">
+  <meta name="twitter:image" content="{% static 'images/featured.jpg' %}">
 
-	<!--Google+ Tags-->
-	<meta itemprop="name" content="Scholarships with admission | Just Rokket">
-	<meta itemprop="description" content="Get scholarship with admission to top colleges for MBA, Engineering, Pharmacy, Education, Animation and lots of other courses. Apply online for admission to graduation and post graduation courses across colleges in India.">
-	<meta itemprop="image" content="{% static 'featured.jpg' %}">
+  <!--Google+ Tags-->
+  <meta itemprop="name" content="Scholarships with admission | Just Rokket">
+  <meta itemprop="description" content="Get scholarship with admission to top colleges for MBA, Engineering, Pharmacy, Education, Animation and lots of other courses. Apply online for admission to graduation and post graduation courses across colleges in India.">
+  <meta itemprop="image" content="{% static 'featured.jpg' %}">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+  <!-- <link rel="stylesheet" href="css/style.css"> -->
+  <link href="{% static 'css/new_home.css' %}" rel="stylesheet"/>
+
+  <style>
+      .testimonial .card img {
+        margin: 0 45%;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('.community__slider').slick({
+
+        slidesToScroll: 1,
+        autoplaySpeed: 2000,
+        mobileFirst:true,
+        dots: true,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: true
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 1
+          }
+        }
+        // You can unslick at a given breakpoint now by adding:
+        // settings: "unslick"
+        // instead of a settings object
+      ]
+      });
+
+      $('.story__slider').slick({
+        autoplaySpeed: 2000,
+        dots: true,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        adaptiveHeight: true
+      });
+
+      $('.testimonial__slider').slick({
+        autoplaySpeed: 2000,
+        dots: true,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        adaptiveHeight: true
+      });
+
+    });
+  </script>
+
+
 {% endblock meta %}
 
+{% block menu_bar_custom %}
+<li class="" style=""><a href="/admissions" style="text-decoration: none;">Apply to College</a></li>
+{% endblock menu_bar_custom %}
+
 {% block content %}
-    <style type="text/css">
-        .selectRow {
-            display : block;
-            padding : 20px;
-        }
-        .select2-container {
-            width: 200px;
-        }
+<body class="home">
+  <div class="hero">
+    <div class="hero__inner">
 
-        .select2-drop-active{
-            margin-top: -25px;
-        }
-
-        .popover{
-            width:18em;
-            min-width: 18em;
-        }
-
-
-
-    </style>
-    <div id="banner-screen-main" class="mainscreen bnnr-mobile home-screen-relative">
+        <h2 class="hero__title">answers. advice. admission</h2>
+        <img src="{% static 'images/img/Center_graphic.svg' %}" alt="" class="hero__img">
+        <p class="hero__subTitle"><b>a community </b> to help you get into</p>
+        <p class="hero__subTitle">Right college, skills and careers.</p>
         <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0;">
-                <div class="col-md-12 col-xs-12 col-sm-12" style="padding-right: 0px!important;">
-                    <div class="text-center" style="margin-top: 2em;">
-                            <h2 class="apply-home-mobile" style="color:#333333;font-family: 'Raleway', sans-serif;font-weight: lighter;">
-                                FIND YOUR SCHOLARSHIP
-                            </h2>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="col-md-6 col-lg-6 col-xs-12 col-md-offset-3 col-lg-offset-3 col-sm-6 col-sm-offset-3 form-top">
-                        <div class="panel panel-default" style="background: transparent; border: none;font-family: 'Raleway', sans-serif;">
-                            <div class="panel-body" style="padding: 0;">
-                                <div class="col-md-12 " style="">
-                                    <form action="/explore-post/" class="form" id="scholarship-form" method="post" name="scholarship-form">
-                                        {% csrf_token %}
-
-                                        <div class="changer switcheroo-wrapper">
-                                            <input class="btn-toggle mainscreen-buttons" id="id_g_level" name="level" style="font-family: 'Raleway', sans-serif;" type="radio" value="G" checked> <label class="bs-bet-type-label mainscreen-label" style=
-                                            "margin-left:17%;font-family: 'Raleway', sans-serif;">GRAD</label> <input class="btn-toggle btn-subdued" id="id_pg_level" name="level" style="font-family: 'Raleway', sans-serif;" type="radio" value="PG"> <label class="btn-toggle mainscreen-label" style="font-family: 'Raleway', sans-serif;">PG</label>
-                                        </div>
-
-                                            <div class="form-group">
-                                                 <p style="font-family: 'Raleway', sans-serif;font-size: 15px; padding-left: 0px;color:#333333;margin-bottom: 0px;">
-                                                     <span class="city-text-error"></span><br>
-                                                    {% comment %}<span class="city-parent city-error-red">Search for courses in <a class="city-link" style="color: #f00025;">City ?</a></span>{% endcomment %}
-                                                    <div class="city-select-parent">
-                                                        <select class="form-control-1 city nofocus" id="id_location" name="city" style="display: none;width:100%;">
-                                                            <option disabled selected value="-1">Where do you want to study?</option>
-                                                            {% for city in view.get_cities %}
-                                                                <option value="{{ city.id }}">{{ city.name }}</option>
-                                                            {% endfor %}
-                                                        </select>
-                                                    </div>
-                                                </p>
-
-                                            </div>
-{#                                        <script>#}
-{#                                            jQuery(document).ready(function(){#}
-{#                                            jQuery('[data-toggle="popover"]').popover();#}
-{#                                        });#}
-{#                                        </script>#}
-
-
-                                        <div class="form-group col-xs-12" style="padding: 2px 2px 0 2px; border-radius: 0;font-size: 13px;font-family: 'Raleway', sans-serif;">
-                                            <select class="form-control-1 course" id="id_populate_course_categories" name="course" style="display: inline-block;color: #000;  width: 100%;"></select>
-
-                                        </div>
-
-
-
-                                            <center>
-                                                <a class="add-exam-block" style="color:#000;font-family: 'Raleway', sans-serif;font-size: 14px; padding-left: 10px;">Add exam results?</a>
-                                            </center>
-
-
-
-
-
-                                        <div class="exam_block" style="display: none;">
-                                            <!-- QUALIFYING EXAM -->
-                                            <div class="form-group q_exm_form_group" style="margin-bottom: 7px; padding: 2px;width:100%;border-radius: 0px;font-size: 13px;font-family: 'Raleway', sans-serif;">
-                                                   <select class="form-control-1 q_exm nofocus hide-on-off-focus" id="q_exm" name="q_exm" style="width: 68%;position: relative;">
-                                                        <option></option>
-                                                    </select><a id="to-the-right" style="color: #333;float:right;position: absolute; text-align:left; left: 100%; margin-top:12px;margin-left:0px;" href="#" data-toggle="popover" data-trigger="hover" {#  data-placement="bottom" #} title="" data-content="For example, class 12th results for graduation courses"><i class="fa fa-info-circle"></i></a>
-                                                <input type="number"  min="1" max="100" class="form-control-1 q_exm_score nofocus clear_on_load" name="q_exm_score" placeholder="Result&nbsp;%" style="border:1px solid #AAAAAA;font-family: 'Raleway', sans-serif;color: #000;font-size: 14px;width: 30%;z-index: 9999;padding-top: 0px; padding-right: 0px; padding-bottom: 0px;float: right;clear: both;">
-                                            </div>
-
-                                            <!-- COMPETITIVE EXAM -->
-                                            {#<input id="dynamic_course_type" name="course_type" type="hidden">#}
-                                            {% for i in '01' %}
-                                            <div class="row c_hide c_hide{{ forloop.counter }}" style="padding: 0; margin-left: 2px; margin-right: 2px; margin-bottom: 10px;border-radius: 4px;">
-                                                <div class="form-group" id="compt_exm_type" style="margin-bottom: 0; padding-bottom: 0; width:100%;border-radius: 0px;">
-                                                    <select class="form-control-1 select2 compt_exm_type_{{ forloop.counter }}" id="compt_exm_type" data-related-score="{{ forloop.counter }}" name="compt_exm_type_{{ forloop.counter }}" style="color: #333!important;display: inline; border: none;font-family: 'Raleway', sans-serif; width: 68%;">
-                                                        <option selected disabled>
-                                                            <span style="font-family: 'Raleway', sans-serif;color: #333!important;">Competitive Exam {{ forloop.counter }}?</span>
-                                                        </option>
-                                                    </select>
-                                                    <input class="form-control-1 compt_exm_score compt_exm_score_{{ forloop.counter }} nofocus" name="compt_exm_score_{{ forloop.counter }}" placeholder="Result" style="border:1px solid #AAAAAA;font-family: 'Raleway', sans-serif;width: 30%;float:right;clear: both; position: relative;" type="number">
-                                                    <a id="to-the-right" style="color: #333;float:right;position: absolute;left: 100%; margin-top:12px;margin-left:0px;" href="#" data-toggle="popover" data-trigger="hover" title="" data-content="For example, JEE (mains) result for engineering courses">
-                                                        <i class="fa fa-info-circle"></i>
-                                                    </a>
-
-                                                </div>
-                                            </div>
-                                            {% endfor %}
-                                                <input class="course_type clear_on_load" name="course_type" style="display: none; color:black;" value="">
-                                                <center><a class="add" style="color:#333333;font-family: 'Raleway', sans-serif;padding-left: 10px;">Add a competitive exam result?</a></center>
-                                        </div>
-
-
-
-                                    </form>
-                                <button class="btn-orange btn-medium submit my-schorship-mobile" style="font-family: 'Raleway', sans-serif;border-radius: 0px; margin-top: 10px; margin-bottom: 40px;width: 100%;font-weight: 600;" type="submit">SEARCH FOR SCHOLARSHIP</button>
-{#                                    <script>#}
-{#                                        jQuery(".form").validate({#}
-{#                                          ignore: [],#}
-{#                                          rules: {#}
-{#                                            'ignore': [],#}
-{#                                            'city': {#}
-{#                                                'required': true#}
-{#                                            },#}
-{#                                            'course': {#}
-{#                                                'required': true#}
-{#                                            },#}
-{#                                            'q_exm': {#}
-{#                                                'required': function () {#}
-{#                                                    console.log(Boolean(jQuery(".q_exm_score").val()), "q_exm");#}
-{#                                                    return Boolean(jQuery(".q_exm_score").val())#}
-{#                                                }#}
-{#                                            },#}
-{#                                              'compt_exm_type_1': {#}
-{#                                                'required': function () {#}
-{#                                                    console.log(Boolean(jQuery(".compt_exm_score_1").val()), "ce1");#}
-{#                                                    return Boolean(jQuery(".compt_exm_score_1").val())#}
-{#                                                }#}
-{#                                            },#}
-{#                                               'compt_exm_type_2': {#}
-{#                                                'required': function () {#}
-{#                                                    console.log(Boolean(jQuery(".compt_exm_score_2").val()), "ce2");#}
-{#                                                    return Boolean(jQuery(".compt_exm_score_2").val())#}
-{#                                                }#}
-{#                                            },#}
-{##}
-{#                                          },#}
-{#                                          messages: {#}
-{#                                            'city': 'We need to know where you want to study!',#}
-{#                                              'course': 'We need to know what you want to study!'#}
-{#                                          },#}
-{#                                            errorPlacement: function(error, element) {#}
-{#                                                //Custom position: city#}
-{#                                                console.log(error, element)#}
-{##}
-{#                                                if (element.attr("name") == "city" ) {#}
-{#                                                   jQuery("select[name='course'] ~ .select2-container ").css('outline', 'none');#}
-{#                                                }#}
-{##}
-{#                                                else if (element.attr("name") == "course" ) {#}
-{#                                                    // jQuery("select[name='course'] ~ .select2-container ").css('border', '1px solid red');#}
-{#                                                    jQuery("select[name='course'] ~ .select2-container ").css('outline', 'none');#}
-{#                                                }#}
-    {##}
-{#                                                else if (element.attr("name") == "q_exm_score" ) {#}
-{#                                                    jQuery(element).css('border', '1px solid red');#}
-{#                                                }#}
-{#                                                else if (element.attr("name") == "compt_exm_score_1" ) {#}
-{#                                                    jQuery(element).css('border', '1px solid red');#}
-{#                                                }#}
-{#                                                else if (element.attr("name") == "compt_exm_score_2" ) {#}
-{#                                                    jQuery(element).css('border', '1px solid red');#}
-{#                                                }#}
-{#                                                else if (element.attr("name") == "compt_exm_type_1" ) {#}
-{#                                                    console.log("ce1 error")#}
-{#                                                    jQuery("select[name='compt_exm_type_1'] ~ .select2-container ").css('border', '1px solid red');#}
-{#                                                }#}
-{#                                                else if (element.attr("name") == "compt_exm_type_2" ) {#}
-{#                                                    console.log("ce2 error")#}
-{#                                                    jQuery("select[name='compt_exm_type_2'] ~ .select2-container ").css('border', '1px solid red');#}
-{#                                                }#}
-{##}
-{#                                                else if ((element.attr("name") == "compt_exm_type_1" ) && ((element.attr("name") == "compt_exm_score_1" ).value)){#}
-{#                                                    jQuery("select[name='compt_exm_type_1'] ~ .select2-container ").css('border', '1px solid red');#}
-{#                                                }#}
-{##}
-{#                                                else if ((element.attr("name") == "compt_exm_type_2" ) && (!(element.attr("name") == "compt_exm_score_2" ).value)){#}
-{#                                                    jQuery("select[name='compt_exm_type_2'] ~ .select2-container ").css('border', '1px solid red');#}
-{#                                                }#}
-{#                                                else if (element.attr("name") == "q_exm" ) {#}
-{#                                                    jQuery("select[name='q_exm'] ~ .select2-container ").css('border', '1px solid red');#}
-{#                                                }#}
-{#                                                else {#}
-{#                                                    console.log("else fired")#}
-    {#                                                error.insertAfter(element); // default error placement.#}
-{#                                                }#}
-{##}
-{#                                            },#}
-{#                                            success: function(label) {#}
-{#                                                if (label.attr('for') == "city" ) {#}
-{#                                                    console.log("City success")#}
-    {#                                                jQuery("."+label.attr('for')).css('border', '1px solid rgb(147,147,147)');#}
-{#                                                }#}
-{##}
-{#                                                else if (label.attr('for') == "course" ) {#}
-{#                                                    // jQuery("select[name="+label.attr('for')+"] ~ .select2-container ").css('border', '1px solid rgb(147,147,147)');#}
-{#                                                }#}
-{##}
-{#                                                else if (label.attr('for') == "q_exm_score" ) {#}
-{#                                                    jQuery("."+label.attr('for')).css('border', '1px solid rgb(147,147,147)');#}
-{#                                                }#}
-{#                                                else if (label.attr('for') == "compt_exm_score_1" ) {#}
-{#                                                    jQuery("."+label.attr('for')).css('border', '1px solid rgb(147,147,147)');#}
-{#                                                }#}
-{#                                                else if (label.attr('for') == "compt_exm_score_2" ) {#}
-{#                                                    jQuery("."+label.attr('for')).css('border', '1px solid rgb(147,147,147)');#}
-{#                                                }#}
-{#                                                else if (label.attr('for') == "compt_exm_type_1" ) {#}
-{#                                                    jQuery("select[name=" + label.attr('for')   +"] ~ .select2-container ").css('border', '1px solid rgb(147,147,147)');#}
-{#                                                }#}
-{#                                                else if (label.attr('for') == "compt_exm_type_2" ) {#}
-{#                                                    jQuery("select[name=" + label.attr('for') +"] ~ .select2-container ").css('border', '1px solid rgb(147,147,147)');#}
-{#                                                }#}
-{#                                                else if (label.attr('for') == "q_exm" ) {#}
-{#                                                    jQuery("select[name="+label.attr('for')+"] ~ .select2-container ").css('border', '1px solid rgb(147,147,147)');#}
-{#                                                }#}
-{#                                                else {#}
-    {#                                                label.hide();// default error placement.#}
-{#                                                }#}
-{#                                            },#}
-{#                                            submitHandler: function(form) {#}
-{#                                                jQuery(".city-error-red").css('color', 'black');#}
-{#                                                jQuery("select[name='course'] ~ .select2-container ").css('border', 'none');#}
-{#                                                jQuery("select[name='compt_exm_type_1'] ~ .select2-container ").css('border', 'none');#}
-{#                                                jQuery("select[name='compt_exm_type_2'] ~ .select2-container ").css('border', 'none');#}
-{#                                                jQuery("select[name='q_exm'] ~ .select2-container ").css('border', 'none');#}
-{##}
-{#                                                form.submit();#}
-{#                                              },#}
-    {#                                        invalidHandler: function (event, validator) {#}
-    {#                                            console.log("Form is invalid");#}
-    {#                                            // var errors = validator.numberOfInvalids();#}
-    {#                                            // if (errors) {#}
-    {#                                            //     jQuery(validator.errorList[0].element).css("color", "red");#}
-    {#                                            // }#}
-    {#                                        },#}
-{#                                            highlight: function (element) {#}
-{#                                                jQuery(element).css("color", "red");#}
-{#                                            }#}
-{#                                        });#}
-{##}
-{#                                        jQuery(document).on("select2:closing", function () {#}
-{#                                                jQuery("select[name='course'] ~ .select2-container ").css('border', 'none');#}
-{#                                                jQuery("select[name='compt_exm_type_1'] ~ .select2-container ").css('border', 'none');#}
-{#                                                jQuery("select[name='compt_exm_type_2'] ~ .select2-container ").css('border', 'none');#}
-{#                                        })#}
-{##}
-{#                                        jQuery(".submit").click(function() {#}
-{#                                            var errors;#}
-{##}
-{#                                            if (!jQuery("#id_location").val()) {#}
-{#                                                /* Build up errors object, name of input and error message: */#}
-{##}
-{#                                                /* Show errors on the form */#}
-{#                                                jQuery("select[name='city'] ~ .select2-container ").css('border', '1px solid red');#}
-{#                                            }else{#}
-{#                                               jQuery("select[name='city'] ~ .select2-container ").css('border', 'none');#}
-{#                                            }#}
-{##}
-{#                                            if (!jQuery("#id_populate_course_categories").val()) {#}
-{#                                                /* Build up errors object, name of input and error mssage: */#}
-{#                                                    /*jQuery(var robert);#}
-{#                                                    jQuery(robert.getElementById("compt_exm_type"));*/#}
-{#                                                /* Show errors on the form */#}
-{##}
-{#                                                jQuery("select[name='robert'] ~ .select2-container ").css('border', '1px solid red');#}
-{#                                            }else{#}
-{#                                               jQuery("select[name='course'] ~ .select2-container ").css('border', 'none');#}
-{#                                            }#}
-{#                                        });#}
-{#                                    </script>#}
-                                <script>
-                                    jQuery(document).ready(function () {
-                                        if((!jQuery("select[name='compt_exm_type_2']").val()) && (jQuery("select[name='compt_exm_type_2']").val())){
-                                            jQuery("select[name='compt_exm_type_2'] ~ .select2-container ").css('border', '1px solid red');
-                                        }
-                                    })
-                                </script>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4"></div>
-                </div>
-
-            </div>
-            <div class="col-md-12 col-sm-12 hidden-xs hidden-sm blue-bar">
-
-                <div class="col-md-4 col-sm-4">
-                         <div style="background-color: #fff; border-radius: 50%;height: 100px; width:100px;margin-left: 25%; padding: 3px;margin-top: -60px;margin-bottom: 10px;">
-                            <div style="background-color: #ffc000; border-radius: 50%;height: 94px; width: 94px;padding: 20px;padding-left: 25px;">
-                                <p style="font-family: 'Raleway', sans-serif;color: #fff;font-weight: bolder;font-size: medium;">
-                                    3 Easy
-                                    Steps
-                                </p>
-                            </div>
-                        </div>
-                         <div class="col-md-12 col-sm-12 text-center awesome-triangle push-up">
-                            <p class="bb-padding" style="font-weight: bolder;">
-                                Choose College &amp; Scholarship.
-                            </p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-4">
-                    <div class="col-md-12 col-sm-12 text-center awesome-triangle">
-                            <p class="bb-padding" style="font-weight: bolder;">
-                                Pre-register &amp; get admission
-                            </p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-4">
-                    <div class="col-md-12 col-sm-12 text-center">
-                            <p class="bb-padding" style="font-weight: bolder;">
-                                Save on fees for the full course
-                            </p>
-                    </div>
-                </div>
-            </div>
-        </div><!-- #item end -->
-    </div><!-- flexslider start #end -->
-<div class="container scholrship-box">
-    <div class="row mt-e2">
-        <center>
-            <h2 class="raleway-heading">
-                Scholarships on JUST ROKKET!
-            </h2>
-        </center>
-    </div>
-    <div class="row mt-e-new">
-        <div class="col-md-12">
-            <div class="col-md-4 scholr-man-box" >
-                <div class="col-md-3" >
-                    <img src="{% static 'images/icons/merit.png' %}" style="max-height: 60px;">
-                </div>
-                <div class="col-md-9">
-                    <h4 class="raleway-subheading-new">
-                        SCHOLARSHIPS AS PER MERIT
-                    </h4>
-                    <p class="raleway-para raleway-para-new hidden-xs">
-                        Get extra waiver on fees! Higher scholarships basis better performance in qualifying exams.
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-4 scholr-man-box">
-                <div class="col-md-3">
-                    <img src="{% static 'images/icons/fullcourse.png' %}" style="max-height: 60px;">
-                </div>
-                <div class="col-md-9">
-                    <h4 class="raleway-subheading-new">
-                        SCHOLARSHIPS FOR THE FULL COURSE
-                    </h4>
-                    <p class="raleway-para raleway-para-new hidden-xs">
-                        Get scholarships that last for the full duration of your course.
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-4 scholr-man-box">
-                <div class="col-md-3">
-                    <img src="{% static 'images/icons/clear.png' %}" style="max-height: 70px;">
-                </div>
-                <div class="col-md-9">
-                    <h4 class="raleway-subheading-new">
-                        CLEAR AND TRANSPARENT COMMITMENTS
-                    </h4>
-                    <p class="raleway-para raleway-para-new hidden-xs">
-                        The scholarship offer is a part of the admission letter issued by the college.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-e1">
-        <div class="col-md-12">
-            <div class="col-md-4 scholr-man-box">
-                <div class="col-md-3" style="padding-left: 0px; padding-right: 0px;padding-top: 4%;">
-                    <img src="{% static 'images/icons/numerous.png' %}" style="max-height: 60px;">
-                </div>
-                <div class="col-md-9">
-                    <h4 class="raleway-subheading-new">
-                        NUMEROUS COLLEGE OPTIONS
-                    </h4>
-                    <p class="raleway-para hidden-xs" style="text-align: justify;">
-                        Choose from colleges basis the desired course, city and the fees (After Scholarship) they offer you .
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-4 scholr-man-box" >
-                <div class="col-md-3" style="padding-left: 0px; padding-right: 0px;padding-top: 4%;">
-                    <img src="{% static 'images/icons/standard.png' %}" style="max-height: 60px;">
-                </div>
-                <div class="col-md-9">
-                    <h4 class="raleway-subheading-new">
-                        STANDARD ADMISSION PROCESS
-                    </h4>
-                    <p class="raleway-para hidden-xs" style="text-align: justify;">
-                        Experience an almost standard admission process across our partner colleges.
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-4 scholr-man-box">
-                <div class="col-md-3" style="padding-left: 0px; padding-right: 0px;padding-top: 4%;">
-                    <img src="{% static 'images/icons/refund.png' %}" style="max-height: 60px;">
-                </div>
-                <div class="col-md-9">
-                    <h4 class="raleway-subheading-new">
-                        REFUNDABLE PRE REGISTRATION FEE
-                    </h4>
-                    <p class="raleway-para hidden-xs" style="text-align: justify;">
-                        No questions asked policy of refunding the pre registration fees.
-                    </p>
-                </div>
-            </div>
+          <div class="col-md-12 btn__wrapper text-center">
+            <a href="/question-listing"class="btn btn__primary">TAKE ME TO THE COMMUNITY</a>
+            <!-- <br/>
+            <a href="/admissions"><u>NO, TAKE ME TO THE ADMISSION</u></a> -->
+          </div>
 
         </div>
     </div>
-
-</div>
-<!-- #popular-courses #start  -->
-<section class="partner-section">
+  </div>
+  <div class="help">
     <div class="container">
-        <div class="">
-            <h2 class="text-center raleway-heading mb-e1">
-                Partner Colleges
-            </h2>
-            <div class="row">
-                {% for i in view.get_p_colleges %} {% comment %}{% if forloop.counter < 4 %}{% endcomment %}
-                <div class="col-md-3 partner-logo-padding">
-                    <div class="panel panel-default partner-border p-10 m-0">
-                        <div class="panel-body partner-front p-0">
-                            <center>
-                                <img class="partner-image" src="{{ i.logo.url }}">
-                            </center>
-                        </div>
-                    </div>
-                    <div class="partner-description">
-                        <p class="text-center bold partner-text-center text-box-paragraph">
-                            {{ i.title }}
-                        </p>
-                    </div>
-                </div>
-                {% endfor %}
+      <div class="row">
+        <div class="col-md-12">
+          <div class="text-center">
+            <p class="help__title">How just rokket helps you</p>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-3">
+            <div class="card">
+              <img  src="{% static 'images/img/Alien.svg' %}" alt="">
+              <p>connect with the community for right advice and answers</p>
             </div>
         </div>
+        <div class="col-md-3 col-sm-3">
+          <div class="card">
+            <img  src="{% static 'images/img/Rokket.svg' %}" alt="">
+            <p>Apply Directly to the college for admission</p>
+          </div>
+
+        </div>
+        <div class="col-md-3 col-sm-3">
+          <div class="card">
+            <img  src="{% static 'images/img/Direction.svg' %}" alt="">
+            <p>Get a  "1 on 1" counselling for careers, colleges and higher orbit. </p>
+          </div>
+
+        </div>
+        <div class="col-md-3 col-sm-3
+        ">
+          <div class="card">
+            <img  src="{% static 'images/img/Spaceman.svg' %}" alt="">
+            <p>connect with people who have made it to higher orbits. get inspired.</p>
+          </div>
+        </div>
+      </div>
     </div>
-</section>
+  </div>
+  <div class="community">
+      
+          <div class="container">
+      
+            <h3 class="community__title">Get community advice on colleges,</h3>
+            <h3 class="community__title">courses and career paths</h3>
+      
+            <div class="community__slider">
+      
+      
+            {% for expert in experts %}
+              <div class="card">
+                <div class="img__wrapper">
+                  {% if expert.profile_image%} <img  src="{{expert.profile_image.url}}" alt="" class="img-circle img-responsive">
+                  {% else %} <img  src="{% static 'images/img/circle_Img.jpg' %}" alt=""> {%endif%}
+      
+                </div>
+                <h3 class="card__title">{{expert.name}}</h3>
+                <p class="card__profile">{{expert.user_type_display}}</p>
+                <p class="card__univ">{{expert.who_i_am}}</p>
+              </div>
+            {% endfor %}
+      
+      
+            </div>
+            <div class="text-center">
+              <a href="/question-listing" class="btn btn__primary">ASK A QUESTION TO THE COMMUNITY</a>
+            </div>
+          </div>
+      
+      
+        </div>
+  <div class="apply">
+    <div>
+      <h3 class="apply__title">Apply directly to the colleges for admission</h3>
+      <img  src="{% static 'images/img/Laptop_Image.png' %}" alt="">
+      </div>
+      <br/>
+    <a class="btn btn__primary" href="/admissions">APPLY TO COLLEGES</a>
+  </div>
+  <div class="college">
+    <div class=" container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="college__title">PARTNER COLLEGES</h3>
+        </div>
+        <div class="card__wrapper row">
 
-{#<section class="rokket-section">#}
-{#      <div class="container ">#}
-{#          <div class="course_list mb-20 mt-20">#}
-{#              <center>#}
-{#                  <div class="row">#}
-{#                      <h2 class="raleway-heading text-center mb-e2">Some Rokketers</h2>#}
-{#                        {% for i in view.get_rokketeers %}#}
-{#                      <div class="col-md-3 mt-e1">#}
-{#                          <div class="panel panel-default partner-border p-10 m-0">#}
-{#                              <div class="panel-body partner-front p-0">#}
-{#                                  <div class="row"></div>#}
-{#                                    <img src="{{ i.image.url }}" style="width:100%; object-fit: cover; max-height: 200px; height:200px;">#}
-{#                              </div>#}
-{#                          </div>#}
-{#                            <div class="partner-description" style="min-height: 150px; height:150px;">#}
-{#                                <h5 class="m-0 pt-20 raleway-subheading" style="color: white;">#}
-{#                                    <span style="font-weight: bold; font-size: 20px;">{{ i.name }}</span><br>({{ i.from_date|date:"Y" }}&nbsp;to&nbsp;{{ i.to_date|date:"Y" }})#}
-{#                                  </h5><br>#}
-{#                                  <p class="text-center partner-description">#}
-{#                                      {{ i.description }}#}
-{#                                  </p>#}
-{#                            </div>#}
-{#                      </div>#}
-{#                        {% endfor %}#}
-{#                  </div>#}
-{#              </center>#}
-{#            <div class="row" style="margin-top: 50px;"></div>#}
-{#            <center>#}
-{#                <div class="row">#}
-{#                     <a class="btn btn-normal btn-medium" href="#" style="color: #333;">Find More Rokketers</a>#}
-{#                </div>#}
-{#            </center>#}
-{#          </div>#}
-{#      </div>#}
-{#</section>#}
-    <script>
-        jQuery(".close").on("click", function(){
-            jQuery(".modal-body").modal("close");
-            jQuery("div.forgot-password-form").hide(300);
-            jQuery("div.form-login-email").hide(300)
-        });
-    </script>
-    <script>
-        jQuery(document).ready(function () {
-            jQuery("#id_location").select2().select2('val', '1');
-        })
-    </script>
+          {% for i in view.get_p_colleges %}
+            <div class="col-md-3 col-sm-6">
+              <div class="card__inner">
+                <img  src="{{ i.logo.url }}" alt="">
+                <p class="title">{{ i.title }}</p>
+              </div>
+            </div>
+          {% endfor %}
+<!--
+          <div class="col-md-3 col-sm-6">
+            <div class="card__inner">
+              <img  src="{% static 'images/img/Amity.svg' %}" alt="">
+              <p class="title">AMITY UNIVERSITY</p>
+            </div>
+          </div> -->
 
-        <script>
-                jQuery(document).ready(function () {
-                    if(jQuery(window).width() < 767){
-                        jQuery("#to-the-right").attr("data-placement", "left");
-                        jQuery('[data-toggle="popover"]').popover();
-                        }
-                    else if(jQuery(window).width() > 767) {
-                        jQuery("#to-the-right").attr("data-placement", "right");
-                        jQuery('[data-toggle="popover"]').popover();
-                    }
-                });
-        </script>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="college rocketers">
+    <div class=" container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="college__title">SOME ROKKETERS</h3>
+        </div>
+        <div class="card__wrapper row">
 
 
-    <script src="{% static 'js/validate.js'%}"></script>
-    <script>
-        jQuery(".submit").on("click", function () {
-                console.log("form submit attempted");
-            if (validateAll()){
-                jQuery(".form").submit()
-            }
-            else{
-                a = validateAll();
-            }
-        })
-    </script>
-    <script src="{% static 'js/home.js' %}"></script>
-    {#<script type="text/javascript" src="{% static 'vendor/html5_lightbox_free/html5lightbox/jquery.js' %}"></script>#}
-    <script type="text/javascript" src="{% static 'vendor/html5_lightbox_free/html5lightbox/html5lightbox.js' %}"></script>
+          {% for i in view.get_rokketeers %}
+            <div class="col-md-3 col-sm-6">
+              <div class="card__inner">
+                <img  src="{{ i.image.url }}" alt="">
+                <p class="title">{{ i.name }}</p>
+                <p class="subtitle">{{ i.description }}</p>
+              </div>
+            </div>
+          {% endfor %}
+          <!-- <div class="col-md-3 col-sm-6">
+            <div class="card__inner">
+              <img  src="{% static 'images/img/face_Image.jpg' %}" alt="">
+              <p class="title">AMITY UNIVERSITY</p>
+              <p class="subtitle">Amity University</p>
+            </div>
+          </div> -->
 
-    <script>
-    window.onunload = refreshParent;
-    function refreshParent() {
-        window.opener.location.reload();
-    }
-</script>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% comment %} <div class="story">
+    <h3 class="story__title">KARMA STORIES</h3>
+    <p class="story__subTitle">How ordinary people have made a success of their lives</p>
+    <div class="container">
+
+        <div class="story__slider">
+          <div class="row card">
+            <div class="col-md-6">
+              <img src="http://dr.du.ac.in/data0/images/hostel.jpg" alt="">
+            </div>
+            <div class="col-md-6">
+              <h3 class="card__title">Some Title</h3>
+              <p class="card__subTitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi unde sunt eos corrupti quo ducimus id tempore cupiditate recusandae eveniet vitae quibusdam, facilis, modi delectus a dolores libero non nam.</p>
+
+              <p class="card__subTitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi unde sunt eos corrupti quo ducimus id tempore cupiditate recusandae eveniet vitae quibusdam, facilis, modi delectus a dolores libero non nam.</p>
+
+            </div>
+          </div>
+          <div class="row card">
+            <div class="col-md-6">
+              <img src="http://dr.du.ac.in/data0/images/hostel.jpg" alt="">
+            </div>
+            <div class="col-md-6">
+              <h3 class="card__title">Some Title</h3>
+              <p class="card__subTitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi unde sunt eos corrupti quo ducimus id tempore cupiditate recusandae eveniet vitae quibusdam, facilis, modi delectus a dolores libero non nam.</p>
+
+              <p class="card__subTitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi unde sunt eos corrupti quo ducimus id tempore cupiditate recusandae eveniet vitae quibusdam, facilis, modi delectus a dolores libero non nam.</p>
+
+            </div>
+          </div>
+        </div>
+    </div>
+  </div> {% endcomment %}
+  <div class="testimonial">
+    <h3 class="testimonial__title">testimonials</h3>
+    <div class="container">
+      <div class="testimonial__slider">
+        <div class="row card">
+          <div class="col-md-12">
+              <div class="col-md-12 text-center">
+                <img  src="{% static 'images/testimonials1.jpg' %}" alt="">
+              </div>
+              <div class="desc">
+                <p>“Just Rokket is a great site to connect with Colleges. Why? It not only enables you to apply for admission, it also enables you to get confirmed scholarship offers from colleges! What’s more is that your application goes only to the colleges you select and your data is not sold to other colleges – so no harassment from their tele callers 😊’’</p>
+              </div>
+              <div class="details">
+                <h3>Archesha Wadhwa</h3>
+                <p><span>Gargi college</span> | <span>#Psychology</span></p>
+              </div>
+          </div>
+        </div>
+        {% comment %} <div class="row card">
+          <div class="col-md-12">
+            <div class="col-md-12 text-center">
+              <img  src="{% static 'images/img/circle_Img.jpg' %}" alt="">
+            </div>
+              <div class="desc">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus tempore quasi consequuntur voluptatem sunt. Quibusdam magnam laudantium odio tempora obcaecati culpa consectetur numquam, esse, vero et deleniti vel incidunt nisi.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate labore velit beatae perspiciatis autem adipisci iure eveniet in cumque facilis doloremque alias veritatis praesentium sequi sapiente illo, ad ut ab.</p>
+              </div>
+              <div class="details">
+                <h3>Sonu Yadav</h3>
+                <p><span>amity university</span> | <span>#Marketing</span></p>
+              </div>
+          </div>
+        </div>
+        <div class="row card">
+          <div class="col-md-12">
+            <div class="col-md-12 text-center">
+              <img  src="{% static 'images/img/circle_Img.jpg' %}" alt="">
+            </div>
+              <div class="desc">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus tempore quasi consequuntur voluptatem sunt. Quibusdam magnam laudantium odio tempora obcaecati culpa consectetur numquam, esse, vero et deleniti vel incidunt nisi.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate labore velit beatae perspiciatis autem adipisci iure eveniet in cumque facilis doloremque alias veritatis praesentium sequi sapiente illo, ad ut ab.</p>
+              </div>
+              <div class="details">
+                <h3>Sonu Yadav</h3>
+                <p><span>amity university</span> | <span>#Marketing</span></p>
+              </div>
+          </div>
+        </div> {% endcomment %}
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="newsletter">
+    <div class="container">
+      <div class="newsletter__inner">
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <div class="col-sm-3">
+              <p class="icon">
+                <i class="fa fa-envelope-open-o" aria-hidden="true"></i>
+              </p>
+            </div>
+
+            <div class="col-sm-9">
+              <h3 class="title">Signup for Newsletter</h3>
+              <p class="subTitle">Get to know about new scholarships getting listed on Just Rokket and get insights into careers, exam prep tips and great stories.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <form class="form-inline" method="post">
+              <div class="form-group">
+                <input type="email" class="form-control" id="email" placeholder="Your Email Address">
+              </div>
+              <button type="submit" class="btn btn__primary btn__primary--sm">Sign Up</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</body>
 
 {% endblock %}

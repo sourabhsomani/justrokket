@@ -10,13 +10,40 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe-ui-default.js"></script>
+    <style>
+        .jr-progress-step{
+            height: 5px;
+            width: 100%;
+            background-color: #d7d7d7;
+            border-right: 5px solid #fff;
+        }
+        .jr-progress-step.complete{
+            background-color: #26b99a;
+        }
+        .nopadding{
+            padding:0;
+        }    
+    </style>
     {% for data in view.get_data %}
-        <div class="breadcrumb-section" style="background:url({% static 'images/banner-image.jpg' %}); background-size: cover;">
-            <div class="container">
-                <div class="row">
-                    <header class="entry-header">
-                    <h1 class="entry-title">{{ data.college }}</h1>
-                    </header>
+        <div class="breadcrumb-section" style="min-height:20px;">
+        </div>
+        <div class="row">
+            <div class="col-xs-3 nopadding">
+                <div class="jr-progress">
+                    <div class="jr-progress-step complete"></div>
+                </div>
+            </div>
+            <div class="col-xs-3 nopadding">
+                <div class="jr-progress-step complete"></div>
+            </div>
+            <div class="col-xs-3 nopadding">
+                <div class="jr-progress">
+                    <div class="jr-progress-step"></div>
+                </div>
+            </div>
+            <div class="col-xs-3 nopadding">
+                <div class="jr-progress">
+                    <div class="jr-progress-step"></div>
                 </div>
             </div>
         </div>
@@ -33,15 +60,15 @@
                         <div class="col-md-10">
 
                             <div id="border-right-custtm-new" class="col-md-6 border-rgt-new con-box-mob" >
-                                <h4 class="raleway-heading mt-0">{{ data.course_name }}</h4>
-                                <h5 class="raleway-subheading" style="color: #333;font-weight: bold;">{{ data.college }}</h5>
-                                <p class="raleway-heading raleway-heading-new-custtm" style="font-weight: lighter;">
+                                <h4 class="raleway-heading mt-0" style="color:#3d3d3d">{{ data.course_name }}</h4>
+                                <h5 class="raleway-subheading" style="color: #3d3d3d;font-size:20px;font-weight: bold;">{{ data.college }}</h5>
+                                <p class="raleway-heading raleway-heading-new-custtm" style="font-size: 18px;color:#6d6d6d;font-weight: lighter;">
                                     {{ data.campus }} Campus&nbsp;
                                     <a style="color: #333;" href="#" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-html="true" title="" data-content="{{ data.address_s1|safe|linebreaksbr }}, {{ data.address_s2|safe|linebreaksbr }}, {{ data.address_city|safe|linebreaksbr }}, {{ data.address_state|safe|linebreaksbr }}."> <i class="fa fa-info-circle"></i></a>
                                 </p>
 
                                     <div class="row">
-                                        <div class="col-md-9 raleway-heading">
+                                        <div class="col-md-9 raleway-heading" style="color:#3d3d3d;font-size:16px;">
                                             Session starts in {{ data.session_start_date|date:"M Y" }}
                                         </div>
                                         <div class="col-md-3 pl-0">
@@ -56,7 +83,7 @@
                                     <br>
                                     <ul class="tick">
                                         {% for af_cr in data.af_cr.all %}
-                                            <a id="to-the-left" data-toggle="popover" data-trigger="hover" data-html="true" title="" data-content="{{ af_cr.description|safe|linebreaksbr }}" style="text-decoration: none;"><li class="iconTimes" style="display: block;margin: -1%;word-break: break-all;">{{ af_cr.text|safe|linebreaksbr }}</li></a>
+                                            <a id="to-the-left" data-toggle="popover" data-trigger="hover" data-html="true" title="" data-content="{{ af_cr.description|safe|linebreaksbr }}" style="text-decoration: none;"><li class="iconTimes" style="color:#bdbdbd;font-size: 18px;display: block;margin: -1%;word-break: break-all;">{{ af_cr.text|safe|linebreaksbr }}</li></a>
                                         {% endfor %}
                                         {% if data.rec_app %}
                                             <a id="to-the-left" data-toggle="popover" data-trigger="hover" data-html="true" title="" data-content="{{ data.rec_app.description|safe|linebreaksbr }}" style="text-decoration: none;"> <li class="iconTimes" style="display: block;margin: -1%;word-break: break-all;">{{ data.rec_app.text|safe|linebreaksbr }}</li></a>
@@ -124,9 +151,9 @@
                                 var items = [
                                     {% for image in data.images %}
                                         {
-                                            src: "{{ image.src }}",
-                                            w: {{ image.width }},
-                                            h: {{ image.height }}
+                                            src: '{{ image.src }}',
+                                            w: '{{ image.width }}',
+                                            h: '{{ image.height }}'
                                         }{% if not forloop.last %},{% endif %}
                                     {% endfor %}
                                 ];
@@ -157,14 +184,27 @@
                     </div>
                     <div class="col-md-8">
                         <div class="">
-                            <div class="col-md-4 pr-0">
+                            <div class="col-md-6 pr-0" style="">
                                 <div class="panel panel-default" style="border: 1px solid #c7c7c7;height: 85px; margin-bottom: 5px; border-radius: 0;">
-                                    <div class="panel-body" style="padding: 10px;">
-                                        <center><h4 class="raleway" style="display: inline; vertical-align: middle;">Fees per year</h4></center>
-                                        <center><h4 class="raleway"><span style="color:#187e89;">Rs. {{ data.final_fee }}</span>&nbsp;&nbsp;<span style="color:#b7b7b7; text-decoration: line-through;">Rs. {{ data.fee }}</span> </h4></center>
+                                    <div class="panel-body" style="padding-top: 10px;">
+                                        <center><h4 class="raleway" style="display: inline; vertical-align: middle; font-size:16px;color:#3d3d3d">Output Quality Index</h4></center>
+                                        <center><h4 class="raleway" style="color:#187e89; font-size:24px;">{{ data.college_quality_index }}</h4></center>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6 pr-0">
+                                <div class="panel panel-default" style="border: 1px solid #c7c7c7;height: 85px; margin-bottom: 5px; border-radius: 0;">
+                                    <div class="panel-body" style="padding: 10px;">
+                                        <center><h4 class="raleway" style="display: inline; vertical-align: middle; font-size:16px;color:#3d3d3d">Tuition Fees per year</h4></center>
+                                        <center><h4 class="raleway"><span style="color:#187e89;font-size:24px">Rs. {{ data.final_fee }}</span>&nbsp;&nbsp;
+                                            {% if data.savings != 0 %}
+                                        <span style="color:#b7b7b7; text-decoration: line-through;font-size:24px;">Rs. {{ data.fee }}</span>
+                                            {% endif %}
+                                        </h4></center>
+                                    </div>
+                                </div>
+                            </div>
+                            {% comment %}
                             <div class="col-md-4 pr-0" style="">
                                 <div class="panel panel-default" style="border: 1px solid #c7c7c7;height: 85px; margin-bottom: 5px; border-radius: 0;">
                                     <div class="panel-body" style="padding-top: 10px;">
@@ -174,17 +214,25 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4 pr-0">
+                             <div class="col-md-4 pr-0">
                                 <div class="panel panel-default" style="border: 1px solid #c7c7c7;height: 85px; margin-bottom: 5px;border-radius: 0;" >
                                     <div class="panel-body" style="padding-top: 5px;">
                                         <center><h4 class="raleway" style="display: inline; vertical-align: middle;">Scholarship</h4> <h4 style="color: green; display: inline; vertical-align: middle;">{{ data.scholarship }} %</h4></center>
                                         <center><b class="raleway" style="color: #b7b7b7;">( Till Course End )</b></center>
                                     </div>
                                 </div>
+                            </div> {% endcomment %}
+                            {% if data.scholarship != "0" %}
+                            <div class="col-md-12">
+                                <div style="border-top: 1px solid #ccc;padding: 8px 0 8px 0;height: 40px;">
+                                    <div class="col-md-6 col-xs-12 col-sm-6"><img src="{% static 'images/confirmed-scholarships.png' %}" style="height: 30px;width: auto;"> Your scholarship offer on Just Rokket <span>{{ data.scholarship }} %</span></div>
+                                    <div class="col-md-6 col-xs-12 col-sm-6 text-right">Applicable on tuition fees only, T&C apply</div>
+                                </div>
                             </div>
+                            {% endif %}
                             <div class="col-md-12 mt-10 pr-0">
                                 <div class="panel panel-default" style="height: 50px; margin: 0px; border-radius: 0;">
-                                    <button class="btn btn-lg finalize btn-orange new-im-intrested" style="color:white; width: 100%; height: 100%; border-radius: 0; right: 0px;" >I WANT THIS ROKKET OFFER <i class="lnr lnr-arrow-right"></i></button>
+                                    <button class="btn btn-lg finalize btn-orange new-im-intrested" style="color:white; width: 100%; height: 100%; border-radius: 0; right: 0px;" >I WANT THIS ROKKET OFFER <i style="top:0" class="fa fa-chevron-right"></i></button>
                                 </div>
                                 <script>jQuery(".finalize").on("click", function(){window.location="/finalize/{{ view.get_selection }}"})</script>
                             </div>
@@ -256,7 +304,7 @@
                                 };
                                 // Initializes and opens PhotoSwipe
                                 var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
-                                jQuery(".open-gallery").on("click", function(){
+                                jQuery(".open-gallery").on("click touchstart", function(){
                                     gallery.init();
                                 });
                             });
@@ -391,15 +439,14 @@
                                 <!-- END A1-->
                                 {% endif %}
 
-
+                                {% comment %} {% if data.savings != 0 %} {% endcomment %}
                                 {% if view.get_other_benefits %}
                                 <!--A2-->
                                 <div class="panel panel-default" style="margin-top: 15px;">
                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" style="outline: none; border: none; text-underline-mode: none; text-decoration: none;">
                                      <div class="panel-heading" style="height: 50px;" href="#collapse2">
                                           <h4 class="panel-title raleway-heading" style="padding-top: 7px;">
-
-                                                Other Benefits <i class="change colr-red-pluse fa fa-plus" style="float: right;"></i>
+                                                Info - Placements <i class="change colr-red-pluse fa fa-plus" style="float: right;"></i>
                                           </h4>
                                     </div>
                                  </a>
@@ -424,8 +471,7 @@
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" style="outline: none; border: none; text-underline-mode: none; text-decoration: none;">
                                     <div class="panel-heading" style="height: 50px;">
                                       <h4 class="panel-title raleway-heading" style="padding-top: 7px;">
-
-                                            Info Scholarship <i class="change colr-red-pluse fa fa-plus" style="float: right;"></i>
+                                        Info - fees and other costs <i class="change colr-red-pluse fa fa-plus" style="float: right;"></i>
                                       </h4>
                                     </div>
                                 </a>
@@ -455,7 +501,7 @@
                                 </div>
                               </div>
                                 <!-- END A3-->
-
+                                {% comment %} {% endif %} {% endcomment %}
                                 <!--A4-->
                                 {% if view.get_admission_process %}
                                 <div class="panel panel-default" style="margin-top:15px;">
@@ -527,11 +573,11 @@
                 });
         </script>
 
-        <-- photo error fix-->
+        <!-- photo error fix-->
             <script>
-                jQuery(".pswp__button--close").onclick(function () {
+                jQuery('.pswp__button').onclick(function () {
 
-                    jQuery(".pswp--open").css('display', 'none')
+                    jQuery('.pswp').css('display', 'none !important')
                 })
             </script>
     {% endfor %}

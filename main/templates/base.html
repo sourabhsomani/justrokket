@@ -13,10 +13,9 @@
 
 {% endblock title %}
 
-
-<link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="60x60" href="{% static 'images/apple-touch-icon.png' %}">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
 <link rel="manifest" href="/manifest.json">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 <meta name="theme-color" content="#ffffff">
@@ -29,23 +28,27 @@
 <link rel="stylesheet" href="{% static 'css/global.css' %}">
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
-<link href="https://fonts.googleapis.com/css?family=Raleway:400,600" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css" />
 <link id="scrollUpTheme" rel="stylesheet" href="{% static 'css/themes/pill.css' %}">
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.js"></script>
 <script src="{% static 'js/date-validator.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script type="text/javascript" src="{%  static 'js/parsley.min.js' %}"></script>
-
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="{% static 'css/new_home.css' %}" rel="stylesheet"/>
 
 
     <!-- Number Spinners -->
 
     <style>
+    * {
+      font-family: 'Montserrat', sans-serif  ;}
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
           -webkit-appearance: none;
@@ -58,22 +61,41 @@
         color: #000;
         line-height: 28px;
         }
+        .fa{
+          font: normal normal normal 14px/1 FontAwesome !important;
+          margin-right: 6px;
+        }
+
+
+
     </style>
     <style>
         textarea, input, button { outline: none!important; }
         textarea:focus, input:focus, button:focus { outline: none!important; }
     </style>
+
 </head>
+
 <body style="overflow-x: hidden!important;">
 <div class="se-pre-con"></div>
-
+<header class="fixed-header">
+  <nav class="navbar navbar-inverse text-right">
+    <div class="container">
+      <ul class="nav navbar-nav navbar-right navbar-social">
+        <a href="#"> <i class="fa fa-phone"></i>+91 9990 838830</a>
+        <a href="https://www.facebook.com/justrokket"><i class="fa fa-facebook"></i></a>
+        <a href="https://twitter.com/justrokket" target="_blank"><i class="fa fa-twitter"></i></a>
+    </ul>
+    </div>
+  </nav>
+</header>
 <header class="site-header" id="masthead" style="height: 75px; z-index: 999999 !important;">
 <div class="container" style="height: 80px;">
 <div class="header_meta header_meta_custtm">
     <div class="row" style="height: 80px !important;">
       <div class="site-branding col-xs-12 col-sm-4 hidden-xs">
           <a rel="home" href="/">
-              <img alt="Just Rokket" style="object-fit: contain;height: 65px;padding-bottom: 3%;" src="{% static 'images/icons/logo588x136.jpg' %}">
+              <img alt="Just Rokket" style="object-fit: contain;height: 65px;padding-bottom: 3%;" src="{% static 'images/icons/logo588x136.png' %}">
           </a>
       </div>
       <nav class="main-navigation navbar navbar-default" id="site-navigation">
@@ -86,11 +108,11 @@
               </div>
                 <div class="col-xs-6 text-center" style="padding:0">
                     <a rel="home" href="/">
-                         <img alt="Just Rokket" style="max-width: 160px;object-fit: contain; height: auto" src="{% static 'images/icons/logo588x136.jpg' %}">
+                         <img alt="Just Rokket" style="max-width: 160px;object-fit: contain; height: auto" src="{% static 'images/icons/logo588x136.png' %}">
                     </a>
                   </div>
                 <div class="col-xs-3 text-left" style="padding:0; padding-top: 7px;">
-                  <a href="#" class="dropdown-toggle hello" data-toggle="dropdown" role="button" style="font-family: 'MarketFresh',sans-serif; color: #000; background-color: transparent;">{% if request.user.is_authenticated %}<span id="dropdwn_username" style="font-family: 'MarketFresh',sans-serif;color: #000;background-color: transparent;margin-left: 25px;margin-top: 5px;">HELLO!</span>{% else %}<a data-toggle="modal" data-target="#mymodal" style="border:1px solid #b7b7b7;margin: -3px 5px 0 25px;display: inline-block;padding: 3px;font-family: 'MarketFresh',sans-serif; border-radius: 3px;" class="enter-logged-out">ENTER</a>{% endif %}</a>
+                  <a href="#" class="dropdown-toggle hello" data-toggle="dropdown" role="button" style="font-family: 'MarketFresh',sans-serif; color: #000; background-color: transparent;">{% if request.user.is_authenticated %}<span id="dropdwn_username" style="font-family: 'MarketFresh',sans-serif;color: #000;background-color: transparent;margin-left: 25px;margin-top: 5px;">HELLO!</span>{% else %}<a data-toggle="modal" data-target="#mymodal" style="border:1px solid #b7b7b7;margin: -3px 5px 0 25px;display: inline-block;padding: 3px;font-family: 'MarketFresh',sans-serif; border-radius: 3px;" class="enter-logged-out">LOGIN</a>{% endif %}</a>
                      {% if request.user.is_authenticated %}
                         <ul class="dropdown-menu dropdown-content dropdown-menu1" role="menu" style="padding-bottom: 0;margin-top: 1em;margin-right: 1px!important;">
                             <li><a {% if request.user.is_authenticated %} href="/profile/{{ request.user.id }}" {% else %} href="#" {% endif %} style="">My Profile</a></li>
@@ -115,59 +137,25 @@
 {#        </div>#}
         <div class="collapse navbar-collapse mobile_nav">
             <ul class="navbar-left mobile_number_left" style="list-style: none;">
-                <li class="dropdown-menu-left" style=""><a href="#" style="text-decoration: none; font-family: 'MarketFresh',sans-serif" ><span data-tooltip-content="#tooltip_content" style="padding-right: 15px;"><i class="fa fa-phone get-back" style="color: #f00025;"></i> 8376840610</span></a>
+                <li class="dropdown-menu-left" style=""><a href="#" style="text-decoration: none; font-family: 'MarketFresh',sans-serif" ><span data-tooltip-content="#tooltip_content" style="padding-right: 15px;"></span></a>
                     <div id="mob_tooltp" class="hovs arrow_box " style="margin-top: 6%;padding-top: 2px;padding-bottom: 10px; margin-left: -30px;padding-right: 15px; padding-left: 15px; border-radius: 10px;">
                         <p class="hov-box">Mon - Sat, 9 am to 9 pm</p>
                     </div>
                 </li>
             </ul>
+           <ul class="navbar-left mobile_number_left" style="list-style: none;padding-left: 0px!important;">
+                {% block menu_bar_custom %}
+                <li class="" style="float: left;padding-right: 10px;"><a href="/question-listing" style="text-decoration: none;">Go to Community</a></li>
+                <li class="" style="float: left;"><a href="/admissions" style="text-decoration: none;">Apply to College</a></li>
+                {% endblock menu_bar_custom %}
+            </ul>
           <ul class="nav navbar-nav">
-            <li class="dropdown-menu-left">
-                <a  href="/how-this-works" style="text-decoration: none;padding-top: 0px;">
-                    <span data-tooltip-content="#tooltip_content" style="font-family: 'MarketFresh',sans-serif">How This Works?</span>
-                </a>
-                 <div id="mob_tooltp" class="hovs arrow_box " style="width: 420px;height: 310px;margin-left: -50%; border-radius: 10px;padding-left: 0px;padding-right: 0px;padding-top: 15px;padding-bottom: 0px;margin-top: -6px;">
-                      <div class="col-md-12 col-xs-12" style="border-bottom: 1px ridge; padding-bottom: 10px; padding-left: 0px;">
-                          <div class="col-md-3 col-xs-3" style="padding-left: 0px;">
-                                <img class="center-block" src="{% static 'images/icons/search-college.png' %}" style="max-height: 40px;margin-top: 5px;">
-                          </div>
-                          <div class="col-md-9 col-xs-9" style="padding-right: 0px;padding-left: 0px;">
-                                <p class="hov-box"><span style="color:#f00025; ">SEARCH COLLEGES</span> and scholarships for the desired course in the city you want to study in.</p>
-                          </div>
-                      </div>
-                      <div class="col-md-12 col-xs-12" style="border-bottom: 1px ridge; padding-bottom: 10px;padding-left: 0px;">
-                          <div class="col-md-3 col-xs-3" style="padding-left: 0px;">
-                                <img class="center-block" src="{% static 'images/icons/merit.png' %}" style="max-height:40px;margin-top: 15px;padding-left: 0px;">
-                          </div>
-                          <div class="col-md-9 col-xs-9" style="padding-right: 0px; padding-left: 0px;">
-                                <p class="hov-box">Share your performance in earlier exams and <span style="color:#f00025;">GET MERIT BASED SCHOLARSHIP OFFERS</span> from educational institutes.</p>
-                          </div>
-                      </div>
-                      <div class="col-md-12 col-xs-12" style="border-bottom: 1px ridge;padding-bottom: 10px; padding-left: 0px;">
-                          <div class="col-md-3 col-xs-3" style="padding-left: 0px;">
-                                <img class="center-block" src="{% static 'images/icons/pre-reg.png' %}" style="max-height: 40px; margin-top: 10px;">
-                          </div>
-                          <div class="col-md-9 col-xs-9" style="padding-right: 0px;padding-left: 0px;">
-                                <p class="hov-box"><span style="color:#f00025;">PRE REGISTER AND APPLY</span> for a seat with scholarship in the college & course of your choice</p>
-                          </div>
-                      </div>
-                      <div class="col-md-12 col-xs-12" style="padding-bottom: 10px; padding-left: 0px;margin-bottom: 10px;">
-                          <div class="col-md-3 col-xs-3" style="padding-left: 0px;">
-                                <img class="center-block" src="{% static 'images/icons/selection.png' %}" style="max-height: 35px;margin-top: 10px;">
-                          </div>
-                          <div class="col-md-9 col-xs-9" style="padding-right: 0px;padding-left: 0px;">
-                                <p class="hov-box">Complete the admission formalities after <span style="color:#f00025;"> SELECTION </span></p>
-                          </div>
-                      </div>
-                     <p class="text-center hov-box">Learn while you save money on your fees for the full course!</p>
-                 </div>
-            </li>
             <li class="nav-item dropdown hidden-xs">
-              <a  href="#" class="dropdown-toggle hidden-xs hello" data-toggle="dropdown" role="button" aria-expanded="false" style="font-family: 'MarketFresh',sans-serif; padding: 0; color: #000; background-color: transparent;">{% if request.user.is_authenticated %}<span id="dropdown_username" style="font-family: 'MarketFresh',sans-serif; padding-top: 0px;color: #000;background-color: transparent;">Hello, {{ username }}!</span>{% else %}<a data-toggle="modal" data-target="#mymodal" style="margin-top:-10px;font-family: 'MarketFresh',sans-serif;" class="enter-logged-out">ENTER</a>{% endif %}</a>
+              <a  href="#" class="dropdown-toggle hidden-xs hello" data-toggle="dropdown" role="button" aria-expanded="false" style="font-family: 'MarketFresh',sans-serif; padding: 0; color: #000; background-color: transparent;">{% if request.user.is_authenticated %}<span id="dropdown_username" style="text-transform:uppercase;padding-top: 0px;color: #000;background-color: transparent;margin-left: 10px;">Hello, {{ username }}!</span>{% else %}<a data-toggle="modal" data-target="#mymodal" style="margin-top:-10px;font-family: 'MarketFresh',sans-serif;" class="enter-logged-out">Login</a>{% endif %}</a>
                 {% if request.user.is_authenticated %}
                 <ul class="dropdown-menu dropdown-content" role="menu" style="padding-bottom: 0;margin-top: 1em;-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .175);box-shadow: 0 0 1px  rgba(0, 0, 0, 0.6);">
                     <li><a {% if request.user.is_authenticated %} href="/profile/{{ request.user.id }}" {% else %} href="#" {% endif %} style="">My Profile</a></li>
-                    <li><a {% if request.user.is_authenticated %} href="/profile/{{ request.user.id }}/#tab2" {% else %} href="#" {% endif %} style="">My Vouchers</a></li>
+                    <li><a {% if request.user.is_authenticated %} href="/profile/{{ request.user.id }}/#tab3" {% else %} href="#" {% endif %} style="">My Activity</a></li>
 {#                    <li class="mvc">{% if request.user.is_authenticated %}<a href="/profile/{{ request.user.id }}#tab2" style="">My Vouchers</a>{% else %} <a href="#" style="">My Vouchers {% endif %}</li>#}
 {#                    <li>{% if request.user.is_authenticated %}<a href="/profile/{{ request.user.id }}#tab3" style="">My Activity </a>{% else %} <a href="#" style="">My Activity {% endif %}</a></li>#}
                     {% if request.user.is_authenticated %}<li><a href="/logout">Logout</a></li>{% endif %}
@@ -192,26 +180,26 @@
 {#        window.location = "/profile/{{ request.user.id }}#tab2";#}
 {#    })#}
 </script>
-<div class="signup-newsletter col-xs-12">
-    <div class="container">
+<div class="signup-newsletter col-xs-12 ">
+    <div class="container-fluid newsletter">
 
        <div class="col-xs-12 text-center">
           <div class="letter-icon-red">
           <img alt="Emailer Mailer" src="{% static 'images/emailer-icon.jpg' %}">
           </div>
       </div>
-      <div class="col-xs-12 news-letter-box">
+      <div class="col-xs-10 news-letter-box col-xs-offset-1" id="point-me">
              <div class="col-xs-12 col-sm-6">
-             <span class="i-email-subscribe"><i class="icon-envelope-letter icons"></i></span>
+             <span class="icon"><i class="fa fa-envelope-open-o" style="font-size:32px!important"></i></span>
              <h3>Signup for Newsletter</h3>
              <p>Get to know about new scholarships getting listed on Just Rokket and get insights into careers, exam prep tips and great stories.</p>
              </div>
              <div class="col-xs-12 col-sm-6">
-              <form method="post" class="sign-form sign-box-news" id="signupform" action="/newsletter/">{% csrf_token %}
+              <form method="post" class="sign-form sign-box-news" id="signupform" action="/newsletter/#point-me">{% csrf_token %}
               <input type="email" required placeholder="Your email address" class="form-control  form-emailer-search form-control-new" name="email">
-        &nbsp;&nbsp;<button class="btn-red btn-medium" value="Sign up" type="submit" style="height: 43px;align-content: center;">Signup</button>
+        &nbsp;&nbsp;<button class="btn-red btn-medium" value="Sign up" type="submit" style="height: 43px;align-content: center;"  onclick="myFunction()">Signup</button>
                  </form>
-             <div class="col-xs-12 col-sm- col-md-12">
+             <div class="col-xs-12 col-sm- col-md-12" style="padding-left: 0px; margin-top: 10px;">
                  {% for message in messages %}
                      <p style="float: left;">{{ message }}</p>
                   {% endfor %}
@@ -220,43 +208,44 @@
         </div>
     </div>
 </div>
-<footer id="colophon" class="site-footer">
-  <div class="container">
-     <div class="col-xs-12 col-md-12 col-lg-12">
-         <div class="col-xs-12 col-sm-4 footer-widget">
-              <aside class="" id="text-1">
-                  <h6 class="widget-title">About</h6>
-                  <ul>
-                    <li style="padding-bottom: 0px;"><a href="/about-us">About Us</a></li>
-                    <li style="padding-bottom: 0px;"><a href="/pricing">Pricing</a></li>
-                    <li style="padding-bottom: 0px;"><a href="/partner-institutions">Partner Institutions</a></li>
-                    <li style="padding-bottom: 0px;"><a href="http://blog.justrokket.com" target="_blank">Just Rokket Diary</a></li>
-                  </ul>
-              </aside>
-         </div>
-         <div class="col-xs-12 col-sm-4 footer-widget">
-             <aside class="widget_text" id="text-1">
-                 <h6 class="widget-title">Support</h6>
-                 <ul>
-                    <li style="padding-bottom: 0px;"><a href="/how-this-works">How This Works</a></li>
-                    <li style="padding-bottom: 0px;"><a href="/faq">FAQ's</a></li>
-                    <li style="padding-bottom: 0px;"><a href="/tnc">Terms of Use</a></li>
-                    <li style="padding-bottom: 0px;"><a href="/privacy-policy">Privacy Policy</a></li>
-                    <li style="padding-bottom: 0px;"><a href="/why-students-can-depend-on-us">Why You Can Depend on us</a></li>
-                 </ul>
-             </aside>
+<footer id="colophon" class="">
+  <div class="footer">
+    <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-sm-3">
+            <h3 class="footer__title">About </h3>
+            <ul>
+              <li><a href="/about-us">About Us</a></li>
+              <li><a href="/pricing">Pricing</a></li>
+              <li><a href="/partner-institutions">Partner Institutions</a></li>
+              <li><a href="http://blog.justrokket.com" target="_blank">Just Rokket Diary</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3 col-sm-3">
+            <h3 class="footer__title">Support </h3>
+            <ul>
+              <li><a href="/how-this-works">How This Works</a></li>
+              <li><a href="/faq">FAQ's</a></li>
+              <li><a href="/tnc">Terms of Use</a></li>
+              <li><a href="/privacy-policy">Privacy Policy</a></li>
+              <li><a href="/why-students-can-depend-on-us">Why You Can Depend on us</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3 col-sm-3">
+            <h3 class="footer__title">Institutions </h3>
+            <ul>
+              <li><a href="mailto:sales@justrokket.com">Become A Partner</a></li>
+              <li><a href="/how-just-rokket-helps-partner-institutions">How Just Rokket Helps You</a></li>
+           </ul>
+          </div>
+          <div class="col-md-3 col-sm-3">
+            <h3 class="footer__title">Contact Us </h3>
+            <ul>
+              <li><a class="foo-col" href="/contact-us">Contact Us</a></li>
+            </ul>
+          </div>
         </div>
-        <div class="col-xs-12 col-sm-4 footer-widget footer-widget-lastChild">
-           <aside class="widget_quickcontact">
-              <h6 class="widget-title">Institutions</h6>
-                 <ul>
-                    <li style="padding-bottom: 0px;"><a href="mailto:sales@justrokket.com">Become A Partner</a></li>
-                    <li style="padding-bottom: 0px;"><a href="/how-just-rokket-helps-partner-institutions">How Just Rokket Helps You</a></li>
-                 </ul>
-                 <h6 class="foo-col" style="margin-top: 25px;margin-bottom: 0px;"><a class="foo-col" href="/contact-us">Contact Us</a></h6>
-{#                 <h6 class="foo-col" style="margin-top: 21px;"><a class="foo-col" href="/refund-policy">Refund Policy</a></h6>#}
-           </aside>
-        </div>
+    </div>
      </div>
   </div>
  <div class="footer-copyright">
@@ -302,13 +291,7 @@
                             </div>
                             <div class="text-center button  " style="margin-top: 1em;">
                                 <input class="btn-orange " name="Login" type="submit" value="Sign In" >
-
-
-
                             </div>
-
-
-
                             <div class="row remeber" style="margin-bottom: 1em;">
                                 <center><a class="forgot-password" href="#password-reset" >Forgot Password?</a></center>
                             </div>
@@ -343,7 +326,6 @@
                         </form>
                     </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -379,6 +361,7 @@
     </form>
     </div>
 </div>
+<script src="{% static 'plugin/unslider-master/src/js/unslider.js' %}"></script>
 <script src="{% static 'vendor/flexslider/jquery.flexslider-min.js' %}"></script>
 <script src="{% static 'js/theme.js' %}"></script>
 <script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
@@ -453,7 +436,7 @@
     console.log("SignUpform")
     jQuery.ajax({
         type: jQuery(this).attr('method'),
-        url: '/signup2/',
+        url: '/signup/',
         data: jQuery(this).serialize(),
         dataType: 'json',
         success: function(response) {
@@ -511,7 +494,7 @@
           jQuery('#email-errors').html(response.form)
           jQuery('#email-errors').attr(response)
         }
-    });<a  href="someotherpage.php" >Your Link</a>
+    });
     return false;
   });
 </script>
@@ -588,7 +571,7 @@
     jQuery("input[type='email']").removeAttr('required');
     jQuery("input[type='password']").removeAttr('required');
   });
-    
+
     jQuery(".close").on("click", function () {
         jQuery("input[name='email']").val('');
         jQuery(".recover-button-after").html('');
@@ -609,7 +592,7 @@
  ga('send', 'pageview');
 </script>
 
-<!-- changes in hello/help dropdown-->
+<!-- changes in hello/help dropdown (mobile)-->
 
 <script>
     jQuery(document).ready(function() {
@@ -621,8 +604,37 @@
     });
 
 </script>
+    <script>
+        $(window).scroll(function() {
+            sessionStorage.scrollTop = $(this).scrollTop();
+        });
 
+        $(document).ready(function() {
+            if (sessionStorage.scrollTop != "None") {
+                $(window).scrollTop(sessionStorage.scrollTop);
+            }
 
+        });
 
+        $('.help').on('click', function(){
+
+          $('.mobile_nav').toggle();
+        })
+
+        if(window.location.search != ''){
+            if(window.location.search.indexOf("next=")!=-1){
+                if($(".enter-logged-out").length==0){
+                    window.location.href=window.location.search.split("=")[1];
+                }
+                else{
+                    $('#mymodal').modal('show');
+                    $('.close').remove();   
+                }
+            }
+        }
+        $('.close').on('click', function(){
+            $('#mymodal').modal('hide');
+        })
+    </script>
 </body>
 </html>

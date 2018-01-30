@@ -44,6 +44,18 @@
         border-radius: 0!important;
         color: #666!important;
     }
+    .jr-progress-step{
+        height: 5px;
+        width: 100%;
+        background-color: #d7d7d7;
+        border-right: 5px solid #fff;
+    }
+    .jr-progress-step.complete{
+        background-color: #26b99a;
+    }
+    .nopadding{
+        padding:0;
+    }
     </style>
     {%  if request.user.is_authenticated %}
     <script></script>
@@ -61,24 +73,29 @@
     <link rel="stylesheet" href="{% static 'vendor/fancybox/css/fancybox.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
     <script src="{% static 'vendor/masked.js' %}"></script>
-    <div class="breadcrumb-section" style="background:url({% static 'images/banner-image.jpg' %}); background-size: cover;">
-        <div class="container">
-            <div class="row">
-                <header class="entry-header">
-                <h1 class="entry-title">Your Profile</h1>
-                </header>
+    <div class="breadcrumb-section" style="min-height:20px;">
+    </div>
+    <div class="row">
+        <div class="col-xs-3 nopadding">
+            <div class="jr-progress">
+                <div class="jr-progress-step complete"></div>
+            </div>
+        </div>
+        <div class="col-xs-3 nopadding">
+            <div class="jr-progress-step complete"></div>
+        </div>
+        <div class="col-xs-3 nopadding">
+            <div class="jr-progress">
+                <div class="jr-progress-step complete"></div>
+            </div>
+        </div>
+        <div class="col-xs-3 nopadding">
+            <div class="jr-progress">
+                <div class="jr-progress-step"></div>
             </div>
         </div>
     </div>
     <section class="screen4-bg pt-30">
-         <div class="container">
-            <div class="row">
-                <ul class="nav nav-tabs nav-tabs-red nav-new-heading-tabs raleway">
-                    <li class="active"><a href="#profile" data-toggle="tab" style="padding-left: 1em;padding-right: 1em;">Profile</a></li>
-                    <li><a id="2" href="#payment" disabled="disabled">Payment</a></li>
-                </ul>
-            </div>
-        </div>
         <style>
             .disabled:hover{
             cursor: not-allowed;
@@ -277,7 +294,7 @@
                                                             </div>
                                                         {% endif %}
                                                         {% if ask_school %}
-                                                            <div class="col-md-11" style="margin-left: -5px;padding-left: 0px;">
+                                                            <div class="col-md-11 col-xs-10" style="margin-left: -5px;padding-left: 0px;">
                                                                 <p style="text-align: left; font-size: 12px;">The parent / legal guardian of the candidate understands & agrees with the aforesaid college rules and the <a href="/tnc/"><b style="text-decoration: underline">Terms of Use</b></a></p>
                                                             </div>
                                                         {% endif %}
@@ -367,6 +384,7 @@
                     </div>
                     <div class="col-md-5">
                         {% for college in get_college %}
+                            {% if scholarship != "0" %}
                             <div class="">
                                 <div class="panel" style="width: 100%; border:1px solid black;">
                                     <div class="panel" style="border: 4px solid #0070C0; margin: 20px; ">
@@ -461,7 +479,17 @@
                                     </div>
                                 </div>
                             </div>
+                            {% endif %}
                         {% endfor %}
+                        {% if scholarship == "0" %}
+                        <div style="border: 1px solid #b7b7b7;" class="duration-box-year-mobile hidden-xs">
+                            <center><img src="{{ cert_detail.college.logo.url }}" style="min-height: 75px;max-height: 100px;"></center>
+                            <h4 class="course-with-text"> {{ get_selection.course_name }}</h4>
+                            <h4 class="text-bottm-bordr text-center">{{ cert_detail.college.name }}</h4>
+                            <p class="text-center">{{ cert_detail.college.street_1 }}, {{ cert_detail.college.city }}<br>Session Starts in {{ cert_detail.college_qualification.session_start|date:"M Y" }}</p><br>
+                            <p class="rale-3 text-center">Duration {{ cert_detail.college_qualification.qualification.duration }} Years</p>
+                        </div>
+                        {% endif %}
 {#                        <div class="" style="padding-left: 0px; padding-right: 0px; margin-top: 1em;">#}
 {#                            <div class="acc-bg">#}
 {#                                <!-- accordion #start-->#}
@@ -494,11 +522,6 @@
 {#                                    </div>#}
 {#                                </div>#}
 {#                            </div>#}
-                            <div style="border: 1px solid #b7b7b7; padding: 15px 10px 5px 10px; margin-top: 2em;">
-                                  <h5  class="pre-reg-text">
-                                      The pre-registration wih 'Just Rokket' does not replace the registration and/or other fees required to be paid to the institution.
-                                  </h5>
-                            </div>
 {#                        </div>#}
 {#                        <!-- accordion #end-->#}
                         <div class="box-club clearfix">

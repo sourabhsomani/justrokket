@@ -6,6 +6,7 @@ jQuery(".add").on("click", function () {
     if (count == 2) {
         jQuery(".add").css("color", "rgba(0,0,0,0)");
     }
+    jQuery(this).remove();
     count++
 });
 
@@ -27,7 +28,7 @@ function populate_qualifying_exam(course_option_chosen) {
     // jQuery("select[name=compt_exm_type]").empty().trigger('change');
     jQuery.ajax({
         data :{'level': level, 'course': course_option_chosen},
-        url: "populate/qualification/exam/",
+        url: "/populate/qualification/exam/",
         dataType: "json",
         success: function (response) {
             jQuery.each(response, function (key, value) {
@@ -45,7 +46,7 @@ function populate_qualifying_exam(course_option_chosen) {
 
 function populate_competitive_exam(level, course, q_exam) {
     jQuery.ajax({
-        url: "populate/qualification/exam/?level=" + level + "&course=" + course + "&q_exam=" + q_exam,
+        url: "/populate/qualification/exam/?level=" + level + "&course=" + course + "&q_exam=" + q_exam,
         dataType: "json",
         success: function (data) {
             jQuery.each(data, function (key, value) {
@@ -82,7 +83,7 @@ function formatCourseCategorySelection(repo) {
 jQuery("#id_populate_course_categories").select2({
     allowClear: false,
     ajax: {
-        url: "populate/course/categories/",
+        url: "/populate/course/categories/",
         dataType: 'json',
         delay: 0,
         data: function (params) {
@@ -114,7 +115,7 @@ jQuery("#id_populate_course_categories").select2({
     minimumInputLength: 3,
     templateResult: formatCourseCategory,
     templateSelection: formatCourseCategorySelection,
-    placeholder: "What do you want to study?",
+    placeholder: "Course ?",
 }).on("change", function (e) {
     var option_chosen = jQuery("#select2-id_populate_course_categories-container").text();
     jQuery("input[name='course_type']").val(option_chosen);
@@ -141,7 +142,7 @@ function formatQualificationSelection(repo) {
 
 jQuery('select[name=q_exm]').select2({
     ajax: {
-        url: "populate/qualification/exam/",
+        url: "/populate/qualification/exam/",
         dataType: 'json',
         delay: 250,
         data: function (params) {
@@ -194,7 +195,7 @@ function formatCompetitiveExamSelection(repo) {
 
 jQuery('select[name=compt_exm_type_1]').select2({
     ajax: {
-        url: "populate/competitve/exam/",
+        url: "/populate/competitve/exam/",
         dataType: 'json',
         delay: 250,
         data: function (params) {
@@ -227,7 +228,7 @@ jQuery('select[name=compt_exm_type_1]').select2({
 
 jQuery('select[name=compt_exm_type_2]').select2({
     ajax: {
-        url: "populate/competitve/exam/",
+        url: "/populate/competitve/exam/",
         dataType: 'json',
         delay: 250,
         data: function (params) {

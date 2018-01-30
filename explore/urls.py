@@ -11,7 +11,9 @@ from . import settings
 urlpatterns = [
     url(r'^', include('django.contrib.auth.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.HomeView.as_view(), name='home'),
+    url(r'^$', views.HomeViewNew.as_view(), name='home'),
+    url(r'^admissions/$', views.HomeView.as_view(), name='home'),
+    url(r'^community-page/$', views.admissions1.as_view(), name='home'),
     url(r'^explore-post/$', views.ExplorePost.as_view(), name='explore-post'),
     url(r'^profile/(?P<pk>\d+)', views.UpdateProfile.as_view(), name='profile'),
     url(r'^selected-college/(?P<pk>\d+)/$', views.Screen3.as_view(), name='selected-college'),
@@ -61,14 +63,16 @@ urlpatterns = [
     url(r'^newsletter/$', views.Newsletter.as_view(), name='newsletter'),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
     url(r'^sitemap\.xml$', TemplateView.as_view(template_name='sitemap.xml', content_type='text/xml')),
-
-    url(r'^apple-touch-icon\.png$', RedirectView.as_view(url="/static/apple-touch-icon.png", permanent=False)),
-    url(r'^favicon-32x32\.png$', RedirectView.as_view(url="/static/favicon-32x32.png", permanent=False)),
+    url(r'^apple-touch-icon\.png$', RedirectView.as_view(url="/static/images/apple-touch-icon.png", permanent=False)),
+    url(r'^favicon-32x32\.png$', RedirectView.as_view(url="/static/images/favicon-32x32.png", permanent=False)),
     url(r'^favicon-16x16\.png$', RedirectView.as_view(url="/static/favicon-16x16.png", permanent=False)),
     url(r'^favicon\.ico$', RedirectView.as_view(url="/static/favicon.ico", permanent=False)),
     url(r'^manifest\.json$', RedirectView.as_view(url="/static/manifest.json", permanent=False)),
     url(r'^safari-pinned-tab\.svg$', RedirectView.as_view(url="/static/safari-pinned-tab.svg", permanent=False)),
     url(r'^featured-image\.jpg$', RedirectView.as_view(url="/static/images/featured.jpg")),
+    # url(r'^community/', include('qa.urls')),
+    url(r'^question-listing/', include('qa.urls')),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

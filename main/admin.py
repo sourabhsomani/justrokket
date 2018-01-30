@@ -8,7 +8,7 @@ app = apps.get_app_config('main')
 
 for model_name, model in app.models.items():
     admin.site.register(model)
-
+    
 
 class OrderResource(resources.ModelResource):
     class Meta:

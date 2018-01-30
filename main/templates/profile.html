@@ -5,6 +5,11 @@
 {% endblock title %}
 {% block content %}
     <script src="{% static 'vendor/masked.js' %}"></script>
+    <script>
+      jQuery('.submitForm').on('click', function(){
+        alert('sjdbh');
+      })
+    </script>
     <style type="text/css">
       #id_id_type{
         width:100%;
@@ -15,8 +20,55 @@
       .errorlist{
         border: 1px solid red;
       }
+      .card{
+        border-bottom: 1px solid #e7e7e7;
+      }
+      .question__title p span{
+        font-size: 16px;
+        font-weight: 600;
+
+        margin-right: 6px;
+      }
+      .question__title p span+span{
+        font-weight: 400;
+      }
+      .well{
+        max-height: 450px;
+        overflow: auto;
+      }
+      .question__ellipsis{
+        max-width: 70%;
+        min-width: 70%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        line-height: 20px;
+        vertical-align: bottom;
+      }
+      .answer__ellipsis{
+        max-width: 30%;
+        min-width: 30%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        line-height: 26px;
+        vertical-align: bottom;
+      }
+      .question__date{
+
+      }
+      .btn__primary{
+        background-color: #f00025;
+        color: #fff;
+        border: 1px solid #f00025;
+        padding: 12px 36px;
+        margin-bottom: 12px;
+      }
     </style>
     <div class="breadcrumb-section" style="background:url({% static 'images/banner-image.jpg' %}); background-size: cover;">
+
 	    <div class="container">
             <div class="row">
                 <header class="entry-header">
@@ -27,17 +79,20 @@
     </div>
     <div class="row about-us-main-box" style="background-color: #f4f4f4;">
         <div class="container">
+
+
             <div class="col-md-12 pl-0 pr-0" style="background-color: #fff;padding-top: 2em; margin-bottom: 2em;">
               <ul class="nav nav-tabs nav-tabs-red nav-new-heading-tabs">
                   <li class="active"><a data-toggle="tab" href="#tab1">My Profile</a></li>
-                  <li><a data-toggle="tab" href="#tab2">My Vouchers</a></li>
-{#                  <li><a data-toggle="tab" href="#tab3">My activity</a></li>#}
+                  <!-- <li><a data-toggle="tab" href="#tab2">My Vouchers</a></li> -->
+                  <li><a data-toggle="tab" href="#tab3">My Activity</a></li>
               </ul>
 
                 <div class="tab-content tab-content-border">
                 <div id="tab1" class="tab-pane fade in active clearfix pl-0 pr-0">
                   <form class="form form-horizontal" action="" method="POST">
                   {% csrf_token %}
+
                   <div class="col-md-12 pl-0 pr-0">
                     <div class="panel panel-default panel-new">
                       <div class="panel-heading pnel-new-bg">
@@ -49,7 +104,14 @@
                           <label for="name" class="col-sm-2 control-label">{{ form.name.label }}</label>
                           <div class="col-sm-10 {% if form.name.errors %}errorlist{% endif %}">
                               {{ form.name}}
-                            {% comment %}<input type="email" class="form-control" id="inputEmail3" placeholder="Email">{% endcomment %}
+                            {% comment %}<input type="email" class="form-control jj" id="inputEmail3" placeholder="Email">{% endcomment %}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="name" class="col-sm-2 control-label">I Am</label>
+                          <div class="col-sm-10 {% if form.name.errors %}errorlist{% endif %}">
+                              {{ form.who_i_am}}
+                            {% comment %}<input type="email" class="form-control jj" id="inputEmail3" placeholder="Email">{% endcomment %}
                           </div>
                         </div>
 {#                        <div class="form-group">#}
@@ -64,7 +126,7 @@
 {#                              {{ form.id_no}}#}
 {#                          </div>#}
 {#                        </div>#}
-                        
+
                         <div class="form-group">
                           <label for="id_type" class="col-sm-2 control-label">Gender</label>
                           <div class="col-sm-10 {% if form.gender.errors %}errorlist{% endif %}">
@@ -96,44 +158,44 @@
                                 {% comment %}<input type="email" class="form-control" id="inputEmail3" placeholder="Email">{% endcomment %}
                               </div>
                           </div>
-{#                        <div class="form-group">#}
-{#                          <label for="hosue" class="col-sm-2 control-label">House</label>#}
-{#                          <div class="col-sm-10 {% if form.house.errors %}errorlist{% endif %}">#}
-{#                              {{ form.house}}#}
-{#                            {% comment %}<input type="email" class="form-control" id="inputEmail3" placeholder="Email">{% endcomment %}#}
-{#                          </div>#}
-{#                        </div>#}
-{#                        <div class="form-group">#}
-{#                          <label for="street" class="col-sm-2 control-label">Street</label>#}
-{#                          <div class="col-sm-10 {% if form.street.errors %}errorlist{% endif %}">#}
-{#                              {{ form.street}}#}
-{#                            {% comment %}<input type="email" class="form-control" id="inputEmail3" placeholder="Email">{% endcomment %}#}
-{#                          </div>#}
-{#                        </div>#}
-{#                        <div class="form-group">#}
-{#                          <label for="city" class="col-sm-2 control-label ">City</label>#}
-{#                          <div class="col-sm-10 city {% if form.city.errors %}errorlist{% endif %}">#}
-{#                            {{ form.city }}#}
-{#                          </div>#}
-{#                        </div>#}
-{#                        <div class="form-group">#}
-{#                          <label for="district" class="col-sm-2 control-label ">District</label>#}
-{#                          <div class="col-sm-10 {% if form.district.errors %}errorlist{% endif %}">#}
-{#                              {{ form.district}}#}
-{#                          </div>#}
-{#                        </div>#}
-{#                        <div class="form-group">#}
-{#                          <label for="state" class="col-sm-2 control-label">State</label>#}
-{#                          <div class="col-sm-10 {% if form.state.errors %}errorlist{% endif %}">#}
-{#                              {{ form.state}}#}
-{#                          </div>#}
-{#                        </div>#}
-{#                        <div class="form-group">#}
-{#                          <label for="pin" class="col-sm-2 control-label">Pin</label>#}
-{#                          <div class="col-sm-10 {% if form.pin.errors %}errorlist{% endif %}">#}
-{#                              {{ form.pin}}#}
-{#                          </div>#}
-{#                        </div>#}
+                        <!-- <div class="form-group">
+                          <label for="hosue" class="col-sm-2 control-label">House</label>
+                          <div class="col-sm-10 {% if form.house.errors %}errorlist{% endif %}">
+                              {{ form.house}}
+                            {% comment %}<input type="email" class="form-control" id="inputEmail3" placeholder="Email">{% endcomment %}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="street" class="col-sm-2 control-label">Street</label>
+                          <div class="col-sm-10 {% if form.street.errors %}errorlist{% endif %}">
+                             {{ form.street}}
+                            {% comment %}<input type="email" class="form-control" id="inputEmail3" placeholder="Email">{% endcomment %}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="city" class="col-sm-2 control-label ">City</label>
+                          <div class="col-sm-10 city {% if form.city.errors %}errorlist{% endif %}">
+                            {{ form.city }}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="district" class="col-sm-2 control-label ">District</label>
+                          <div class="col-sm-10 {% if form.district.errors %}errorlist{% endif %}">
+                              {{ form.district}}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="state" class="col-sm-2 control-label">State</label>
+                          <div class="col-sm-10 {% if form.state.errors %}errorlist{% endif %}">
+                              {{ form.state}}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="pin" class="col-sm-2 control-label">Pin</label>
+                          <div class="col-sm-10 {% if form.pin.errors %}errorlist{% endif %}">
+                              {{ form.pin}}
+                          </div>
+                        </div> -->
 {##}
 {#                        <div class="form-group">#}
 {#                          <label for="country" class="col-sm-2 control-label">Country</label>#}
@@ -165,7 +227,7 @@
                                       <div style="margin-top: 10px">{{ request.user.email }}</div>
                                   </div>
                             </div>
-                            
+
                             <div class="form-group">
                               <label for="id_no" class="col-sm-2 control-label">Mobile</label>
                               <div class="col-sm-10 {% if form.mobile.errors %}errorlist{% endif %}">
@@ -173,21 +235,152 @@
                               </div>
                             </div>
 
+
+
+
                             <div class="form-group">
                       <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-orange">Update Profile</button>
+
                       </div>
                     </div>
                           </div>
                         </div>
                     </div>
+                    <div class="col-md-12 pl-0 pr-0">
+                        <div class="panel panel-default panel-new mb-0">
+                          <div class="panel-heading pnel-new-bg">
+                            <div class="panel-title pnel-new-bg-text">Education Qualification</div>
+                          </div>
+                          <div class="panel-body">
+                            <div class="form-group">
+                              <label for="id_no" class="col-sm-2 control-label">School</label>
+                              <div class="col-sm-10 {% if form.mobile.errors %}errorlist{% endif %}">
+                                  {{ form.school}}
+                              </div>
+                            </div>
 
+                            <div class="form-group">
+                              <label for="id_no" class="col-sm-2 control-label">School Course</label>
+                              <div class="col-sm-10 {% if form.mobile.errors %}errorlist{% endif %}">
+                                  {{ form.school_course}}
+                              </div>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="id_no" class="col-sm-2 control-label">School Qualification</label>
+                              <div class="col-sm-10 {% if form.mobile.errors %}errorlist{% endif %}">
+                                  {{ form.school_qualification}}
+                              </div>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="id_no" class="col-sm-2 control-label">School Classs 12th Year</label>
+                              <div class="col-sm-10 {% if form.mobile.errors %}errorlist{% endif %}">
+                                  {{ form.class_12_year}}
+                              </div>
+                            </div>
+
+                            {{ eduqualform.management_form }}
+                            
+                            {% for form in eduqualform %}
+                              <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label for="name" class="col-sm-12">{{ form.college.label_tag }} </label>
+                                    <div class="col-sm-12 {% if form.name.errors %}errorlist{% endif %}">
+                                      {{ form.college }}
+                                    </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label for="name" class="col-sm-12">{{ form.course.label_tag }} </label>
+                                    <div class="col-sm-12 {% if form.name.errors %}errorlist{% endif %}">
+                                      {{ form.course }}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label for="name" class="col-sm-12">{{ form.qualification.label_tag }} </label>
+                                    <div class="col-sm-12 {% if form.name.errors %}errorlist{% endif %}">
+                                      {{ form.qualification }}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label for="name" class="col-sm-12">{{ form.year_of_passing_out.label_tag }} </label>
+                                    <div class="col-sm-12 {% if form.name.errors %}errorlist{% endif %}">
+                                      {{ form.year_of_passing_out }}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div>
+                                  <div class="form-group">
+                                    <label for="name" class="col-sm-12" style="display:none">{{ form.id.label_tag }} </label>
+                                    <div class="col-sm-12 {% if form.name.errors %}errorlist{% endif %}" style="display:none">
+                                      {{ form.id }}
+                                    </div>
+                                  </div>
+                                </div>
+                            {% endfor %}
+
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 pl-0 pr-0">
+                        <div class="panel panel-default panel-new mb-0">
+                          <div class="panel-heading pnel-new-bg">
+                            <div class="panel-title pnel-new-bg-text">My  Interest</div>
+                          </div>
+                          <div class="panel-body">
+
+                            <div class="form-group clearfix">
+                              <label for="name" class="col-sm-2 control-label">{{ form.my_interest.label }}</label>
+                              <div class="col-sm-10 {% if form.name.errors %}errorlist{% endif %}">
+                                {{form.my_interest}}
+                              </div>
+                            </div>
+                            <div class="form-group clearfix">
+                              <label for="name" class="col-sm-2 control-label">{{ form.what_i_do_well.label }}</label>
+                              <div class="col-sm-10 {% if form.name.errors %}errorlist{% endif %}">
+                                {{form.what_i_do_well}}
+                              </div>
+                            </div>
+                            <div class="form-group clearfix">
+                              <label for="name" class="col-sm-2 control-label">{{ form.career_mission.label }}</label>
+                              <div class="col-sm-10 {% if form.name.errors %}errorlist{% endif %}">
+                                {{form.career_mission}}
+                              </div>
+                            </div>
+                            <div class="form-group clearfix">
+                              <label for="name" class="col-sm-2 control-label">{{ form.interesting_about_me.label }}</label>
+                              <div class="col-sm-10 {% if form.name.errors %}errorlist{% endif %}">
+                                {{form.interesting_about_me}}
+                              </div>
+                            </div>
+                            <div class="form-group clearfix">
+                              <label for="name" class="col-sm-2 control-label">{{ form.my_extra_curri.label }}</label>
+                              <div class="col-sm-10 {% if form.name.errors %}errorlist{% endif %}">
+                                {{form.my_extra_curri}}
+                              </div>
+                            </div>
+                            <div class="form-group text-center">
+                              <button type="submit" class="btn btn-orange">Update Profile</button>
+                            </div>
+                          </div>
+
+                        </div>
+                    </div>
                     <div class="row">
                     </div>
                     <div class="panel panel-default panel-new mb-0">
+
                     </div>
-                    
+
                      </form>
+
                     <div class="panel panel-default panel-new">
                         <div class="panel-heading pnel-new-bg">
                         <div class="panel-title pnel-new-bg-text">My Password Details</div>
@@ -252,7 +445,7 @@
                                         <p class="raleway" style="color: #888;"> Session Starting in&nbsp;: &nbsp;&nbsp;<span class="rale-3" style="">{{ voucher.session_start|date:"M, Y" }}</span></p>
                                         <p class="raleway" style="color: #888;"> Email&nbsp;: &nbsp;&nbsp;<span class="rale-3" style=""> {{ voucher.email }} </span></p>
                                         <p class="raleway" style="color: #888;"> Mobile&nbsp;: &nbsp;&nbsp;<span class="rale-3" style=""> {{ voucher.mobile }} </span></p>
-                                       
+
                                         {% if voucher.c_exm_type_1 or voucher.c_exm_type_2 %}
                                         <p class="raleway" style="color: #888;"> Compt Exams&nbsp;: &nbsp;&nbsp;<span class="rale-3" style=""> {{ voucher.c_exm_type_1 }}{% if voucher.c_exm_type_2 %},{{ voucher.c_exm_type_2 }}{% endif %}  </span></p>
                                         <p class="raleway" style="color: #888;"> Compt Exam Score&nbsp;: &nbsp;&nbsp;<span class="rale-3" style=""> {{ voucher.c_exm_score_1 }}{% if voucher.c_exm_type_2 %} and {% endif %}{{ voucher.c_exm_score_2 }} {% if voucher.c_exm_type_2 %}respectively.{% endif %} </span></p>
@@ -263,8 +456,8 @@
                                         <p class="raleway" style="color: #888;"> Qualification Exam Score&nbsp;: &nbsp;&nbsp;<span class="rale-3" style=""> {{ voucher.q_exm_score }} </span></p>
                                         {% endif %}
 
-                                        
-                                        
+
+
 
                                     </div>
 {#                                    <div class="col-md-6 col-xs-12 col-sm-12"  id="{{ voucher.order_number }}">#}
@@ -304,47 +497,165 @@
                     <div id="tab3" class="tab-pane fade p-0">
                         <div class="panel panel-default panel-new pt-30">
                             <div class="panel-heading" style="background-color: #e7e7e7;">
-                                <div class="panel-title heading-black-box">"Tell your friends in your email list and on socail platforms about Just Rokket".</div>
+                                <div class="panel-title heading-black-box">
+                                  MY Questions
+                                </div>
                             </div>
                             <div class="panel-body">
-                               
-                                    <div class="row">
-                                        <div class="col-sm-1 col-md-1 col-xs-1 gmail-icn">
-                                            <a href="#"><img  src="{% static 'images/icons/Gmail_Icon.png' %}"></a>
-                                        </div>
-                                        <div class="col-sm-11 col-md-11 col-xs-11">
-                                            <p style="padding-top: 5px;color: #000;">Import your Gmail contacts and tell them about Just Rokket</p>
-                                        </div>
+                              {% for myquestion in my_questions %}
+                              <div class="col-md-12">
+                                <div class="card">
+                                  <div class="question__title" type="button" data-toggle="collapse" data-target="#myquestion-{{myquestion.pk}}" aria-expanded="false" aria-controls="collapseExample">
+                                      <h4>
+                                        <span>Q</span>
+                                        <span>{{myquestion.description}}</span>
+                                      </h4>
+
+                                      {% if myquestion.answer_set.all %}
+                                      <p>
+                                        <span>A</span>
+                                        <a href="#">Click to see answer.</a>
+                                      </p>
+                                       {% else %}
+                                      <p>
+                                        <span>A</span>
+                                        <a href="#">No Answer Yet.</a>
+                                      </p>
+                                      {% endif %}
+
+                                  </div>
+
+                                  <div class="collapse" id="myquestion-{{myquestion.pk}}">
+                                    <div class="well">
+
+                                      {% for answer in myquestion.answer_set.all %}
+                                      <div class="answer">
+                                         <p>
+                                          <span>A</span>
+                                          {% if answer.user.profile_image %}
+                                          <img src="{{answer.user.profile_image.url}}" alt="" class="img-circle" style="width:20px"/>
+                                          {% else %}
+                                          <img src="/static/images/img/circle_Img.jpg" alt="" class="img-circle" style="width:20px"/>
+                                          {% endif %}
+                                          <a href="#">{{answer.user.name}}, {{answer.user.get_user_type_display}}, {{answer.user.who_i_am}}</a>
+                                        </p>
+                                        <p>
+                                          <span><b>Ans {{forloop.counter}}- </b></span>
+                                          <span>{{answer.answer_text}}</span>
+                                        </p>
+                                      </div>
+                                      {%endfor%}
+
                                     </div>
-                                    <div class="row mt-e1">
-                                        <div class="col-sm-1 col-md-1 col-xs-1 outlookicon">
-                                            <a href="#"><img src="{% static 'images/icons/outlook_icon.png' %}"></a>
-                                        </div>
-                                        <div class="col-sm-11 col-md-11 col-xs-11">
-                                            <p style="padding-top: 5px;color: #000;" >Import your Outlook contacts and tell them about Just Rokket</p>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-e1">
-                                        <div class="col-sm-1 col-md-1 col-xs-1 facebookicon">
-                                            <a href="#"><img src="{% static 'images/icons/facebook_icon.png' %}" ></a>
-                                        </div>
-                                         <div class="col-sm-11 col-md-11 col-xs-11">
-                                            <p style="padding-top: 5px;color: #000;">Share post with your friends.</p>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-e1">
-                                         <div class="col-sm-1 col-md-1 col-xs-1 twittericon">
-                                            <a href="#"><img src="{% static 'images/icons/twitter_icon.png' %}" ></a>
-                                        </div>
-                                         <div class="col-sm-11 col-md-11 col-xs-11">
-                                            <p style="padding-top: 5px;color: #000;">Share post with your friends.</p>
-                                        </div>
-                                    </div>
-                                
+                                  </div>
+                                </div>
+
+                              </div>
+
+                              {%endfor%}
                             </div>
                         </div>
+                        <div class="panel panel-default panel-new">
+                            <div class="panel-heading" style="background-color: #e7e7e7;">
+                                <div class="panel-title heading-black-box">
+                                  My Answers
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                              {%for each in answered_by_me%}
+                              <div class="col-md-12">
+                                <div class="card">
+                                  <div class="question__title" type="button" data-toggle="collapse" data-target="#myanswer-{{each.question.pk}}" aria-expanded="false" aria-controls="collapseExample">
+                                      <h4>
+                                        <span>Q</span>
+                                        <span class="question__ellipsis">{{each.question.title}}</span>
+                                        <span class="question__date text-right">Posted on - {{each.question.pub_date}}</span>
+                                      </h4>
+                                      <p>
+                                        <span>A</span>
+                                        <span class="answer__ellipsis">{{answer.answer_text}}</span>
+                                      </p>
+                                  </div>
+
+                                  <div class="collapse" id="myanswer-{{each.question.pk}}">
+                                    <div class="well">
+                                      {%for answer in each.question.answer_set.all %}
+                                      {% ifequal answer.user.user request.user %}
+                                      <div class="answer">
+                                        <p>
+                                          <span><b>Ans {{forloop.counter}}- </b></span>
+                                          <span>{{answer.answer_text}}</span>
+                                        </p>
+                                      </div>
+                                      {% endifequal %}
+                                       {%endfor%}
+
+
+
+                                    </div>
+                                  </div>
+
+
+
+                                </div>
+
+                              </div>
+                              {% endfor %}
+                            </div>
+                        </div>
+                        <div class="panel panel-default panel-new">
+                            <div class="panel-heading" style="background-color: #e7e7e7;">
+                                <div class="panel-title heading-black-box">
+                                  Question Pending
+                                </div>
+                            </div>
+                            {% for each in questions_pending %}
+                            <div class="panel-body">
+
+                              <div class="col-md-12">
+
+                                <div class="card">
+                                  <div class="question__title" type="button" data-toggle="collapse" data-target="#pending-{{each.question.pk}}" aria-expanded="false" aria-controls="collapseExample">
+                                      <h4>
+                                        <span>Q</span>
+                                        <span class="question__ellipsis">{{each.question.title}}</span>
+                                        <span class="question__date text-right">Posted on - {{each.question.pub_date}}</span>
+                                      </h4>
+                                      <p>
+                                        <span>A</span>
+                                        <span class="answer__ellipsis">No Answer yet, Please publish your answer.</span>
+                                      </p>
+                                  </div>
+                                  <div class="collapse" id="pending-{{each.question.pk}}">
+                                    <div class="well">
+
+                                      <div class="answer">
+                                        <h4>
+                                          <span>Q</span>
+                                          <span class="">{{each.question.description}}</span>
+                                        </h4>
+                                        <hr/>
+                                      </div>
+                                      <form id="asnwerByID" action="/question-listing/answerfromprofile/" class="asnwerByID" method="post">
+                                        <div class="form-group">
+                                          <label for="disabledTextInput">Your Answer</label>
+                                          <input type="hidden" class="hidden" name="question_id" value="{{each.question.pk}}"/>
+                                          <textarea class="form-control profile-forms asnwerByIDBox" rows="8" name="answer_text"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn__primary submitForm" >Publish</button>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                             {% endfor %}
+                        </div>
                     </div>
-                </div> <!-- tabs #end -->
+                    </div>
+                </div>
+
+               <!-- tabs #end -->
             </div>
         </div>
     </div>
@@ -358,6 +669,11 @@
         jQuery("input[type='checkbox']").removeAttr('required')
       });
     jQuery("#id_dob").mask("9999-99-99",  {placeholder: 'YYYY-MM-DD' });
+    $(document).ready(function(){
+        jQuery(".panel-heading.pnel-new-bg").click(function(){
+            jQuery(this).next(".panel-body").slideToggle();
+        });
+    });
     </script>
     <script>
 
@@ -403,9 +719,43 @@
         jQuery(document).ready(function () {
             jQuery("textarea#id_address").css('min-height', '130px');
             jQuery("textarea#id_address").css('max-height', '140px');
+
+
+
+            jQuery('.asnwerByID').on('submit', function(e){
+             e.preventDefault() ;
+             e.stopPropagation();
+             var url = jQuery(this).attr('action');
+             var hello = {};
+             var data = jQuery(this).serializeArray().map(function(x){
+               hello[x.name] = x.value;
+             });
+             var newHello = {
+               question_id:parseInt(hello.question_id),
+               answer_text:hello.answer_text,
+             }
+             var form_Data = JSON.stringify(newHello);
+             jQuery.post(url,form_Data, function(data){
+                 // console.log(data)
+                 window.location.reload();
+             }).fail(function(err){
+               console.log(err);
+             })
+           })
         })
+
     </script>
 
+    <script>
+      (function(){
+        var selectBox = document.querySelectorAll('select');
+        for(i=0; i<= selectBox.length; i++){
+          selectBox[i].classList.add('form-control');
+        }
+      })();
+
+
+    </script>
     <!-- field validations-->
 <!--    <script>
         $(".form-group").ready(function(){
@@ -419,4 +769,9 @@
     });
 });
     </script>-->
+
+
+
+
+
 {% endblock %}

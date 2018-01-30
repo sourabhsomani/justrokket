@@ -1,0 +1,241 @@
+{% extends 'qa/base.html' %}
+{% load django_markdown %}
+{% load staticfiles %}
+{% block content %}
+<!-- <h2 class="pull-right">Points: {{ user.points }}</h1>
+<ul>
+  <li><b>Website :</b> {{ user.website }} </li>
+   <li><b>e-mail :</b> {{ user.user.email }} </li>
+   <li><b>Date Joined :</b> {{ user.user.date_joined }} </li>
+   <li><b>Last Login :</b> {{ user.user.last_login }} </li>
+   <li><b>is Active :</b> {{ user.user.is_active }} </li>
+<ul>
+
+</div> -->
+<div class="row">
+
+
+  <div class="col-md-8 col-sm-8 qa__left">
+     <div class="qa__answerWrapper">
+       <div class="qa__Search row" style="padding-bottom:32px">
+         <!-- <div class="col-md-12 btn__wrapper text-center">
+           <a href="/qa" class="btn btn__primary  btn__primary--sm u__padding12X36">COMMUNITY</a>
+           <a href="/admissions/" class="btn btn__secondry btn__secondry--sm u__margin--left-6">COLLEGE ADMISSION</a>
+         </div> -->
+       </div>
+         <div class="qa__answerWrapper">
+          <br/>
+          <div class="tab-content container-fluid">
+           <div class="tab-pane active" id="latest">
+              <div class="qa__q-card">
+                  <div class="row ">
+                    <div class="row profile__row">
+
+                       <div class="col-xs-12 col-sm-8 col-md-8 ">
+                          <div class="row">
+                               <div class="col-sm-4 col-md-2">
+                               {% if user.profile_image%}
+                                   <img src="{{user.profile_image.url}}" alt="" class="img-circle img-responsive">
+                                {% endif %}
+                                
+                               </div>
+                               <div class="col-sm-6 col-md-8">
+                                   <h4 style="margin-top:12px;">{{user.name}}</h4>
+                                   <small>
+                                     <cite>{{user.get_user_type_display}}</cite>
+                                    </small>
+                                   <p>{{user.who_i_am}}</p>
+                                   <p></p>
+
+                               </div>
+                          </div>
+                       </div>
+                       <div class="col-xs-12 col-sm-4 col-md-4 profile__row--adddress text-right">
+                         <p>{{user.address}}</p>
+
+                       </div>
+                     </div>
+
+                     {% for eduqual in user.collegeeduqual_set.all %}
+
+
+                     <div class="row profile__row">
+                       <div class="col-md-3 profile__college">
+                         <h4>College/University</h4>
+                         <p> {{eduqual.college}}</p>
+                       </div>
+                       <div class="col-md-3 profile__college ">
+                         <h4>qualification</h4>
+                         <p>{{eduqual.qualification}}</p>
+                       </div>
+                       <div class="col-md-3 profile__college">
+                         <h4>Course</h4>
+                         <p>{{eduqual.course}}</p>
+                       </div>
+                       <div class="col-md-3 profile__college">
+                         <h4>Year Of Passing Out</h4>
+                         <p>{{eduqual.year_of_passing_out}}</p>
+                       </div>
+                     </div>
+                     {% endfor %}
+                     <div class="row profile__row">
+                       <div class="col-md-12 profile__content">
+                         <h4>My Interest</h4>
+                         <p>{{user.my_interest}}</p>
+                         <p></p>
+                       </div>
+                       <div class="col-md-12 profile__content">
+                         <h4>What I do well</h4>
+                         <p>{{user.what_i_do_well}}</p>
+                         <p></p>
+                       </div>
+                       <div class="col-md-12 profile__content">
+                         <h4>Career mission</h4>
+                         <p>{{user.career_mission}}</p>
+                         <p></p>
+                       </div>
+                       <div class="col-md-12 profile__content">
+                         <h4>Interesting thing about me</h4>
+                         <p>{{user.interesting_about_me}}</p>
+                         <p></p>
+                       </div>
+                       <div class="col-md-12 profile__content">
+                         <h4> My extra curricullar</h4>
+                         <p>{{user.my_extra_curri}}</p>
+                         <p></p>
+                       </div>
+
+                     </div>
+                  </div>
+              </div>
+              <br>
+           </div>
+
+          </div>
+        </div>
+     </div>
+  </div>
+
+  <div class="col-md-4 col-sm-4 qa__right">
+
+    <div class="row qa__qButton">
+      <div class="col-md-12">
+        <a class="btn btn-lg " href="{% url 'qa_create_question' %}">I Want To Ask A Question</a>
+      </div>
+    </div>
+
+     <!-- <div class="panel panel-default">
+        <div class="panel-body">
+           <h4>Total Questions: {{ totalcount }}</h4>
+           <h4>Total Answers: {{ anscount }}</h4>
+        </div>
+     </div> -->
+
+     <!-- contact us -->
+     <!-- tags -->
+     <div class="qa__popularTag">
+       <div class="row ">
+         <div class="col-md-12">
+            <h3 class="title">Popular Tags</h3>
+         </div>
+          <div class="col-md-12">
+             {# {% for tag in tags %} #}
+              {# <a href="/question-listing/tag/{{ tag.name }}">#{{ tag.name }}</a> #}
+             {# s{% endfor %} #}
+             <a href="/question-listing/tag/marketing">#marketing</a>
+             <a href="/question-listing/tag/finance">#finance</a>
+             <a href="/question-listing/tag/computerscience">#computerscience</a>
+             <a href="/question-listing/tag/class12board">#class12board</a>
+             <a href="/question-listing/tag/jee">#jee</a>
+             <a href="/question-listing/tag/cat">#cat</a>
+             <a href="/question-listing/tag/mat">#mat</a>
+             <a href="/question-listing/tag/mba">#mba</a>
+             <a href="/question-listing/tag/pgdm">#pgdm</a>
+             <a href="/question-listing/tag/btech">#btech</a>
+             <a href="/question-listing/tag/amityuniversity">#amityuniversity</a>
+             <a href="/question-listing/tag/studyinaustralia">#studyinaustralia</a>
+             <a href="/question-listing/tag/studyinamerica">#studyinamerica</a>
+          </div>
+        </div>
+     </div>
+
+     <!-- user profile -->
+     <div class="qa__communityMember">
+       <h3 class="title">COMMUNITY EXPERTS</h3>
+       <div class=" card">
+       {% for expert in experts%}
+           <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                      <div class="row">
+                          <div class="col-sm-6 col-md-4">
+                             {% if expert.profile_image %}
+                              <img class="img img-circle" src="{{expert.profile_image.url}}" alt="">
+                              {% else %}
+                              <img class="img img-circle" src="{% static "qa/User_Placeholder.svg" %}" alt="" class="img-circle img-responsive" />
+                              {% endif %}
+                          </div>
+                          <div class="col-sm-6 col-md-8">
+                              <h4>
+                                   <a href="{% url 'qa_profile' expert.user.id expert.name|cut:' ' %}">{{expert.name}} </a></h4>
+                              <small>
+                                <cite title="San Francisco, USA">{{expert.user_type_display}}</cite>
+                              </small>
+                              <p>
+                                  {{expert.who_i_am}}
+                              </p>
+
+                          </div>
+                      </div>
+              </div>
+           </div>
+           {%endfor%}
+           <div class="row">
+             <div class="col-md-12">
+               <div class="text-right">
+                   <a href="/community-page">Show More</a>
+               </div>
+             </div>
+           </div>
+      </div>
+     </div>
+     {% if noans.count %}
+       <div class="panel panel-warning">
+          <div class="panel-heading">
+             <h3 class="panel-title">Unanswered Questions</h3>
+          </div>
+          <div class="panel-body">
+             <ul>
+                {% for question in noans %}
+                <li><a href="{% url 'qa_detail' question.id %}">{{ question.title }}</a></li>
+                {% endfor %}
+             </ul>
+          </div>
+       </div>
+     {% endif %}
+
+     {% comment %}
+     {% if user.is_authenticated %}
+       <div class="span3 well">
+          <center>
+             <a href="{% url 'qa_profile' user.id user.profile.name|cut:' ' %}" data-toggle="modal">
+             {% if user.userqaprofile.picture %}
+             <img src="{{ user.userqaprofile.picture }}" name="aboutme" width="100" height="100" class="img-circle">
+             {% else %}
+             <img src="{% static 'qa/user.png' %}" name="aboutme" width="100" height="100" class="img-circle">
+             {% endif %}
+             </a>
+             <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+             <a href="/profile/{{ user.id }}">My Profile</a> | <!--to consider-->
+             <a href="/logout/">Logout</a>
+          </center>
+     </div>
+     {% else %}
+     <a class="btn btn-block btn-success" href="/login"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login | Sign Up</a><br/>
+     {% endif %}{% endcomment %}
+  </div>
+  </div>
+
+</div>
+
+
+{% endblock content %}

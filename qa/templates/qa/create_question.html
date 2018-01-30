@@ -1,0 +1,260 @@
+{% extends 'qa/base.html' %}
+{% load django_markdown %}
+{% load staticfiles %}
+
+{% block content %}
+
+  {% if message %}
+  <strong>Enter a valid Question!</strong>
+  {% endif %}
+    <div class="row">
+      <div class="col-md-8 col-sm-8 qa__left">
+        <form method="post" action="{% block action_url %}{% url 'qa_create_question' %}{% endblock action_url %}">
+          <div class="qa__Search row" style="padding-bottom:32px">
+              <!-- <div class="col-md-12 btn__wrapper text-center">
+                <a href="/qa" class="btn btn__primary  btn__primary--sm u__padding12X36">COMMUNITY</a>
+                <a href="/admissions/" class="btn btn__secondry btn__secondry--sm u__margin--left-6">COLLEGE ADMISSION</a>
+              </div> -->
+              <div class="col-md-12">
+                <div class="text-center">
+                    <h3>Ask A question</h3>
+                    <p>YOUR QUESTIONS ARE ANSWERED BY CURRENT STUDENTS OF COLLEGES, EXPERTS IN EXAM PREPARATION OR CAREERS OR FOREIGN EDUCATION.</p>
+                </div>
+              </div>
+         </div>
+         <div class="qa__answerWrapper">
+           <ul class="nav nav-tabs nav-justified" style="display:none">
+              <li role="presentation" {% if active_tab == 'latest' %}class="active"{% endif %}><a href="#latest" data-toggle="tab"><span class="glyphicon glyphicon-th-list"></span> Latest</a></li>
+              <li role="presentation" {% if active_tab == 'unans' %}class="active"{% endif %}><a href="#unans" data-toggle="tab"><span class="glyphicon glyphicon-question-sign"></span> Unanswered <span class="badge">{{ totalnoans }}</span></a></li>
+              <li role="presentation" {% if active_tab == 'reward' %}class="active"{% endif %}><a href="#reward" data-toggle="tab"><span class="glyphicon glyphicon-star"></span> Most Rewarding <span class="badge">{{ reward | length }}</span></a></li>
+           </ul>
+           <br/>
+           <div class="tab-content container-fluid">
+            <div class="tab-pane active" id="latest">
+
+               <div class="qa__q-card" style="margin-bottom:18px">
+                   <div class="row">
+                      <div class="col-md-12 hidden">
+                        <div class="qa__search_resultWrapper" style="position:initial">
+                          <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">#</span>
+                            {{ form.tag }}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="qa__search_resultWrapper">
+                          <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">#</span>
+                            <input type="text" class="form-control" placeholder="Please input minimum 3 characters to search here" aria-describedby="basic-addon1" id="js_search"/>
+                          </div>
+                          <div class="qa__search_result">
+                            <ul>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <br/>
+                      <div class="col-md-12">
+                        <br/>
+                        <div class="form-group">
+                          <label for="title">Title</label>
+
+                          {{ form.title }}
+                        </div>
+
+                        <div class="form-group">
+                          <label for="title">Description</label>
+                          {{form.description}}
+                        </div>
+
+                      </div>
+                      <div class="col-md-12">
+                        <div class="text-center">
+                          <button type="submit" class="btn btn__primary btn__primary--sm">Submit</button>
+                        </div>
+                      </div>
+                   </div>
+               </div>
+            </div>
+         </div>
+         </div>
+          {% csrf_token %}
+        </form>
+      </div>
+      <div class="col-md-4 col-sm-4 qa__right">
+
+        <div class="row qa__qButton">
+          <div class="col-md-12">
+           <!--  <a class="btn btn-lg " href="{% url 'qa_create_question' %}">I Want To Ask A Question</a> -->
+          </div>
+        </div>
+
+         <!-- <div class="panel panel-default">
+            <div class="panel-body">
+               <h4>Total Questions: {{ totalcount }}</h4>
+               <h4>Total Answers: {{ anscount }}</h4>
+            </div>
+         </div> -->
+
+         <!-- contact us -->
+         <!-- tags -->
+         <div class="qa__popularTag">
+           <div class="row ">
+             <div class="col-md-12">
+                <h3 class="title">Popular Tags</h3>
+             </div>
+              <div class="col-md-12">
+                 {# {% for tag in tags %} #}
+                  {# <a href="/question-listing/tag/{{ tag.name }}">#{{ tag.name }}</a> #}
+                 {# {% endfor %} #}
+                 <a href="/question-listing/tag/marketing">#marketing</a>
+                 <a href="/question-listing/tag/finance">#finance</a>
+                 <a href="/question-listing/tag/computerscience">#computerscience</a>
+                 <a href="/question-listing/tag/class12board">#class12board</a>
+                 <a href="/question-listing/tag/jee">#jee</a>
+                 <a href="/question-listing/tag/cat">#cat</a>
+                 <a href="/question-listing/tag/mat">#mat</a>
+                 <a href="/question-listing/tag/mba">#mba</a>
+                 <a href="/question-listing/tag/pgdm">#pgdm</a>
+                 <a href="/question-listing/tag/btech">#btech</a>
+                 <a href="/question-listing/tag/amityuniversity">#amityuniversity</a>
+                 <a href="/question-listing/tag/studyinaustralia">#studyinaustralia</a>
+                 <a href="/question-listing/tag/studyinamerica">#studyinamerica</a>
+              </div>
+            </div>
+         </div>
+
+         <!-- user profile -->
+         <div class="qa__communityMember">
+           <h3 class="title">COMMUNITY EXPERTS</h3>
+           <div class=" card">
+                  {% for expert in experts%}
+           <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                      <div class="row">
+                          <div class="col-sm-6 col-md-4">
+                              {% if expert.profile_image %}
+                              <img class="img img-circle" src="{{expert.profile_image.url}}" alt="">
+                              {% else %}
+                              <img class="img img-circle" src="{% static "qa/User_Placeholder.svg" %}" alt="" class="img-circle img-responsive" />
+                              {% endif %}
+                          </div>
+                          <div class="col-sm-6 col-md-8">
+                            <h4>
+                              <a href="{% url 'qa_profile' expert.user.id expert.name|cut:' ' %}">
+                                  {{expert.name}}
+                                </a>
+                              </h4>
+                              <small>
+                                <cite>{{expert.user_type_display}}</cite>
+                              </small>
+                              <p>
+                                  {{expert.who_i_am}}
+                              </p>
+
+                          </div>
+                      </div>
+              </div>
+           </div>
+           {%endfor%}
+               <div class="row">
+                 <div class="col-md-12">
+                   <div class="text-right">
+                       <a href="/community-page">Show More</a>
+                   </div>
+                 </div>
+               </div>
+          </div>
+         </div>
+         {% if noans.count %}
+           <div class="panel panel-warning">
+              <div class="panel-heading">
+                 <h3 class="panel-title">Unanswered Questions</h3>
+              </div>
+              <div class="panel-body">
+                 <ul>
+                    {% for question in noans %}
+                    <li><a href="{% url 'qa_detail' question.id %}">{{ question.title }}</a></li>
+                    {% endfor %}
+                 </ul>
+              </div>
+           </div>
+         {% endif %}
+
+         {% comment %}
+         {% if user.is_authenticated %}
+           <div class="span3 well">
+              <center>
+                 <a href="{% url 'qa_profile' user.id user.profile.name%}" data-toggle="modal">
+                 {% if user.userqaprofile.picture %}
+                 <img src="{{ user.userqaprofile.picture }}" name="aboutme" width="100" height="100" class="img-circle">
+                 {% else %}
+                 <img src="{% static 'qa/user.png' %}" name="aboutme" width="100" height="100" class="img-circle">
+                 {% endif %}
+                 </a>
+                 <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                 <a href="/profile/{{ user.id }}">My Profile</a> | <!--to consider-->
+                 <a href="/logout/">Logout</a>
+              </center>
+         </div>
+         {% else %}
+         <a class="btn btn-block btn-success" href="/login"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login | Sign Up</a><br/>
+         {% endif %}{% endcomment %}
+      </div>
+    </div>
+
+</div>
+
+{% endblock content %}
+
+{% block js %}
+  <script>
+    $(function () {
+      $('input, select,textarea').addClass('form-control');
+      $('.markItUpHeader').hide();
+      $('.markItUp,.markItUpEditor').css("width","100%");
+    });
+    $(document).ready(function(){
+      var xhr;
+      $('#js_search').on('keyup', function(e, value){
+        var abc = $('#js_search').val();
+        if(abc.length<3){return false;}
+            $('.qa__search_result ul').html('');
+            var url = '/question-listing/tag?q='+abc;
+            if(xhr && xhr.readyState != 4){
+              xhr.abort();
+            }
+            xhr=$.ajax({url: url, success: function(result){
+                $('.qa__search_result ul').html('');
+                result.map(function(item){
+                  $('.qa__search_result').show();
+                    var item = item ;
+                    $('.qa__search_result ul').append('<li><a class="qa-result-list" href="javascript:void(0)">'+item+'</a></li>');
+                })
+            }});
+        });
+        $(document).on('click', function(e){
+          if(e.target.className=="qa-result-list"){
+            var changeVal=e.target.innerHTML;
+            jQuery("#id_tag option").filter(function(i,e){if(e.innerHTML==changeVal){
+              jQuery("#id_tag").val(e.value).change();
+            }});
+            jQuery("#js_search").val(e.target.innerHTML);
+          }
+            if( e.target.id != 'js_search') {
+              $(".qa__search_result").hide();
+            }
+        })
+        $('#js_search').on('focusout', function(){
+          <!-- $('.qa__search_result').hide(); -->
+          <!-- $('.qa__search_result ul').html(''); -->
+          console.log('sd')
+        })
+    });
+  </script>
+{% endblock js %}
+{% block extra_js %}
+  {% markdown_editor "#id_description" %}
+  {% markdown_media %}
+{% endblock extra_js %}

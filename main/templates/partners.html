@@ -70,10 +70,12 @@
                                                 </center>
                                             </div>
 
-                                            <div class="col-md-3 col-sm-3" style="padding-top: 2%;">
+                                            <div class="col-md-3 col-sm-3 " style="padding-top: 2%;">
                                                 <span style="font-weight: bold; font-size: larger;">{{ college.college.title }}</span><br>
-                                                <span style="font-size: larger;">{{ college.college.description }}</span><br>
-                                                    <span style="font-size: smaller;">{{ college.college.city }}</span><br>
+                                                <span class="" style="font-size: larger;">{{ college.college.description }}</span><br>
+
+                                                    <span class="" style="font-size: smaller;">{{ college.college.city }}</span><br>
+
                                                     <span style="font-size: smaller;">{{ college.college.state }}</span>
 
                                                 {% comment %}<div class="col-md-9 col-sm-9" style="min-height: 62px;">
@@ -86,7 +88,8 @@
                                                     <div class="col-md-6 col-xs-12 col-sm-12 p-10">
                                                         <div class="partners-box">
                                                             <h4>{{ qualification.name }}</h4>
-                                                            <p style="word-break: break-all;">
+
+                                                            <p class="truncate" style="word-break: break-all;">
                                                                 {% for course in qualification.courses %}
                                                                     {{ course }}{% if not forloop.last %},{% else %}.{% endif %}
                                                                 {% endfor %}

@@ -29,42 +29,9 @@
 
 @import 'https://fonts.googleapis.com/css?family=Montserrat:400,700';
 @import 'https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i';
-@font-face {
-    font-family: 'MarketFresh';
-    src: url('market_fresh/Market_Fresh.otf');
-    /* IE9 Compat Modes */
 
-    src: url('market_fresh/Market_Fresh.otf?#iefix') format('embedded-opentype'),
-    /* IE6-IE8 */
-
-    url('market_fresh/Market_Fresh.otf') format('opentype'),
-    /* Modern Browsers */
-
-    url('market_fresh/Market_Fresh.otf') format('opentype'),
-    /* Safari, Android, iOS */
-
-    url('market_fresh/Market_Fresh.otf') format('opentype');
-    /* Legacy iOS */
-}
-@font-face {
-    font-family: 'Raavi';
-    src: url('Raavi.ttf');
-    /* IE9 Compat Modes */
-
-    src: url('Raavi.ttf?#iefix') format('embedded-truetype'),
-    /* IE6-IE8 */
-
-    url('Raavi.ttf') format('truetype'),
-    /* Modern Browsers */
-
-    url('Raavi.ttf') format('truetype'),
-    /* Safari, Android, iOS */
-
-    url('Raavi.ttf') format('truetype');
-    /* Legacy iOS */
-}
 html {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Montserrat', sans-serif  ;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
 }
@@ -405,7 +372,7 @@ input,
 select,
 textarea {
     color: #333;
-    font-family: 'Raleway', sans-serif;
+
     font-size: 13px;
     line-height: 1.9;
 }
@@ -418,7 +385,7 @@ h6 {
     clear: both;
     color: #666;
     font-weight: bold;
-    font-family: 'Raleway', sans-serif;
+
 }
 h2.text-center {
     background-position: center bottom;
@@ -458,7 +425,7 @@ address {
 }
 pre {
     background: #eee;
-    font-family: "Courier 10 Pitch", Courier, monospace;
+
     font-size: 15px;
     font-size: 1.1rem;
     line-height: 1.6;
@@ -471,7 +438,7 @@ code,
 kbd,
 tt,
 var {
-    font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+
     font-size: 15px;
     font-size: 1.2rem;
 }
@@ -651,7 +618,7 @@ input[type="submit"] {
     border-radius: 0px;
     background: rgb(241, 0, 38);
     color: #fff;
-    font-family: Raleway, sans-serif;
+
     font-size: 15px;
     line-height: 1;
     padding: 15px 25px;
@@ -685,7 +652,7 @@ textarea,
 .wpcf7-select,
 .wpcf7-date {
     color: #666;
-    font-family: 'Raleway', sans-serif;
+
     font-size: 14px;
     border: 1px solid #d7d7d7;
     border-radius: 0px;
@@ -711,7 +678,7 @@ textarea {
     width: 98%;
 }
 .btn {
-    font-family: Raleway, sans-serif;
+
 }
 /*--------------------------------------------------------------
 5) Navigation
@@ -1273,7 +1240,7 @@ nav.meta-login ul li i {
 }
 #secondary .widget_search_filter select {
     color: #657184;
-    font-family: Raleway, sans-serif;
+
     margin-bottom: 30px;
     padding: 10px;
     width: 90%;
@@ -1479,7 +1446,7 @@ nav.meta-login ul li i {
     border: 0px;
 }
 .footer-widget .menu {
-    font-family: Raleway, sans-serif;
+
     font-weight: bold;
 }
 .footer-widget .quickcontact {

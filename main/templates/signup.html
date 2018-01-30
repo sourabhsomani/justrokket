@@ -1,61 +1,96 @@
-{% extends 'base.html' %}
-{% load crispy_forms_tags %}
-{% block meta %}
-    <title>Newsletter - Just Rokket</title>
-	<meta charset="utf-8">
-	<meta name="language" content="en-us">
-	<meta name="robots" content="noodp"/>
-	<link rel="canonical" href="https://justrokket.com/newsletter-signup/" />
-	<meta name="description"content="Signup to Just Rokket Newsletter for Admission News, Exam Tips and More">
-	<meta name="copyright" content="2017 Explore Edu Tech Private Limited">
-	<meta name="content-language" content="EN">
-	<meta name="publisher" content="https://justrokket.com/">
-    <meta name="contact" content="service@justrokket.com">
-<!--    <meta property="og:image" content="">-->
-	<meta name="theme-color" content="#187e89">
-	<!--Facebook Tags-->
-	<meta property="og:type" content="website">
-	<meta property="og:title" content="Newsletter - Just Rokket">
-	<meta property="og:description" content="Signup to Just Rokket Newsletter for Admission News, Exam Tips and More">
-	<meta property="og:url" content="https://justrokket.com/newsletter-signup/">
-	<meta property="og:site_name" content="Just Rokket | Scholarships with admission">
-	<meta property="og:image" content="{% static 'featured.jpg' %}">
+{#{% extends 'base.html' %}#}
+{#{% load crispy_forms_tags %}#}
+{#{% block meta %}#}
+{#    <title>Newsletter - Just Rokket</title>#}
+{#	<meta charset="utf-8">#}
+{#	<meta name="language" content="en-us">#}
+{#	<meta name="robots" content="noodp"/>#}
+{#	<link rel="canonical" href="https://justrokket.com/newsletter-signup/" />#}
+{#	<meta name="description"content="Signup to Just Rokket Newsletter for Admission News, Exam Tips and More">#}
+{#	<meta name="copyright" content="2017 Explore Edu Tech Private Limited">#}
+{#	<meta name="content-language" content="EN">#}
+{#	<meta name="publisher" content="https://justrokket.com/">#}
+{#    <meta name="contact" content="service@justrokket.com">#}
+{#<!--    <meta property="og:image" content="">-->#}
+{#	<meta name="theme-color" content="#187e89">#}
+{#	<!--Facebook Tags-->#}
+{#	<meta property="og:type" content="website">#}
+{#	<meta property="og:title" content="Newsletter - Just Rokket">#}
+{#	<meta property="og:description" content="Signup to Just Rokket Newsletter for Admission News, Exam Tips and More">#}
+{#	<meta property="og:url" content="https://justrokket.com/newsletter-signup/">#}
+{#	<meta property="og:site_name" content="Just Rokket | Scholarships with admission">#}
+{#	<meta property="og:image" content="{% static 'featured.jpg' %}">#}
+{##}
+{#	<!--Twitter Tags-->#}
+{#	<meta name="twitter:card" content="summary_large_image">#}
+{#	<meta name="twitter:url" content="https://justrokket.com/newsletter-signup/">#}
+{#	<meta name="twitter:title" content="Newsletter - Just Rokket">#}
+{#	<meta name="twitter:description" content="Signup to Just Rokket Newsletter for Admission News, Exam Tips and More">#}
+{#	<meta name="twitter:image" content="{% static 'featured.jpg' %}">#}
+{##}
+{#	<!--Google+ Tags-->#}
+{#	<meta itemprop="name" content="Newsletter - Just Rokket">#}
+{#	<meta itemprop="description" content="Signup to Just Rokket Newsletter for Admission News, Exam Tips and More">#}
+{#	<meta itemprop="image" content="{% static 'featured.jpg' %}">#}
+{#{% endblock meta %}#}
+{#{% block content %}#}
+{#    <div class="row" style="margin-top: 50px"></div>#}
+{#    <div class="container">#}
+{#        <div class="panel panel-default">#}
+{#            <div class="panel-heading">#}
+{#                Sign up for a Just Rokket Account.#}
+{#            </div>#}
+{#            <div class="panel-body">#}
+{#                <form class="form" action="" method="POST">{% csrf_token %}#}
+{#                    {{ form|crispy }}#}
+{#                    <button class="btn btn-success" onclick="animate()">Sign up</button>#}
+{#                    <img id="fuck" src="images/3.png" />#}
+{#                    <script>#}
+{#                        function animate() {#}
+{#                            setTimeout(function(){ alert("Hello"); }, 3000);#}
+{##}
+{#                        }#}
+{##}
+{#                    </script>#}
+{##}
+{#                </form>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="row" style="margin-top: 50px"></div>#}
+{#{% endblock %}#}
 
-	<!--Twitter Tags-->
-	<meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:url" content="https://justrokket.com/newsletter-signup/">
-	<meta name="twitter:title" content="Newsletter - Just Rokket">
-	<meta name="twitter:description" content="Signup to Just Rokket Newsletter for Admission News, Exam Tips and More">
-	<meta name="twitter:image" content="{% static 'featured.jpg' %}">
 
-	<!--Google+ Tags-->
-	<meta itemprop="name" content="Newsletter - Just Rokket">
-	<meta itemprop="description" content="Signup to Just Rokket Newsletter for Admission News, Exam Tips and More">
-	<meta itemprop="image" content="{% static 'featured.jpg' %}">
-{% endblock meta %}
-{% block content %}
-    <div class="row" style="margin-top: 50px"></div>
-    <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Sign up for a Just Rokket Account.
-            </div>
-            <div class="panel-body">
-                <form class="form" action="" method="POST">{% csrf_token %}
-                    {{ form|crispy }}
-                    <button class="btn btn-success" onclick="animate()">Sign up</button>
-                    <img id="fuck" src="images/3.png" />
-                    <script>
-                        function animate() {
-                            setTimeout(function(){ alert("Hello"); }, 3000);
-                            
-                        }
+{#<div>#}
+{#    Error 404#}
+{#</div>#}
+{##}
+{#<div>#}
+{#    Sorry the page you requested does not exist!#}
+{#</div>#}
 
-                    </script>
 
-                </form>
-            </div>
-        </div>
+
+{##}
+<div class="container">
+    <div class="row">
+    <div class="error-template">
+	    <h1>Oops!</h1>
+	    <h2>404 Not Found</h2>
+	    <div class="error-details">
+            Requested page not found!<br>
+
+	    </div>
+	    <div class="error-actions">
+		</div>
+	</div>
     </div>
-    <div class="row" style="margin-top: 50px"></div>
-{% endblock %}
+</div>
+
+<style>
+
+    .error-template {padding: 40px 15px;text-align: center;}
+    .error-actions {margin-top:15px;margin-bottom:15px;}
+    .error-actions .btn { margin-right:10px; }
+
+</style>

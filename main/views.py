@@ -23,20 +23,27 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render
 # app imports
 from main import models
+from qa.models import Question,Answer
 from main import forms
 from string import Template
-from ccavutil import encrypt,decrypt
-from twilio.rest import TwilioRestClient
+# from ccavutil import encrypt,decrypt
+# from twilio.rest import TwilioRestClient
 from main import utils
-from utils import send_mail
+from .utils import send_mail
 from django.template import Context, loader
 import sys
 import math
 
 
+
+
+
+
+from django.db import transaction
+
 class Screen6(TemplateView):
     template_name = "screen6.html"
-    
+
     def get(self, request, *args, **kwargs):
         self.send_mail()
         return super(Screen6, self).get(request, *args, **kwargs)
@@ -147,8 +154,49 @@ class BlogdetailsView(TemplateView):
         return context
 
 
-class HomeView(TemplateView):
+
+class admissions1(TemplateView):
+    from django.db.models import Q
+    template_name = "allprofile.html"
+    def get_context_data(self, **kwargs):
+        context = super(TemplateView, self).get_context_data(**kwargs)
+        context['experts'] = models.Profile.objects.filter(~Q(user_type="A"))
+        print(context['experts'])
+        return context
+
+
+class HomeViewNew(TemplateView):
     template_name = "home.html"
+    def get_context_data(self, **kwargs):
+        context = super(HomeViewNew, self).get_context_data(**kwargs)
+        context['experts'] = models.Profile.objects.filter(~Q(user_type="A"))[:15] 
+        context['applicants'] = models.Profile.objects.filter(Q(user_type="A"))[:4]
+        return context
+
+    def get(self, request, *args, **kwargs):
+        self.college_code()
+        if self.request.session.get('next'):
+            del self.request.session['next']
+        self.request.session['next'] = self.request.get_full_path()
+        return super(HomeViewNew, self).get(request, *args, **kwargs)
+        
+    
+
+    def get_p_colleges(self):
+        return models.PartnerCollege.objects.filter(homepage_display=True)
+
+    def get_rokketeers(self):
+        return models.Rokketeer.objects.filter(homepage_display=True)
+
+    def college_code(self):
+        for college in models.College.objects.all():
+            if not college.code:
+                college.code = college.name[:2].upper() + str(college.id)
+                college.save()
+
+
+class HomeView(TemplateView):
+    template_name = "admission.html"
 
     def get(self, request, *args, **kwargs):
         self.college_code()
@@ -194,18 +242,18 @@ class HomeView(TemplateView):
 
 class ExplorePost(FormView):
     form_class = forms.ExploreForm
-    
+
     def form_invalid(self, form):
-        print "Form is invalid"
-        print form.errors
-        print self.request.POST
+        print("Form is invalid")
+        print(form.errors)
+        print(self.request.POST)
         response = super(ExplorePost, self).form_invalid(form)
         return response
-    
+
     def form_valid(self, form):
-        print "Form is valid"
-        print self.request.POST
-        print self.request.POST.get("course")
+        print("Form is valid")
+        print(self.request.POST)
+        print(self.request.POST.get("course"))
         screen_6_text = ""
         level = self.request.POST.get("level")
         city = self.request.POST.get("city")
@@ -216,6 +264,7 @@ class ExplorePost(FormView):
             course = models.Qualification.objects.get(search_code=self.request.POST.get('course'))
         q_exm = self.request.POST.get("q_exm") # if self.request.POST.get("q_exm") else models.QualifyingExam.objects.first().id #FIXME: Why was this done?
         q_exm_score = int(math.floor(float(self.request.POST.get("q_exm_score")))) if self.request.POST.get("q_exm_score") else 0
+
         if q_exm == "" or q_exm_score == 0:
             # create Event1
             screen_6_text = utils.SCREEN_6_TEXT
@@ -266,7 +315,7 @@ class Explore(TemplateView):
         if request.session.get('next'):
             del request.session['next']
         self.request.session['next'] = request.get_full_path()
-        print "Search!", self.request.session
+        print("Search!", self.request.session)
         return super(Explore, self).get(request, *args, **kwargs)
 
     def get_search(self):
@@ -275,7 +324,7 @@ class Explore(TemplateView):
     def get_max_value(self):
         value = 0
         for item in self.get_results():
-            print item
+            print(item)
             if int(item['final_fee']) > value:
                 value = item['final_fee']
         return value + 1
@@ -284,7 +333,7 @@ class Explore(TemplateView):
         array1 = []
         for college in colleges:
             if int(college.pop_score) == 5:
-                print "Sorted amd added colleges with pop score 5"
+                print("Sorted amd added colleges with pop score 5")
                 array1.append(college)
 
         # Make QS out of array1
@@ -298,7 +347,7 @@ class Explore(TemplateView):
         array1_1 = []
         for college in colleges:
             if int(college.pop_score) == 4:
-                print "Sorted amd added colleges with pop score 4"
+                print("Sorted amd added colleges with pop score 4")
                 array1_1.append(college)
 
         # Make QS out of array1
@@ -312,7 +361,7 @@ class Explore(TemplateView):
         array2 = []
         for college in colleges:
             if int(college.pop_score) == 3:
-                print "Sorted amd added colleges with pop score 3"
+                print("Sorted amd added colleges with pop score 3")
                 array2.append(college)
 
         # Make QS out of array2
@@ -326,7 +375,7 @@ class Explore(TemplateView):
         array3_5 = []
         for college in colleges:
             if int(college.weight) == 5 and int(int(college.pop_score)) not in [3, 4, 5]:
-                print "Sorted amd added colleges with wt 5 and pop score not 3 4 or 5"
+                print("Sorted amd added colleges with wt 5 and pop score not 3 4 or 5")
                 array3_5.append(college)
 
         # Make QS our of array 3_5
@@ -340,7 +389,7 @@ class Explore(TemplateView):
         array3_4 = []
         for college in colleges:
             if int(college.weight) == 4 and int(int(college.pop_score)) not in [3, 4, 5]:
-                print "Sorted amd added colleges with wt 4 and pop score not 3 4 or 5"
+                print("Sorted amd added colleges with wt 4 and pop score not 3 4 or 5")
                 array3_4.append(college)
 
         # Make QS our of array 3_4
@@ -354,7 +403,7 @@ class Explore(TemplateView):
         array3_3 = []
         for college in colleges:
             if int(college.weight) == 3 and int(int(college.pop_score)) not in [3, 4, 5]:
-                print "Sorted amd added colleges with wt 3 and pop score not 3 4 or 5"
+                print("Sorted amd added colleges with wt 3 and pop score not 3 4 or 5")
                 array3_4.append(college)
 
         # Make QS our of array 3_3
@@ -368,7 +417,7 @@ class Explore(TemplateView):
         array3_2 = []
         for college in colleges:
             if int(college.weight) == 2 and int(int(college.pop_score)) not in [3, 4, 5]:
-                print "Sorted amd added colleges with wt 2 and pop score not 3 4 or 5"
+                print("Sorted amd added colleges with wt 2 and pop score not 3 4 or 5")
                 array3_2.append(college)
 
         # Make QS our of array 3_2
@@ -382,7 +431,7 @@ class Explore(TemplateView):
         array3_1 = []
         for college in colleges:
             if int(college.weight) in [0, 1] and int(int(college.pop_score)) not in [3, 4, 5]:
-                print "Sorted amd added colleges with wt 0 or 1 and pop score not 3 4 or 5"
+                print("Sorted amd added colleges with wt 0 or 1 and pop score not 3 4 or 5")
                 array3_1.append(college)
 
         # Make QS our of array 3_1
@@ -396,7 +445,7 @@ class Explore(TemplateView):
         array3_m1 = []
         for college in colleges:
             if int(college.weight) == -1 and int(int(college.pop_score)) not in [3, 4, 5]:
-                print "Sorted amd added colleges with wt -1 and pop score not 3 4 or 5"
+                print("Sorted amd added colleges with wt -1 and pop score not 3 4 or 5")
                 array3_m1.append(college)
 
         # Make QS our of array 3_1
@@ -411,7 +460,7 @@ class Explore(TemplateView):
         array3_m2 = []
         for college in colleges:
             if int(college.weight) == -2 and int(int(college.pop_score)) not in [3, 4, 5]:
-                print "Sorted amd added colleges with wt -2 and pop score not 3 4 or 5"
+                print("Sorted amd added colleges with wt -2 and pop score not 3 4 or 5")
                 array3_m2.append(college)
 
         # Make QS our of array 3_1
@@ -425,7 +474,7 @@ class Explore(TemplateView):
         array3_m3 = []
         for college in colleges:
             if int(college.weight) == -3 and int(int(college.pop_score)) not in [3, 4, 5]:
-                print "Sorted amd added colleges with wt -3 and pop score not 3 4 or 5"
+                print("Sorted amd added colleges with wt -3 and pop score not 3 4 or 5")
                 array3_m3.append(college)
 
         # Make QS our of array 3_1
@@ -439,7 +488,7 @@ class Explore(TemplateView):
         array3_m4 = []
         for college in colleges:
             if int(college.weight) == -4 and int(int(college.pop_score)) not in [3, 4, 5]:
-                print "Sorted amd added colleges with wt -4 and pop score not 3 4 or 5"
+                print("Sorted amd added colleges with wt -4 and pop score not 3 4 or 5")
                 array3_m4.append(college)
 
         # Make QS our of array 3_1
@@ -453,7 +502,7 @@ class Explore(TemplateView):
         array3_m5 = []
         for college in colleges:
             if int(college.weight) == -5 and int(int(college.pop_score)) not in [3, 4, 5]:
-                print "Sorted amd added colleges with wt -5 and pop score not 3 4 or 5"
+                print("Sorted amd added colleges with wt -5 and pop score not 3 4 or 5")
                 array3_m5.append(college)
 
         # Make QS our of array 3_1
@@ -495,7 +544,7 @@ class Explore(TemplateView):
         array5 = []
         for college in colleges:
             if college not in array4 and college.pop_score == 2:
-                print "Sorted score and added colleges with pop score 2 "
+                print("Sorted score and added colleges with pop score 2 ")
                 array5.append(college)
 
         array5IDs = []
@@ -508,7 +557,7 @@ class Explore(TemplateView):
         array6 = []
         for college in colleges:
             if college not in array4 and college.pop_score == 1:
-                print "Sorted score and added colleges with pop score 1"
+                print("Sorted score and added colleges with pop score 1")
                 array6.append(college)
 
         array6IDs = []
@@ -523,7 +572,7 @@ class Explore(TemplateView):
         for college in array6:
             array4.append(college)
 
-        print "Array before make unique ", array4
+        print("Array before make unique ", array4)
 
         def distinct_list(seq):  # Order preserving
             seen = set()
@@ -531,17 +580,17 @@ class Explore(TemplateView):
 
         array9 = array4
         array4 = distinct_list(array9)
-        print "Sorted Results ", array4
+        print("Sorted Results ", array4)
         return array4
 
     def score(self, search, ga, **kwargs):
 
-        print "q_exm", search.q_exm_score
-        print "c_exm_1", search.compt_exm_score_1
-        print "c_exm_2", search.compt_exm_score_2
+        print("q_exm", search.q_exm_score)
+        print("c_exm_1", search.compt_exm_score_1)
+        print("c_exm_2", search.compt_exm_score_2)
 
         if search.q_exm_score == '0' and search.compt_exm_score_1 == '0' and search.compt_exm_score_2 == '0':
-            print "No exam data entered, default to L"
+            print("No exam data entered, default to L")
             return "L"
 
         score = 0
@@ -551,13 +600,13 @@ class Explore(TemplateView):
         else:
             q_exm = models.QualifyingExam.objects.first()
         if str(search.q_exm_score) == "0" and not ga:
-            print "Lowest Band"
+            print("Lowest Band")
             # return "L"  #If this is not done, then if a user does not enter a q_exm but enters a c_exm, he is assigend L.
         if ga:
-            print "Replacing q_exm with GA object", q_exm
-            print kwargs.get("college")
+            print("Replacing q_exm with GA object", q_exm)
+            print(kwargs.get("college"))
             q_exm = models.GAScore.objects.filter(college=models.College.objects.get(id=kwargs.get("college")), q_exam=q_exm).first()
-            print "Replaced q_exm with GA object", q_exm
+            print("Replaced q_exm with GA object", q_exm)
         if q_exm is not None and q_exm.score_type != "Rank":
             if not ga and int(search.q_exm_score) <= int(q_exm.l_cutoff):
                 score = 1
@@ -577,7 +626,7 @@ class Explore(TemplateView):
             elif int(search.q_exm_score) < int(q_exm.h_cutoff):
                 score = 3
 
-        print "Score assigned based on QE is ", score
+        print("Score assigned based on QE is ", score)
 
         _score = 0
         if search.compt_exm_type_1 and search.compt_exm_score_1:
@@ -713,21 +762,21 @@ class Explore(TemplateView):
                 for c in q.courses.all():
                     if c.id == int(course):
                         q_objects.append(q)
-            print "Type selected is COR and the list of q_objs is ", q_objects
+            print("Type selected is COR and the list of q_objs is ", q_objects)
 
             for q in q_objects:
-                print "q.level ", q.level, " search.level ", search.level
+                print("q.level ", q.level, " search.level ", search.level)
                 if q.level != search.level:
                     q_objects.remove(q)
-                    print "Removed ", q
-            print "List after level filter ", q_objects
+                    print("Removed ", q)
+            print("List after level filter ", q_objects)
 
         else:
-            print "Type selected is CAT"
+            print("Type selected is CAT")
             q_obj = models.Qualification.objects.filter(course_category=search.course) #FIXME: Did Nikhil change this?
             # q_objects.append(q_obj)
             q_objects = list(q_obj)
-            print "q_obj", q_obj
+            print("q_obj", q_obj)
 
 
         # Add seats according to query to college model #
@@ -743,13 +792,13 @@ class Explore(TemplateView):
                     total_seats += cqualification.seats
             college.seats = total_seats
             college.save()
-            print "Total seats ", total_seats, " was added to college object."
+            print("Total seats ", total_seats, " was added to college object.")
 
-        print "Getting Score"
+        print("Getting Score")
         score = self.score(search, False)
-        print "score returned is ", score
+        print("score returned is ", score)
 
-        print "course ", course, "course_type", course_type, "city", search.city
+        print("course ", course, "course_type", course_type, "city", search.city)
 
         # First, get all colleges, not held, and level
         colleges = []
@@ -757,11 +806,11 @@ class Explore(TemplateView):
             flag = False
             for _q in college.qualifications.all():
                 if _q in q_objects:
-                    print _q, " is in college.qualifications.all() ", college.qualifications.all()
+                    print(_q, " is in college.qualifications.all() ", college.qualifications.all())
                     flag = True
             if flag:
                 colleges.append(college)
-        print "Colleges List initial :", colleges
+        print("Colleges List initial :", colleges)
 
         for college in colleges:
             if search.q_exm_score == "0" and search.compt_exm_score_1 == "0" and search.compt_exm_score_2 == "0" and college.category == "GA":
@@ -792,7 +841,7 @@ class Explore(TemplateView):
             for college in colleges:
                 qs = models.CollegeCourse.objects.filter(college=college, course=models.Course.objects.get(id=search.course)).first()
                 if qs is None:
-                    print college.name, " is being removed because CC object for course ", course, " does not exist."
+                    print(college.name, " is being removed because CC object for course ", course, " does not exist.")
                     colleges.remove(college)
 
         # Filter by Course, if type selected is course
@@ -806,33 +855,33 @@ class Explore(TemplateView):
                 if not flag:
                     colleges.remove(college)
 
-        print "Going to sort following list of colleges: ", colleges
+        print("Going to sort following list of colleges: ", colleges)
         array4 = self.sort_colleges(colleges)
 
         json = []
 
-        print "### Starting Result Population ###"
-        print array4, "array4"
+        print("### Starting Result Population ###")
+        print(array4, "array4")
         if course_type == "cor":
             for college in array4:
-                print college, " is in hand."
+                print(college, " is in hand.")
                 # Get CollegeCourse Object #
                 if course_type == "cor":
                     cc_objects = models.CollegeCourse.objects.filter(college=college, course=course, approval_period__date_from__lte=datetime.datetime.now().date(), approval_period__date_to__gte=datetime.datetime.now().date())
                 if len(cc_objects) == 0:
-                    print "Did not find CC object, skipping college: ", college
+                    print("Did not find CC object, skipping college: ", college)
                     continue  # Skip entire for loop
 
-                print cc_objects, "CC Objects"
+                print(cc_objects, "CC Objects")
                 schl = 0
                 for cc_obj in cc_objects:
-                    print cc_obj, " is in hand."
+                    print(cc_obj, " is in hand.")
                     # Get CollegeQualification Object #
-                    print "Looking for CQ object for ", college, cc_obj.qualification
+                    print("Looking for CQ object for ", college, cc_obj.qualification)
                     cq = models.CollegeQualification.objects.filter(college=college, qualification=cc_obj.qualification, approval_period__isnull=False).first() #FIXME: Will this always be one?
-                    print cq, "CQ was found"
+                    print(cq, "CQ was found")
                     if cq is not None and cq.qualification.level == search.level:
-                        print cq, "CQ"
+                        print(cq, "CQ")
                         '''if cq.approval_period.date_from < datetime.datetime.now().date() < cq.approval_period.date_to:
                             print "college ", college, " is not in approval period. Skipping. "
                             continue'''
@@ -841,32 +890,32 @@ class Explore(TemplateView):
 
                         schl = 0
                         if not college.category == "GA":
-                            print "College is not of type GA"
+                            print("College is not of type GA")
                             if score == "L":
                                 schl = cc_obj.schl_l
                             elif score == "M":
                                 schl = cc_obj.schl_m
                             elif score == "H":
                                 schl = cc_obj.schl_h
-                            print "schl calculated is ", schl
+                            print("schl calculated is ", schl)
                         elif college.category == "GA":
-                            print "College is of type GA, recalculating score."
+                            print("College is of type GA, recalculating score.")
                             ga_score = self.score(search, True, **{'college': college.id})
-                            print "New GA score is", ga_score
+                            print("New GA score is", ga_score)
                             if ga_score == "L":
                                 schl = cc_obj.schl_l
                             elif ga_score == "M":
                                 schl = cc_obj.schl_m
                             elif ga_score == "H":
                                 schl = cc_obj.schl_h
-                            print "schl calculated is ", schl
+                            print("schl calculated is ", schl)
 
                         # Determine the fee #
                         fee = cc_obj.fee
 
                         # Determine total seats #
                         if cc_obj:
-                            if cc_obj.seats and cc_obj > 0:
+                            if cc_obj.seats and cc_obj.seats > 0:
                                 seats = cc_obj.seats
                                 decrement_from = "cc"
                             elif cc_obj.seats == 0:
@@ -881,12 +930,15 @@ class Explore(TemplateView):
                         # Make images array #
                         images = []
                         for image in college.images.all():
-                            images.append(
-                                {'url': image.image.url, 'height': image.image.height, 'width': image.image.width})
+                            try:
+                                '''images.append({'url': image.image.url, 'height': image.image.height, 'width': image.image.width})'''
+                                images.append({'url': image.image.url, 'height': '100%', 'width': '100%'})
+                            except:
+                                print("Error")
 
-                        if bool(schl):
+                        if True:
                             s_fee = float(fee) - ((float(schl) / 100.0) * float(fee))
-                            if cq is not None and seats != -1 and schl != 0:
+                            if cq is not None and seats != -1:
                                 json.append({'id': college.id, 'name': college.name, 'street1': college.street_1, 'campus': college.campus,
                                              'street2': college.street_2,
                                              'city': college.city, 'state': college.state, 'pin': college.pin,
@@ -896,36 +948,36 @@ class Explore(TemplateView):
                                              'scholarship': schl,
                                              'final_fee': int(s_fee), 'college_qualification': cq.id, 'seats': seats, 'lat': college.lat, 'long': college.long,
                                              'city_lat': college.city.lat, 'city_long': college.city.long,
-                                             'city_id': college.city.id, 'decrement_from': decrement_from, 'cc_obj': cc_obj.id})
-                        print "college was not populated because cq is None ", college
-                        print "bool schl", bool(schl), schl
+                                             'city_id': college.city.id, 'decrement_from': decrement_from, 'cc_obj': cc_obj.id,'college_quality_index':cq.college_quality_index})
+                        print("college was not populated because cq is None ", college)
+                        print("bool schl", bool(schl), schl)
 
         elif course_type == "cat":
             for college in array4:
-                print college, " is in hand."
+                print(college, " is in hand.")
 
                 # Get CollegeQualification Object #
                 for q_obj__ in q_objects:
                     cq = models.CollegeQualification.objects.filter(qualification=q_obj__, college=college, qualification__level=search.level).first()
 
-                    print cq, "CQ was found"
+                    print(cq, "CQ was found")
                     if cq is not None:
-                        print cq, "CQ"
+                        print(cq, "CQ")
 
                         course_name = cq.qualification
 
                         schl = 0
                         if not college.category == "GA":
-                            print "College is not of type GA"
+                            print("College is not of type GA")
                             if score == "L":
                                 schl = cq.schl_l
                             elif score == "M":
                                 schl = cq.schl_m
                             elif score == "H":
                                 schl = cq.schl_h
-                            print "schl calculated is ", schl
+                            print("schl calculated is ", schl)
                         elif college.category == "GA":
-                            print "College is of type GA, recalculating score."
+                            print("College is of type GA, recalculating score.")
                             ga_score = self.score(search, True, **{'college': college.id})
                             if ga_score == "L":
                                 schl = cq.schl_l
@@ -933,19 +985,19 @@ class Explore(TemplateView):
                                 schl = cq.schl_m
                             elif ga_score == "H":
                                 schl = cq.schl_h
-                            print "schl calculated is ", schl
+                            print("schl calculated is ", schl)
 
                         # Determine the fee #
                         f = 0
                         f_unit = 0
                         for _cc in models.CollegeCourse.objects.filter(college=college, qualification=q_obj__):
                             if not bool(f):
-                                print "First fee found is ", _cc.fee
+                                print("First fee found is ", _cc.fee)
                                 f = _cc.fee
                                 f_unit = _cc.time_unit
                             else:
                                 if _cc.fee < f:
-                                    print "Smaller fee found ", _cc.fee
+                                    print("Smaller fee found ", _cc.fee)
                                     f = _cc.fee
                                     f_unit = _cc.time_unit
                         fee = f
@@ -961,7 +1013,7 @@ class Explore(TemplateView):
                         # Make images array #
                         images = []
                         for image in college.images.all():
-                            images.append({'url': image.image.url, 'height': image.image.height, 'width': image.image.width})
+                            images.append({'url': image.image.url, 'height': '100%', 'width': '100%'})
 
                         if bool(schl):
                             s_fee = float(fee) - ((float(schl) / 100.0) * float(fee))
@@ -975,8 +1027,8 @@ class Explore(TemplateView):
                                              'website': college.website, 'session_start': cq.session_start, 'cost': fee, 'fee_unit': f_unit,
                                              'scholarship': schl,
                                              'final_fee': int(s_fee), 'college_qualification': cq.id, 'seats': seats, 'lat': college.lat, 'long': college.long,
-                                             'city_lat': college.city.lat, 'city_long': college.city.long, 'city_id': college.city.id, 'decrement_from': decrement_from})
-                        print "bool schl", bool(schl), schl
+                                             'city_lat': college.city.lat, 'city_long': college.city.long, 'city_id': college.city.id, 'decrement_from': decrement_from,'college_quality_index':cq.college_quality_index})
+                        print("bool schl", bool(schl), schl)
 
         return json
 
@@ -1002,7 +1054,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
     def get_vouchers(self):
         from django.core import serializers
         serialized_obj = serializers.serialize('json', list(models.Order.objects.filter(profile=self.request.user.profile, status=2)))
-        print serialized_obj
+        print(serialized_obj)
         # return serialized_obj
 
 
@@ -1037,7 +1089,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 #     fields = ['name', 'id_type', 'id_no', 'dob', 'gender', 'otp', 'mobile', 'house'
 #               'state', 'city', 'street', 'district', 'state', 'country']
 #     success_url = "/"
-    
+
 #     def form_valid(self, form):
 #         fi = form.save(commit=False)
 #         fi.user = self.request.user
@@ -1049,9 +1101,9 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 class Selection(FormView):
     template_name = "profile.html"
     form_class = forms.SelectedForm
-    
+
     def form_valid(self, form):
-        print "Form is valid"
+        print("Form is valid")
         college = models.College.objects.get(id=self.request.POST.get("college"))
         scholarship =self.request.POST.get("scholarship")
         fee = self.request.POST.get("fee")
@@ -1084,10 +1136,10 @@ class Selection(FormView):
         b.last_c_code += 1
         b.save()
         return HttpResponseRedirect("/selected-college/" + str(a.id))
-    
+
     def form_invalid(self, form):
-        print "Form is invalid"
-        print form.errors
+        print("Form is invalid")
+        print(form.errors)
         return super(Selection, self).form_invalid(form)
 
 
@@ -1107,14 +1159,22 @@ class Screen3(TemplateView):
         savings = int(s.fee) - int(s.final_fee)
         # Make images array #
         images = []
-
         for image in s.college.images.all():
-            images.append({'src': image.image.url, 'height': image.image.height, 'width': image.image.width})
+            try:
+                images.append({'src': image.image.url, 'height': '100%', 'width': '100%'})
+            except:
+                print("Error")
+                pass
 
         def get_p_image():
+            imageUrl=""
             for image in s.college.images.all():
                 if image.primary:
-                    return image.image.url
+                    imageUrl=image.image.url
+                    break
+            else:
+                imageUrl=s.college.images.all()[0].image.url
+            return imageUrl
 
         data.append(
             {'college': s.college.name, 'course_name': s.course_name, 'address_s1':
@@ -1124,7 +1184,7 @@ class Screen3(TemplateView):
              'fee': s.fee, 'final_fee': s.final_fee, 'scholarship': s.scholarship, 'images': images, 'pimage': get_p_image(),
              'lat': s.college.lat, 'long': s.college.long, 'logo': s.college.logo.url, 'campus': s.college.campus,
              'session_start_date': s.college_qualification.session_start, 'seats': s.seats,
-             'af_cr': cq.af_cr, 'savings': savings, 'rec_app': cq.rec_app}
+             'af_cr': cq.af_cr, 'savings': savings, 'rec_app': cq.rec_app,'college_quality_index':cq.college_quality_index}
         )
         return data
 
@@ -1132,27 +1192,27 @@ class Screen3(TemplateView):
         try:
             if len(models.Event1.objects.all()) == 1:
                 if models.Event1.objects.all().first().activate and models.Event1.objects.all().first().date_from.month <= datetime.date.today().month <= models.Event1.objects.all().first().date_to.month:
-                    print "E1 is true"
+                    print("E1 is true")
                     s = models.Selection.objects.get(id=self.kwargs['pk'])
                     if s.search.level == "G":
-                        print "Level is G"
+                        print("Level is G")
                         q_exm = s.search.q_exm
                         if not q_exm:
                             q_exm = -1
-                        print "q_exm", q_exm
+                        print("q_exm", q_exm)
                         e1 = models.Event1.objects.all().first()
                         if q_exm is None:
-                            print "E1 is fired"
+                            print("E1 is fired")
                             return [{'preview': e1.preview, 'description': e1.description,
                                      'icon_lib': e1.icon_lib, 'icon_name': e1.icon_name, 'icon_size': e1.icon_size, 'icon_color': e1.icon_color,
                                      'preview2': e1.preview2, 'description2': e1.description2}]
                         _p = []
                         for p in e1.parameter1.all():
                             _p.append(int(p.id))
-                        print _p, q_exm
+                        print(_p, q_exm)
                         if q_exm:
                             if int(q_exm) not in _p:
-                                print "E1 is fired"
+                                print("E1 is fired")
                                 return [{'preview': e1.preview, 'description': e1.description,
                                          'icon_lib': e1.icon_lib, 'icon_name': e1.icon_name, 'icon_size': e1.icon_size, 'icon_color': e1.icon_color,
                                          'preview2': e1.preview2, 'description2': e1.description2}]
@@ -1160,7 +1220,7 @@ class Screen3(TemplateView):
                         q_exm = s.search.q_exm
                         e1 = models.Event1.objects.all().first()
                         if not q_exm:
-                            print "E1 is fired"
+                            print("E1 is fired")
                             return [{'preview': e1.preview, 'description': e1.description,
                                      'icon_lib': e1.icon_lib, 'icon_name': e1.icon_name, 'icon_size': e1.icon_size, 'icon_color': e1.icon_color,
                                      'preview2': e1.preview2, 'description2': e1.description2}]
@@ -1169,12 +1229,12 @@ class Screen3(TemplateView):
                             _p.append(int(p.id))
                         if q_exm:
                             if int(q_exm) not in _p:
-                                print "E1 is fired"
+                                print("E1 is fired")
                                 return [{'preview': e1.preview, 'description': e1.description,
                                          'icon_lib': e1.icon_lib, 'icon_name': e1.icon_name, 'icon_size': e1.icon_size, 'icon_color': e1.icon_color,
                                          'preview2': e1.preview2, 'description2': e1.description2}]
-        except Exception, e:
-            print 'Exception Occured {}'.format(sys.exc_info()[-1].tb_lineno)
+        except(Exception, e):
+            print('Exception Occured {}'.format(sys.exc_info()[-1].tb_lineno))
         return False
 
     def get_eb2(self):
@@ -1191,7 +1251,7 @@ class Screen3(TemplateView):
                         e2 = models.Event2.objects.all().first()
                         return [{'preview3': e2.preview3, 'description3': e2.description3, 'true': False}]
         except:
-            print "Exception occured"
+            print("Exception occured")
         return False
 
     def get_boxes(self):
@@ -1234,16 +1294,16 @@ class Screen3(TemplateView):
         eb = 0
         if self.get_eb1():
             eb += 1
-            print "EB1"
+            print("EB1")
         if self.get_eb2():
             eb += 1
-            print "EB2"
+            print("EB2")
         b = 0
         for item in self.get_boxes():
             if item:
                 b += 1
         b = b + eb
-        print "total ", b
+        print("total ", b)
         if b == 4:
             return 3
         elif b == 3:
@@ -1269,7 +1329,7 @@ class Screen4(TemplateView):
 
     def get_college(self):
         s = models.Selection.objects.get(id=self.kwargs['pk'])
-        return [{'logo': s.college.logo.url, 'course_title': s.course_name, 'college': s.college, 'duration': s.college_qualification.qualification.duration, 'college_qualification': s.college_qualification, 'coupon_code': s.coupon_code}]
+        return [{'logo': s.college.logo.url, 'course_title': s.course_name, 'college': s.college, 'duration': s.college_qualification.qualification.duration, 'college_qualification': s.college_qualification, 'coupon_code': s.coupon_code,'street_1':s.street_1,'city':s.city }]
 
     def get_agreements(self):
         y = []
@@ -1361,7 +1421,7 @@ class VerifyMobile(View):
 class CreateProfile(FormView):
     form_class = forms.Screen4Form
     model = models.Profile
-    
+
     def get_context_data(self, *args, **kwargs):
         context = super(CreateProfile, self).get_context_data(*args, **kwargs)
         obj = self.get_object()
@@ -1369,7 +1429,7 @@ class CreateProfile(FormView):
         return context
 
     def form_valid(self, form):
-        
+
         # def get(request, parameter):
         #     return self.request.POST.get(parameter)
 
@@ -1397,7 +1457,7 @@ class CreateProfile(FormView):
         p.save()
 
     def form_invalid(self, form):
-        print "Form is invalid"
+        print("Form is invalid")
         return super(CreateProfile, self).form_invalid(form)
 
 
@@ -1443,7 +1503,7 @@ class LoginUser(FormView):
     def form_valid(self, form):
         u = models.User.objects.filter(email=self.request.POST.get("email"),
                                        ).first()
-        
+
         if u is None:
             if self.request.is_ajax():
                data_dict = {'success': True, 'msg': "User with this email does not exist", 'email': '', 'password': ''}
@@ -1469,18 +1529,49 @@ class LoginUser(FormView):
     def form_invalid(self, form):
         if self.request.is_ajax():
             data_dict = {'form': form.errors}
-            print data_dict
+            print(data_dict)
             return HttpResponse(json.dumps(data_dict), content_type="application/json")
         return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
-    
-    
+
+
 class UpdateProfile(LoginRequiredMixin, UpdateView):
     success_url = "/update-profile/"
     template_name = "profile.html"
     # form_class = forms.Screen4Form
-    fields = ['name', 'dob', 'gender', 'phone', 'address',
-              'profile_image', 'graduation_year', 'mobile']
-    
+    # fields = ['name', 'dob', 'gender', 'phone', 'address',
+    #           'profile_image', 'graduation_year', 'mobile','college']
+
+    form_class = forms.ProfileForm
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateProfile, self).get_context_data(**kwargs)
+        user = User.objects.get(id=self.kwargs['pk'])
+        profile = models.Profile.objects.get(user=user)
+        # questions asked by me
+        context['my_questions'] = Question.objects.filter(user=profile)
+
+
+        context['answered_by_me'] = models.QuestionExpert.objects.filter(assigned_to=profile).filter(answered=True)
+
+        #questions that were assigned to this profile but haven't been answered by him yet
+        context['questions_pending'] = models.QuestionExpert.objects.filter(assigned_to=profile).filter(answered=False)
+
+
+        print(context['answered_by_me'])
+        # context['questions_pending'] = 
+
+        #question 
+        # context['questio']
+        print(context['my_questions'])
+
+        if self.request.POST:
+            context['eduqualform'] = forms.EduQualFormSet(self.request.POST, instance=self.object)
+        else:
+            context['eduqualform'] = forms.EduQualFormSet(instance=self.object)
+        return context
+
+
+
     def get_success_url(self):
         view_name = 'update-profile'
         return reverse(view_name, kwargs={'pk': self.kwargs['pk']})
@@ -1488,12 +1579,12 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         user = User.objects.get(id=self.kwargs['pk'])
         return models.Profile.objects.get(id=user.profile.id)
-    
+
     def get_vouchers(self):
         a = []
         for v in models.Order.objects.filter(profile=self.request.user.profile, status=2):
             c1, c2, q1 = False, False, False
-            print v.selection.search.compt_exm_type_1
+            print(v.selection.search.compt_exm_type_1)
             if bool(v.selection.search.compt_exm_type_1):
                 c1 = models.CompetitiveExam.objects.filter(id=v.selection.search.compt_exm_type_1).first()
             if bool(v.selection.search.compt_exm_type_2):
@@ -1521,14 +1612,26 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
                  'refund_processed': v.refund_processed
                  }
             )
-        print a
+        print(a)
         return a
 
     def form_valid(self, form):
+
+        context = self.get_context_data()
+        eduqual = context['eduqualform']
+
+        with transaction.atomic():
+            self.object = form.save()
+        if eduqual.is_valid():
+            eduqual.instance = self.object
+            eduqual.save()
+
+
+
         return super(UpdateProfile, self).form_valid(form)
 
     def form_invalid(self, form):
-        print form.errors
+        print(form.errors)
         return super(UpdateProfile, self).form_invalid(form)
 
 
@@ -1571,6 +1674,7 @@ class SignupView(FormView):
                 )
             if self.request.is_ajax():
                 data_dict = {'success': True, 'msg': "Signup Successfull", 'email': '', 'password': ''}
+
                 return HttpResponse(json.dumps(data_dict), content_type="application/json")
 
             return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
@@ -1583,9 +1687,9 @@ class SignupView(FormView):
 
 def get_name(obj):
     try:
-        name = obj.name
+        name = obj["name"]
     except:
-        name = obj.course_category
+        name = obj["course_category"]
     return name
 
 
@@ -1600,13 +1704,13 @@ def populate_course_categories(request):
         if web_input and web_input_for_level:
             # two kinds of search criteria
             # 1) keywords search based on course-returns course obj and course category
-            # fetch course objects, prepare data list and return course name 
+            # fetch course objects, prepare data list and return course name
             course_obj = models.Course.objects.filter(keywords__word__icontains=web_input,
                                                       qualification__level=web_input_for_level).values('id', 'name').distinct()
-            
+
             # convert it into python data type
             course_object_data_list = list(course_obj)
-            # fetch course category, prepare data list and return course category 
+            # fetch course category, prepare data list and return course category
             for item in course_object_data_list:
                 course_category.extend(list(models.Qualification.objects.filter(courses=item.get('id'),
                                                                                 level=web_input_for_level).values('course_category').distinct()))
@@ -1626,10 +1730,17 @@ def populate_course_categories(request):
             final_data.extend([item.get('course_category') for item in course_category_from_qualification_list])
             final_data.extend([item.get('courses__name') for item in course_category_from_qualification_list])
             final_data = list(set(final_data))
-            data.extend(models.Course.objects.filter(name__in=final_data, qualification__level=web_input_for_level).distinct('name', 'id'))
-            data.extend(models.Qualification.objects.filter(course_category__in=final_data, level=web_input_for_level).distinct('course_category'))
+            # data.extend(models.Course.objects.filter(name__in=final_data, qualification__level=web_input_for_level).distinct('name', 'id'))
+            # data.extend(models.Qualification.objects.filter(course_category__in=final_data, level=web_input_for_level).distinct('course_category'))
+
+            data.extend(models.Course.objects.filter(name__in=final_data, qualification__level=web_input_for_level).values().distinct())
+            data.extend(models.Qualification.objects.filter(course_category__in=final_data, level=web_input_for_level).values().distinct())
+
+            # for idx, iterable in enumerate(data):
+            #     final_data_list.append({'id': iterable.search_code, 'name': get_name(iterable)})
+
             for idx, iterable in enumerate(data):
-                final_data_list.append({'id': iterable.search_code, 'name': get_name(iterable)})
+                 final_data_list.append({'id': iterable["search_code"], 'name': get_name(iterable)})
 
     return HttpResponse(json.dumps(final_data_list), content_type="application/json")
 
@@ -1647,12 +1758,12 @@ def populate_qualification_exam(request):
         # if web_input_for_level and web_input_for_level is not None:
         #     qualification_exam_obj = \
         #         models.Qualification.objects.filter(level=web_input_for_level, courses__name=web_input_for_course).values('id', 'qualifying_exams__name', 'competitive_exam__name').distinct('qualifying_exams__name')
-        print web_input_for_keyword, web_input_for_level
+        print(web_input_for_keyword, web_input_for_level)
         if web_input_for_level and web_input_for_keyword:
             qualification_exam_obj = \
                 models.Qualification.objects.filter(level=web_input_for_level).filter(
                 Q(qualifying_exams__qualifying_exams_keywords__word__istartswith=web_input_for_keyword) | Q(qualifying_exams__name__istartswith=web_input_for_keyword)).values('qualifying_exams__id', 'qualifying_exams__name', 'competitive_exam__name').distinct('qualifying_exams__name')
-        
+
         elif web_input_for_level:
             qualification_exam_obj = \
                 models.Qualification.objects.filter(level=web_input_for_level).values('qualifying_exams_id', 'qualifying_exams__name', 'competitive_exam__name').distinct('qualifying_exams__name')
@@ -1696,13 +1807,13 @@ def populate_competitve_exam(request):
                 models.Qualification.objects.filter(level=web_input_for_level
                     ).filter(Q(competitive_exam__competitive_exam_keywords__word__istartswith=web_input_for_keyword) | Q(competitive_exam__name__istartswith=web_input_for_keyword)).values('competitive_exam__id', 'competitive_exam__name', 'competitive_exam__score_type').distinct('competitive_exam__name')
 
-        
+
         # if web_input_for_level:
         #     competitve_exam_obj = \
         #         models.Qualification.objects.filter(level=web_input_for_level).values('id', 'competitive_exam__name').distinct('competitive_exam__name')
         competitve_exam_data_list = list(competitve_exam_obj)
         for item in competitve_exam_data_list:
-            print item
+            print(item)
             data_list.append({'id': item.get('competitive_exam__id'), 'name': item.get('competitive_exam__name'),  'exam_type': item.get('competitive_exam__score_type')})
     return HttpResponse(json.dumps(data_list), content_type="application/json")
 
@@ -1850,7 +1961,7 @@ class PricingView(TemplateView):
 
 def get_college(pk):
     s = models.Selection.objects.get(id=pk)
-    print "Screen 4 requesting college details"
+    print("Screen 4 requesting college details")
     return [{'logo': s.college.logo.url, 'course_title': s.course_name, 'college': s.college, 'duration': s.college_qualification.qualification.duration, 'college_qualification': s.college_qualification, 'coupon_code': s.coupon_code}]
 
 
@@ -1859,7 +1970,7 @@ def get_agreements(pk):
     if models.Selection.objects.get(id=pk).college_qualification.agreements:
         for x in models.Selection.objects.get(id=pk).college_qualification.agreements.statements.all():
             y.append(x.preview)
-        print "Agreements ", y
+        print("Agreements ", y)
         return y
     return False
 
@@ -2037,19 +2148,21 @@ def profile_view(request, pk):
                 except Exception as e:
                     print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e), e)
                 order.tnc = cd.get('tnc')
-                from django.forms.models import model_to_dict  # lazy load
+                from django.forms.models import model_to_dict  # lazy load                
                 order.save()
                 # FIXME: An silent fail occurs if the admin has failed to add amounts to the configuration table. \
                 # This error needs to be caught and handled.
 
                 if not request.user.is_authenticated():
                     login(request, user_obj)
-                    return HttpResponseRedirect(request.META.get('HTTP_REFERER')+"#payment")
-                return HttpResponseRedirect(request.META.get('HTTP_REFERER')+"#payment")
+                    #return HttpResponseRedirect(request.META.get('HTTP_REFERER')+"#payment")
+                    return HttpResponseRedirect("/thank-you/"+pk+"?email=None")
+                #return HttpResponseRedirect(request.META.get('HTTP_REFERER')+"#payment")
+                return HttpResponseRedirect("/thank-you/"+pk+"?email=None")
             except Exception as e:
                 print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e), e)
         else:
-            print form_data.errors
+            print(form_data.errors)
     else:
         try:
             user = request.user
@@ -2058,11 +2171,11 @@ def profile_view(request, pk):
                          'name': profile.name,
                          'dob': profile.dob,
                          'gender': profile.gender,
+                         'phone':profile.mobile,
                          'school': profile.school,
                          'class_12_year': profile.class_12_year,
                          'address': profile.address,
                          'parent_email': profile.parent_email,
-
                          }
         except Exception as e:
             print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e), e)
@@ -2074,7 +2187,7 @@ def profile_view(request, pk):
                                                 selection=selection_obj,
                                                 profile=profile,
                                                 status=2, #FIXME: Change to 1 when reverting control flow.
-                                                amount=get_amount_for_order(request, profile, getcollege),  
+                                                amount=get_amount_for_order(request, profile, getcollege),
                                                 ).latest('id')
             data_dict['tnc'] = order.tnc
             # encryption = formatrequestparameterstoccavnue(request, profile, getcollege)
@@ -2094,6 +2207,8 @@ def profile_view(request, pk):
                'access_code': settings.TEST_ACCESS_CODE,
                'profile_obj': profile, 'pk': pk,
                'email': request.POST.get("email"),
+               'scholarship':getscholarshipdetails[0].scholarship,
+               'cert_detail':models.Selection.objects.get(id=pk),
                'amount': get_amount_for_order(request, profile, getcollege) if get_amount_for_order(request, profile, getcollege) else 0}
     template = "screen4-new.html"
     return render(request, template, context)
@@ -2318,7 +2433,7 @@ class ForgotPasswordNewPassword(FormView):
         user = models.User.objects.get(email=email)
         user.set_password(self.request.POST.get("password"))
         user.save()
-        print self.request.POST.get("password")
+        print(self.request.POST.get("password"))
         return HttpResponseRedirect("/")
 
 
@@ -2386,6 +2501,7 @@ class Newsletter(FormView):
         add_message(self.request, 25, "Congratulations! You are subscribed to Just Rokket's Newsletter")
         return super(Newsletter, self).form_valid(form)
 
+
     def get_success_url(self):
         return self.request.META.get('HTTP_REFERER')
 
@@ -2400,7 +2516,7 @@ class RequestRefund(TemplateView):
         o.refund_due_date = datetime.datetime.now() + timedelta(days=15)
         o.refund_reason = self.request.GET.get("why")
         o.save()
-        print self.request.META.get("HTTP_REFERRER")
+        print(self.request.META.get("HTTP_REFERRER"))
         return HttpResponseRedirect(self.request.META.get("HTTP_REFERER")+"#tab2")
 
 
@@ -2411,9 +2527,3 @@ def error404(request):
         'message': 'All: %s' % request,
         })
     return HttpResponse(content=template.render(context), content_type='text/html; charset=utf-8', status=404)
-
-
-
-
-
-

@@ -1,0 +1,365 @@
+{% load staticfiles %}
+{% load socialaccount %}
+<div class="qa">
+<title>Simple QA</title>
+<meta name="viewport" content="width=devise-width, initial-scale=1.0" >
+<link rel="icon" href="/favicon-32x32.png">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="{% static 'css/qa.css' %}" rel="stylesheet"/>
+<style>
+  .fixed-header .navbar{
+  float: none;
+  margin: 0;
+  height: 10px;
+  background: #373737;
+  max-height: 12px;
+  min-height: 28px !important;
+  border-radius: 0px;
+  }
+  .fixed-header .navbar ul{
+  margin-top: 0;
+  }
+  .navbar-inverse {
+    border-radius: 0px;
+    background: #373737;
+    min-height: auto;
+    padding: 3px 24px;
+  }
+  .navbar-inverse .navbar-social a {
+    color: #dddddd;
+    text-decoration: none;
+    margin-left: 12px;
+  }
+  .qa__q-card.nqa{
+    background: #e0ffff;
+    padding: 10px 24px;
+    color:#000000;
+    position: relative;
+  }
+  .qa__q-card.nqa a{
+    text-decoration: none;
+    display: block;
+    color: #000000;
+  }
+  .qa__q-card.nqa .tag{position: absolute;top: 20px;right: 20px;}
+</style>
+<header class="fixed-header">
+  <nav class="navbar navbar-inverse text-right">
+    <div class="container-fluid">
+      <ul class="nav navbar-nav navbar-right navbar-social">
+        <a href="#"> <i class="fa fa-phone"></i>+91 9990 838830</a>
+        <a href="https://www.facebook.com/justrokket"><i class="fa fa-facebook"></i></a>
+        <a href="https://twitter.com/justrokket" target="_blank"><i class="fa fa-twitter"></i></a>
+    </ul>
+    </div>
+  </nav>
+</header>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+          <img alt="Just Rokket"   src="https://justrokket1-bucket.s3.amazonaws.com/static/images/icons/logo588x136.png">
+      </a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/question-listing">Go to Community</a></li>
+        <li><a href="/admissions">Apply to Colleges</a></li>
+        <li class="dropdown">
+
+            {% if request.user.is_authenticated %}
+              <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  Hello, {{ username }}!
+              </a>
+            {% else %}
+              <a href="/?next=/question-listing/" data-target="#mymodal" class="enter-logged-out">Login</a>
+            {% endif %}
+
+          {% if request.user.is_authenticated %}
+          <ul class="dropdown-menu">
+            <li><a {% if request.user.is_authenticated %} href="/profile/{{ request.user.id }}" {% else %} href="#" {% endif %} style="">My Profile</a></li>
+            <li><a {% if request.user.is_authenticated %} href="/profile/{{ request.user.id }}/#tab2" {% else %} href="#" {% endif %} style="">My Vouchers</a></li>
+{#                    <li class="mvc">{% if request.user.is_authenticated %}<a href="/profile/{{ request.user.id }}#tab2" style="">My Vouchers</a>{% else %} <a href="#" style="">My Vouchers {% endif %}</li>#}
+{#                    <li>{% if request.user.is_authenticated %}<a href="/profile/{{ request.user.id }}#tab3" style="">My Activity </a>{% else %} <a href="#" style="">My Activity {% endif %}</a></li>#}
+            {% if request.user.is_authenticated %}<li><a href="/logout">Logout</a></li>{% endif %}
+            {% comment %}<li><a href="#" style="height: 0;">{% if request.user.is_authenticated %}<a href="/logout/" style="">LOGOUT</a>{% else %}<a href="#login-form" class="fancybox" id="login-popup-button" style="">LOGIN</a>{% endif %}</a></li>{% endcomment %}
+          </ul>
+
+          {% endif %}
+
+
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+<div class="container-fluid" style="display:none">
+  <div class="row">
+    <div class="col-md-6">
+      <h1>
+        <small>Open Questions</small>
+      </h1>
+    </div>
+    <div class="col-md-6 text-right">
+      <a class="btn btn-lg btn-warning" href="#search">
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Find</a>
+      <a class="btn btn-lg btn-danger" href="{% url 'qa_create_question' %}">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ask Question</a>
+
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+{% block content %}
+
+{% endblock content %}
+ <div id="search">
+   <button type="button" class="close">×</button>
+   <form method="GET" action="{% url 'qa_search' %}">
+     <input type="search" value="" name="word" placeholder="type keyword(s) here" />
+     <input class="btn btn-lg btn-warning" type="submit" value="Find" />
+   </form>
+
+ </div>
+</div>
+
+
+
+<div class="newsletter">
+  <div class="container">
+        <div class="newsletter__inner">
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <div class="col-sm-3">
+                <p class="icon">
+                  <i class="fa fa-envelope-open-o" aria-hidden="true"></i>
+                </p>
+              </div>
+
+              <div class="col-sm-9">
+                <h3 class="title">Signup for Newsletter</h3>
+                <p class="subTitle">Get to know about new scholarships getting listed on Just Rokket and get insights into careers, exam prep tips and great stories.</p>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+
+              <form class="form-inline" method="post" id="signupform" action="/newsletter/#point-me">{% csrf_token %}
+                <div class="form-group">
+                  <input type="email" class="form-control" id="email" placeholder="Your Email Address" name="email">
+                </div>
+                <button type="submit" class="btn btn__primary btn__primary--sm" onclick="myFunction()">Sign Up</button>
+              </form>
+              {% for message in messages %}
+                  <p style="float: left;">{{ message }}</p>
+               {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+<div class="footer">
+  <footer class="container">
+      <div class="row">
+        <div class="col-md-3 col-sm-6">
+          <div class="footer__item">
+              <h3 class="footer__title">about</h3>
+              <ul>
+                <li><a href="" class="footer__link">About Us</a></li>
+                <li><a href="" class="footer__link">Pricing</a></li>
+                <li><a href="" class="footer__link">Partner Institution</a></li>
+                <li><a href="" class="footer__link">Just Rocket Diary</a></li>
+              </ul>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <div class="footer__item">
+              <h3 class="footer__title">Support</h3>
+              <ul>
+                <li><a href="" class="footer__link">About Us</a></li>
+                <li><a href="" class="footer__link">Pricing</a></li>
+                <li><a href="" class="footer__link">Partner Institution</a></li>
+                <li><a href="" class="footer__link">Just Rocket Diary</a></li>
+              </ul>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <div class="footer__item">
+              <h3 class="footer__title">Institution</h3>
+              <ul>
+                <li><a href="" class="footer__link">About Us</a></li>
+                <li><a href="" class="footer__link">Pricing</a></li>
+                <li><a href="" class="footer__link">Partner Institution</a></li>
+                <li><a href="" class="footer__link">Just Rocket Diary</a></li>
+              </ul>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <div class="footer__item">
+              <h3 class="footer__title">Contact Us</h3>
+              <h3 class="footer__title">Refund assurance Us</h3>
+              <!-- <ul>
+                <li><a href="" class="footer__link">About Us</a></li>
+                <li><a href="" class="footer__link">Pricing</a></li>
+                <li><a href="" class="footer__link">Partner Institution</a></li>
+                <li><a href="" class="footer__link">Just Rocket Diary</a></li>
+              </ul> -->
+          </div>
+        </div>
+      </div>
+  </footer>
+</div>
+<div class="modal modal-fadeIn" id="mymodal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content ">
+        <div class="modal-body">
+            <div class="modal-header">
+             <a type="button" class="close" data-dismiss="modal">Close</a>
+         </div>
+            <p class="text-center" style="font-size: larger;margin-bottom: 2em;">Create your account to join the Rokket Community</p>
+            <div class="text-center button" style="margin-top: 1em;">
+                <a href="{% provider_login_url "facebook" method="js_sdk" %}" class="btn btn-facebook" style="color: #fff;text-decoration: none!important; "><i class="fa fa-facebook-f fa-lg"></i> Sign up with facebook</a>
+            </div>
+            <p class="text-center" style="margin-top: 1em; margin-bottom: 0;">No Facebook Account?</p>
+            <p class="text-center" style="font-size: 14px;font-weight: 700;"><a class="signup-email blue-color" style="cursor: pointer; text-decoration: none; margin-bottom: 1em;">Create an account with your Email</a></p>
+            <p class="text-center" style="font-size: larger; margin-bottom: 0;">Already have an account?</p>
+            <p class="text-center">Sign in through <a class="signin-email blue-color" style="cursor: pointer;text-decoration: none!important;font-size: 14px; font-weight: 700;">Email</a> or <a class="fb-login blue-color" href="{% provider_login_url "facebook" method="js_sdk" %}" style="cursor: pointer;text-decoration: none!important;font-size: 14px; font-weight: 700;">Facebook</a></p>
+            <div class="form-login-email" style="display: none;">
+                <form id="login" action="/user-login/" method="POST" >
+                    {% csrf_token %}
+                    <p class="recovery-line" style="display: none">An email has been sent to your registered email</p>
+                    <div style="height: 20px;"><span id="email-errors"></span></div>
+                    <div style="margin: 10px">
+
+                        <center><span style="">{{ login_form.email }}</span></center>
+                    </div>
+                    <div style="height: 10px;"><span id="password-errors"></span></div>
+                    <div style="margin: 10px">
+                        <center><span style="">{{ login_form.password }}</span></center>
+                    </div>
+                    <div class="text-center button  " style="margin-top: 1em;">
+                        <input class="btn-orange " name="Login" type="submit" value="Sign In" >
+                    </div>
+                    <div class="row remeber" style="margin-bottom: 1em;">
+                        <center><a class="forgot-password" href="#password-reset" >Forgot Password?</a></center>
+                    </div>
+                </form>
+            </div>
+            <div class="forgot-password-form" style="display: none;">
+                    <form class="recover" action="/forgot-password/" method="POST">{% csrf_token %}
+                        <center><label for="recovery-email">Enter your registered email</label> </center>
+                        <div style="height: 20px"><span id="recovery-email-errors"></span></div>
+                        <center><input name="email" type="text" placeholder="Email"></center>
+                        <div class="text-center button" style="margin-top: 1em;">
+                            <input class="btn-orange recover-button" name="Login" type="submit" value="Send Recovery Email">
+                        </div>
+                        <center><div class="recover-button-after"></div></center>
+                    </form>
+            </div>
+            <div class="form-signup" style="display: none;">
+                <form id="sign-up" action="/signup/" method="POST" style="margin-bottom: 1.5em;">
+                  {% csrf_token %}
+                    <div style="height: 20px;"><span id="signup-email-errors"></span><span id="signup-confirm-password-errors"></span><span id="signup-password-errors"></span></div>
+                    <center>{{ signup_form.signup_email }}</center>
+                    <div style="height: 5px;"></div>
+                    <center>{{ signup_form.signup_password }}</center>
+                    <div style="height: 5px;"></div>
+                    <center>{{ signup_form.signup_confirm_password }}</center>
+                    <div class="text-center button" style="margin-top: 1em;">
+                        <center><input class="btn-orange" name="Login" type="submit" value="Sign Up"></center>
+                    </div>
+                    <div class="col-xs-12 col-md-12 text-center" style="margin-bottom: 1em;">
+                        <p style="color: #b7b7b7;">Go through our <a class="privacy-policy" href="/privacy-policy" style="text-decoration: none;">Privacy Policy</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- <hr>
+<center>
+  <a href="http://www.djangoproject.com/"><img src="https://www.djangoproject.com/m/img/badges/djangoproject120x25.gif" border="0" alt="A Django project." title="A Django project." /></a> ·
+  <a href="https://github.com/swappsco/django-qa/">Github</a> ·
+  <a data-toggle="modal" data-target="#apiModal">API</a> ·
+  <small><a href="/admin">Admin Panel</a></small></center>
+ <br/><br/> -->
+
+
+ <!-- Modal -->
+ <div class="modal fade" id="apiModal" tabindex="-1" role="dialog" aria-labelledby="APIModal" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+         <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-cloud" aria-hidden="true"></span> API Access</h4>
+       </div>
+       <div class="modal-body">
+         <ul>
+           <li>
+             <b>List of Questions</b>
+             <br/>Retrieve the list of questions.
+             <br/>json URL : <code class="custom-code">http://djangoqa.azurewebsites.net/api/questions/?format=json</code>
+           </li>
+           <br/>
+           <li>
+             <b>List of Users</b>
+             <br/>Retrieve the list of users.
+             <br/>json URL : <code class="custom-code">http://djangoqa.azurewebsites.net/api/users/?format=json</code>
+           </li>
+          </ul>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+       </div>
+     </div>
+   </div>
+ </div>
+</div>
+
+{% block js %}
+<script>
+  $(function () {
+    $('a[href="#search"]').on('click', function(event) {
+      event.preventDefault();
+      $('#search').addClass('open');
+      $('#search > form > input[type="search"]').focus();
+    });
+
+    $('#search, #search button.close').on('click keyup', function(event) {
+      if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
+        $(this).removeClass('open');
+      }
+    });
+
+    });
+</script>
+
+{% endblock js %}
+{%block extra_js %}{% endblock extra_js %}

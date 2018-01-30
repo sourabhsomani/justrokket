@@ -1,6 +1,10 @@
 from django import forms
 from . import models
 
+from django.forms import ModelForm,inlineformset_factory
+
+from .models import CollegeEduQual
+
 
 ID_TYPE_CHOICES = (
     ('', 'Id Proof Type'),
@@ -121,6 +125,27 @@ class Screen4Form(forms.Form):
         self.fields['parent_email'].widget.attrs.update({'class': 'form-control-1', 'placeholder': "Parent's Email"})
         # self.fields['notInCollege'].widget.attrs.update({'placeholder': "I agree"})
         self.fields['tnc'].widget.attrs.update({'placeholder': "I agree"})
+
+
+
+
+class ProfileForm(ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ['name','who_i_am', 'dob', 'gender', 'phone', 'address',
+              'profile_image', 'graduation_year', 'mobile','my_interest','what_i_do_well','career_mission','interesting_about_me','my_extra_curri','school','school_qualification','school_course','class_12_year']
+
+
+
+class EduqualForm(ModelForm):
+    class Meta:
+        model = models.CollegeEduQual
+        fields = ['college','course','qualification','year_of_passing_out']
+
+
+EduQualFormSet = inlineformset_factory(models.Profile, models.CollegeEduQual,
+                                            form=EduqualForm, max_num=3,extra=2)
+
 
 
 class LoginForm(forms.Form):
